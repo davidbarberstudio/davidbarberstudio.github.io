@@ -210,6 +210,12 @@ button:disabled { background: #222222; color: #555555; cursor: not-allowed; }
     <div class="loading" id="loading" style="display:none;">Carregando horários...</div>
     
     <button type="button" id="btnAgendar" onclick="solicitarAgendamento()" disabled>Agendar Horário ✅</button>
+      <!-- BOTÓN CANCELAR CITA -->
+<div style="text-align:center; margin-top:12px;">
+  <button type="button" onclick="mostrarCancelarCita()" style="background:#f44336; color:white; padding:12px 25px; border:none; border-radius:8px; cursor:pointer; font-weight:bold; width:90%;">
+    Cancelar Mi Cita ❌
+  </button>
+</div>
   </form>
   <div id="confirmacao">Enviando agendamento para o sistema... por favor, aguarde. ⌛</div>
 </div>
@@ -222,6 +228,52 @@ function mostrarErroModal() {
 
 function fecharModal() {
   document.getElementById('modalErro').style.display = 'none';
+}
+// FUNÇÕES CANCELAR CITA
+function mostrarCancelarCita() {
+  document.getElementById('modalCancelar').style.display = 'flex';
+  document.getElementById('msgCancelar').style.display = 'none';
+}
+
+function fecharCancelar() {
+  document.getElementById('modalCancelar').style.display = 'none';
+  document.getElementById('telCancelar').value = '';
+  document.getElementById('dataCancelar').value = '';
+}
+
+async function cancelarCita() {
+  const telefone = document.getElementById('telCancelar').value.replace(/\D/g, '');
+  const data = document.getElementById('dataCancelar').value;
+  const msgDiv = document.getElementById('msgCancelar');
+
+  if (!telefone || !data) {
+    msgDiv.textContent = 'Preencha telefone e data';
+    msgDiv.style.display = 'block';
+    msgDiv.style.color = '#f44336';
+    return;
+  }
+
+  msgDiv.textContent = 'Cancelando...';
+  msgDiv.style.display = 'block';
+  msgDiv.style.color = '#fdf0cd';
+
+  try {
+    const response = await fetch(`${SCRIPT_URL}?action=cancelarCita&telefone=${telefone}&data=${data}`);
+    const result = await response.json();
+
+    if (result.success) {
+      msgDiv.textContent = '✅ ' + result.message;
+      msgDiv.style.color = '#4CAF50';
+      if (result.whatsapp) window.open(result.whatsapp, '_blank');
+      setTimeout(() => { fecharCancelar(); triggerCargaHoras(); }, 3000);
+    } else {
+      msgDiv.textContent = '❌ ' + result.error;
+      msgDiv.style.color = '#f44336';
+    }
+  } catch (error) {
+    msgDiv.textContent = 'Erro ao cancelar. Tente novamente.';
+    msgDiv.style.color = '#f44336';
+  }
 }
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcQMOm11ba3BRV0pRKlVplcGx0goPhtHIHurr-jm0sa0rzs9ujvdeTH4xFEyPIhMKjlQ/exec';
 
@@ -503,6 +555,18 @@ async function solicitarAgendamento() {
     <div class="modal-icon">⚠️</div>
     <div class="modal-texto">Preencha todos os campos obrigatórios</div>
     <button class="modal-btn" onclick="fecharModal()">OK</button>
+  </div>
+</div>
+<!-- MODAL CANCELAR CITA -->
+<div id="modalCancelar" class="modal-overlay">
+  <div class="modal-box" style="border: 2px solid #f44336; box-shadow: 0 8px 32px rgba(244, 67, 54, 0.4);">
+    <div class="modal-icon">❌</div>
+    <div class="modal-texto" style="color:#ff8a8a;">Cancelar Mi Cita</div>
+    <input type="tel" id="telCancelar" placeholder="Tu teléfono" style="width:100%; padding:12px; margin:8px 0 15px 0; border-radius:8px; border:1px solid #333; background:#000; color:#fff; box-sizing:border-box;">
+    <input type="date" id="dataCancelar" style="width:100%; padding:12px; margin:8px 0 20px 0; border-radius:8px; border:1px solid #333; background:#000; color:#fff; box-sizing:border-box;">
+    <button onclick="cancelarCita()" style="background:#f44336; color:white; padding:12px; border:none; border-radius:8px; width:100%; font-weight:bold; cursor:pointer; margin-bottom:10px;">Confirmar Cancelación</button>
+    <button onclick="fecharCancelar()" style="background:#666; color:white; padding:12px; border:none; border-radius:8px; width:100%; cursor:pointer;">Cerrar</button>
+    <div id="msgCancelar" style="color:#fdf0cd; margin-top:15px; text-align:center; display:none; font-size:14px;"></div>
   </div>
 </div>
 </body>
