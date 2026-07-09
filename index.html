@@ -251,7 +251,7 @@ function getHorariosPorDia(dataStr) {
     }
 
     if (dia === 6) { // SÁBADO: 08:00-11:30, 12:00 INVISIBLE, 13:00-17:00 + 17:30 cálculo
-    return ['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30'];
+    return ['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30'];
     }
 
     // MARTES A VIERNES: 08:30-11:00, 13:00-19:00 + 19:30 cálculo
@@ -361,7 +361,7 @@ async function carregarHorarios() {
         const esSabado = new Date(data + 'T12:00:00').getDay() === 6;
 const horariosParaMostrar = todosHorarios.filter(h => {
     if (h === '12:00') return false;
-    if (h === '11:30' && !esSabado) return false;
+    if (h === '11:30' &&!esSabado) return false;
     return true;
 }).slice(0, -1);
         horaSelect.innerHTML = '<option value="">Selecione um horário</option>';
@@ -419,10 +419,10 @@ const horariosParaMostrar = todosHorarios.filter(h => {
     }
 }
 
+// PARCHE 3: FUNCIÓN REPARADA - ESPERA 3 SEG + VENTANA ⚠️ EN PORTUGUÉS
 async function solicitarAgendamento() {
     const btn = document.getElementById('btnAgendar');
     const confirmDiv = document.getElementById('confirmacao');
-    const erroMsg = document.getElementById('erroMsg');
 
     const data = document.getElementById('data').value;
     const hora = document.getElementById('hora').value;
@@ -430,13 +430,16 @@ async function solicitarAgendamento() {
     const telefone = document.getElementById('telefone').value;
     const servico = document.getElementById('servico').value;
 
-    if (!data || !hora || !cliente || !telefone || !servico) {
-  mostrarErroModal(); // <-- LLAMA AL MODAL NUEVO
-  return;
+    if (!data ||!hora ||!cliente ||!telefone ||!servico) {
+        mostrarErroModal();
+        return;
     }
+    
+    // 1. BLOQUEA BOTÓN Y MUESTRA MENSAJE EN PORTUGUÉS
     btn.disabled = true;
-    btn.textContent = 'AGENDANDO...';
+    btn.textContent = 'VERIFICANDO DISPONIBILIDADE...';
     confirmDiv.style.display = 'block';
+    confirmDiv.textContent = 'Verificando horário no sistema... por favor, aguarde. ⌛';
 
     const dados = {
         data: data,
@@ -450,28 +453,42 @@ async function solicitarAgendamento() {
     try {
         const formData = new URLSearchParams(dados);
 
-        const msg = `*NOVA RESERVA - David Barber Studio*\n\n👤 Cliente: ${dados.cliente}\n📱 WhatsApp: ${dados.telefone}\n💈 Serviço: ${dados.servico}\n📅 Data: ${dados.data.split('-').reverse().join('/')}\n⏰ Hora: ${dados.hora}\n✂️ Barbeiro: ${dados.barbeiro}`;
-        const whatsappUrl = `https://wa.me/5595991554792?text=${encodeURIComponent(msg)}`;
-        window.open(whatsappUrl, '_blank');
-
-        fetch(SCRIPT_URL, {
+        // 2. ESPERA RESPUESTA DEL SCRIPT ANTES DE ABRIR WHATSAPP
+        const response = await fetch(SCRIPT_URL, {
             method: 'POST',
             body: formData
         });
+        
+        const result = await response.json();
 
-        setTimeout(() => {
-            confirmDiv.style.display = 'none';
-            document.getElementById('agendaForm').reset();
-            document.getElementById('hora').innerHTML = '<option value="">Selecione data e serviço primeiro</option>';
-            document.getElementById('hora').disabled = true;
-            btn.disabled = true;
-            btn.textContent = 'Agendar Horário ✅';
-        }, 3000);
+        // 3. SI EL SCRIPT CONFIRMA, AHORA SÍ ABRE WHATSAPP
+        if (result.success) {
+            confirmDiv.textContent = 'Agendamento confirmado! Redirecionando para o WhatsApp... ✅';
+            window.open(result.whatsapp, '_blank');
+            
+            setTimeout(() => {
+                confirmDiv.style.display = 'none';
+                document.getElementById('agendaForm').reset();
+                document.getElementById('hora').innerHTML = '<option value="">Selecione data e serviço primeiro</option>';
+                document.getElementById('hora').disabled = true;
+                btn.disabled = true;
+                btn.textContent = 'Agendar Horário ✅';
+                triggerCargaHoras();
+            }, 2000);
+
+        } else {
+            throw new Error(result.error || 'Horário indisponível');
+        }
 
     } catch (error) {
-        confirmDiv.textContent = 'Erro de conexão';
+        confirmDiv.style.display = 'none';
         btn.disabled = false;
         btn.textContent = 'Agendar Horário ✅';
+        
+        // 4. VENTANA DE ADVERTENCIA EN PORTUGUÉS ⚠️
+        alert(`⚠️ Atenção! Horário Indisponível\n\n${error.message}\n\nEste horário acabou de ser reservado por outra pessoa ou está bloqueado pelo barbeiro.\n\nPor favor, escolha outro horário disponível.`);
+        
+        triggerCargaHoras();
     }
 }
 </script>
