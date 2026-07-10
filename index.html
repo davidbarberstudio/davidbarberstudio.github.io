@@ -264,7 +264,9 @@ async function cancelarCita() {
     if (result.success) {
       msgDiv.textContent = '✅ ' + result.message;
       msgDiv.style.color = '#4CAF50';
-      if (result.whatsapp) window.open(result.whatsapp, '_blank');
+    if (result.whatsapp) {
+    window.location.href = result.whatsapp; // ← Redirección directa, nunca se bloquea
+    }
       setTimeout(() => { fecharCancelar(); triggerCargaHoras(); }, 3000);
     } else {
       msgDiv.textContent = '❌ ' + result.error;
