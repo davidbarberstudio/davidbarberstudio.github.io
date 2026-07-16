@@ -223,31 +223,31 @@ button:disabled { background: #222222; color: #555555; cursor: not-allowed; }
     Cancelar Mi Cita ❌
   </button>
 </div>
-   <!-- INSTALAR APP - FIJO ABAJO, NO FLOTANTE -->
-<div style="margin-top:20px; padding:16px; background: linear-gradient(145deg, #0a0a0a, #151515); border:1px solid #D4AF37; border-radius:14px; display:flex; align-items:center; gap:12px; font-family:sans-serif">
-  <div style="width:44px;height:44px;min-width:44px;background:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;color:#D4AF37;font-size:18px;border:1px solid #333">DB</div>
-  <div style="flex:1; color:#fff; line-height:1.2">
-    <div style="font-weight:bold; font-size:13px; color:#fff">David Barber Studio</div>
-    <div style="font-size:11px; color:#999">App Oficial • Instala en tu celular</div>
+<!-- BOTÓN INSTALAR V3 - PREMIUM IGUAL A LOS OTROS - EN PORTUGUÊS -->
+<div style="margin-top:16px; display:flex; flex-direction:column; gap:8px;">
+  <button id="db-install-btn-fixed" type="button" style="width:100%; background: linear-gradient(135deg, #D4AF37, #C9A86A); color:#000; border:none; padding:16px; border-radius:12px; font-weight:900; font-size:15px; letter-spacing:0.5px; cursor:pointer; box-shadow:0 4px 12px rgba(212,175,55,0.3);">
+    📲 BAIXAR APP OFICIAL
+  </button>
+  <div style="text-align:center; font-size:11px; color:#777; letter-spacing:0.3px;">
+    Instale nosso app e agende mais rápido ✨
   </div>
-  <button id="db-install-btn-fixed" style="background:linear-gradient(135deg,#D4AF37,#C9A86A);color:#000;border:none;padding:10px 16px;border-radius:10px;font-weight:900;cursor:pointer;font-size:13px">📲 INSTALAR</button>
 </div>
 
 <script>
-let deferredPrompt2;
-const btnFixed = document.getElementById('db-install-btn-fixed');
-window.addEventListener('beforeinstallprompt',(e)=>{e.preventDefault();deferredPrompt2=e;});
-if(btnFixed){
-  btnFixed.addEventListener('click',async()=>{
-    if(deferredPrompt2){deferredPrompt2.prompt();await deferredPrompt2.userChoice;deferredPrompt2=null;}
+let deferredPrompt3;
+const btnFixed3 = document.getElementById('db-install-btn-fixed');
+window.addEventListener('beforeinstallprompt',(e)=>{e.preventDefault();deferredPrompt3=e;});
+if(btnFixed3){
+  btnFixed3.addEventListener('click',async()=>{
+    if(deferredPrompt3){deferredPrompt3.prompt();await deferredPrompt3.userChoice;deferredPrompt3=null;}
     else{
-      if(/iPhone|iPad|iPod/.test(navigator.userAgent)){alert('En iPhone: toca Compartir ⬆️ > Añadir a pantalla de inicio');}
-      else{alert('Toca los 3 puntitos ⋮ > Instalar app');}
+      if(/iPhone|iPad|iPod/.test(navigator.userAgent)){alert('No iPhone: toque em Compartilhar ⬆️ > Adicionar à Tela de Início');}
+      else{alert('Toque nos 3 pontinhos ⋮ > Instalar app');}
     }
   });
 }
 </script>
-<!-- FIN INSTALAR FIJO -->
+<!-- FIN V3 -->
   </form>
   <div id="confirmacao">Enviando agendamento para o sistema... por favor, aguarde. ⌛</div>
 </div>
