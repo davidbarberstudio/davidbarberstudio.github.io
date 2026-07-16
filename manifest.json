@@ -1,0 +1,9 @@
+{
+  "name": "David Barber Studio",
+  "short_name": "DBStudio",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "start_url": ".",
+  "icons": [{"src": "./1781700842770.png","sizes": "512x512","type": "image/png"}]
+}
