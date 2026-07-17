@@ -5,127 +5,75 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>DB - Membresías</title>
-  <!-- BLOQUES PARA ICONO Y APP - SOLO ESTO SE AGREGO -->
   <link rel="manifest" href="https://davidbarberstudio.github.io/manifest-membresia.json">
   <meta name="theme-color" content="#C9A96E">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="DBM">
   <link rel="icon" href="https://davidbarberstudio.github.io/dbm-icon-512.png">
   <link rel="apple-touch-icon" href="https://davidbarberstudio.github.io/dbm-icon-512.png">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     html { width: 100%; background: #000; }
-    body { font-family: 'Montserrat', sans-serif; background: #000; color: #fff; width: 100%; min-height: 100vh; padding-bottom: 120px; font-size: 32px; transform-origin: top left; }
-   .app { width: 100%; padding: 28px 20px; transform: scale(1); }
-   .header { text-align: center; margin-bottom: 40px; padding-bottom: 28px; border-bottom: 5px solid #C9A96E; width: 100%; }
-   .logo { width: 220px; height: auto; margin-bottom: 16px; }
-   .buscador { display: flex; gap: 16px; margin-bottom: 32px; width: 100%; }
-   .buscador input { flex: 1; padding: 36px 28px; border-radius: 24px; border: 5px solid #C9A96E; background: #111; color: #fff; font-size: 32px; font-family: 'Montserrat', sans-serif; min-width: 0; }
-   .btn-buscar { padding: 36px 40px; border-radius: 24px; border: 5px solid #C9A96E; background: #C9A96E; color: #000; font-weight: 700; font-size: 44px; min-width: 120px; }
-   .filtros { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 40px; width: 100%; }
-   .filtro { padding: 32px 16px; border-radius: 50px; border: 4px solid #444; background: #111; color: #888; font-size: 28px; font-weight: 700; font-family: 'Montserrat', sans-serif; }
-   .filtro.activo { background: #C9A96E; color: #000; border-color: #C9A96E; }
-   .card-cliente { background: #0a0a0a; border: 5px solid #C9A96E; border-radius: 32px; padding: 40px; margin-bottom: 32px; width: 100%; box-shadow: 0 0 40px rgba(201,169,110,0.3); }
-   .nombre { font-family: 'Cinzel', serif; font-weight: 700; font-size: 44px; color: #C9A96E; margin-bottom: 12px; }
-   .paquete { font-size: 28px; color: #aaa; margin-bottom: 24px; }
-   .status { float: right; padding: 14px 24px; border-radius: 28px; font-size: 26px; font-weight: 700; }
-   .ACTIVO { background: #198754; } .PORVENCER { background: #FF8C00; color: #000; } .VENCIDO { background: #dc3545; }
-   .whatsapp { color: #25D366; text-decoration: none; font-size: 32px; display: block; margin-bottom: 24px; font-weight: 600; }
-   .dato { display: flex; justify-content: space-between; font-size: 32px; margin-bottom: 16px; font-weight: 600; }
-   .cortes-num { font-size: 56px; color: #C9A96E; font-weight: 700; }
-   .vencimiento { font-size: 28px; color: #999; margin-bottom: 32px; }
-   .acciones { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-   .btn-accion { padding: 36px; border-radius: 24px; border: none; font-size: 32px; font-weight: 700; font-family: 'Montserrat', sans-serif; min-height: 100px; }
-   .btn-corte { background: #198754; color: #fff; } .btn-renovar { background: #C9A96E; color: #000; }
-   .btn-accion:disabled { background: #333; color: #666; }
-   .fab { position: fixed; bottom: 40px; right: 30px; width: 120px; height: 120px; border-radius: 50%; background: #C9A96E; color: #000; border: 6px solid #000; font-size: 70px; font-weight: 300; box-shadow: 0 12px 50px rgba(201,169,110,0.9); z-index: 15; }
-   .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.98); z-index: 20; padding: 20px; overflow-y: auto; }
-   .modal.activo { display: flex; align-items: center; justify-content: center; }
-   .modal-card { background: #0a0a0a; border: 5px solid #C9A96E; border-radius: 32px; padding: 50px 40px; width: 100%; }
-   .modal-card h3 { font-family: 'Cinzel', serif; color: #C9A96E; margin-bottom: 44px; text-align: center; font-size: 48px; }
-   .modal-card input,.modal-card select { width: 100%; padding: 36px; margin: 24px 0; border-radius: 24px; border: 5px solid #C9A96E; background: #000; color: #fff; font-size: 32px; font-family: 'Montserrat', sans-serif; }
-   .modal-botones { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 40px; }
-   .btn-guardar { background: #198754; color: #fff; padding: 36px; border: none; border-radius: 24px; font-weight: 700; font-size: 32px; }
-   .btn-cancelar { background: #333; color: #fff; padding: 36px; border: none; border-radius: 24px; font-weight: 700; font-size: 32px; }
-   .vacio { text-align: center; padding: 160px 20px; color: #666; }
-   .vacio-emoji { font-size: 120px; margin-bottom: 40px; }
-   .vacio-texto { font-size: 36px; }
+    body { font-family: 'Montserrat', sans-serif; background: #000; color: #fff; width: 100%; min-height: 100vh; padding-bottom: 80px; }
+    .app { width: 100%; max-width: 480px; margin: 0 auto; padding: 16px 14px; }
+    .header { text-align: center; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 2px solid #C9A96E; }
+    .logo { width: 110px; height: auto; margin-bottom: 8px; }
+    .buscador { display: flex; gap: 8px; margin-bottom: 16px; }
+    .buscador input { flex: 1; padding: 14px 16px; border-radius: 12px; border: 2px solid #C9A96E; background: #111; color: #fff; font-size: 15px; font-family: 'Montserrat', sans-serif; }
+    .btn-buscar { padding: 14px 18px; border-radius: 12px; border: 2px solid #C9A96E; background: #C9A96E; color: #000; font-weight: 700; font-size: 18px; }
+    .filtros { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 18px; }
+    .filtro { padding: 12px 6px; border-radius: 20px; border: 2px solid #444; background: #111; color: #888; font-size: 12px; font-weight: 700; font-family: 'Montserrat', sans-serif; }
+    .filtro.activo { background: #C9A96E; color: #000; border-color: #C9A96E; }
+    .card-cliente { background: #0a0a0a; border: 2px solid #C9A96E; border-radius: 16px; padding: 16px; margin-bottom: 14px; box-shadow: 0 0 20px rgba(201,169,110,0.2); }
+    .nombre { font-family: 'Cinzel', serif; font-weight: 700; font-size: 18px; color: #C9A96E; margin-bottom: 4px; max-width: 70%; display: inline-block; }
+    .paquete { font-size: 12px; color: #aaa; margin-bottom: 10px; }
+    .status { float: right; padding: 5px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+    .ACTIVO { background: #198754; } .PORVENCER { background: #FF8C00; color: #000; } .VENCIDO { background: #dc3545; }
+    .whatsapp { color: #25D366; text-decoration: none; font-size: 13px; display: block; margin-bottom: 10px; font-weight: 600; }
+    .dato { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; font-weight: 600; }
+    .cortes-num { font-size: 22px; color: #C9A96E; font-weight: 700; }
+    .vencimiento { font-size: 11px; color: #999; margin-bottom: 12px; }
+    .acciones { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .btn-accion { padding: 12px; border-radius: 10px; border: none; font-size: 13px; font-weight: 700; font-family: 'Montserrat', sans-serif; }
+    .btn-corte { background: #198754; color: #fff; } .btn-renovar { background: #C9A96E; color: #000; }
+    .fab { position: fixed; bottom: 20px; right: 16px; width: 56px; height: 56px; border-radius: 50%; background: #C9A96E; color: #000; border: 3px solid #000; font-size: 28px; box-shadow: 0 6px 20px rgba(201,169,110,0.8); }
+    .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); z-index: 20; padding: 14px; overflow-y: auto; }
+    .modal.activo { display: flex; align-items: center; justify-content: center; }
+    .modal-card { background: #0a0a0a; border: 2px solid #C9A96E; border-radius: 16px; padding: 20px 16px; width: 100%; max-width: 400px; }
+    .modal-card h3 { font-family: 'Cinzel', serif; color: #C9A96E; margin-bottom: 16px; text-align: center; font-size: 20px; }
+    .modal-card input,.modal-card select { width: 100%; padding: 14px; margin: 8px 0; border-radius: 10px; border: 2px solid #C9A96E; background: #000; color: #fff; font-size: 14px; }
+    .modal-botones { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px; }
+    .btn-guardar { background: #198754; color: #fff; padding: 12px; border: none; border-radius: 10px; font-weight: 700; font-size: 14px; }
+    .btn-cancelar { background: #333; color: #fff; padding: 12px; border: none; border-radius: 10px; font-weight: 700; font-size: 14px; }
+    .vacio { text-align: center; padding: 60px 20px; color: #666; }
+    .vacio-emoji { font-size: 50px; margin-bottom: 16px; } .vacio-texto { font-size: 14px; }
   </style>
 </head>
 <body>
   <div class="app">
-    <div class="header">
-      <img src="https://i.ibb.co/5pWGBXK/1781697467655.png" class="logo" alt="David Barber Studio">
-    </div>
-    <div class="buscador">
-      <input type="text" id="busca" placeholder="Buscar cliente" oninput="filtrar()">
-      <button class="btn-buscar" onclick="filtrar()">🔍</button>
-    </div>
-    <div class="filtros">
-      <button class="filtro activo" onclick="cambiarFiltro('TODOS', this)">Todos</button>
-      <button class="filtro" onclick="cambiarFiltro('POR VENCER', this)">Por Vencer</button>
-      <button class="filtro" onclick="cambiarFiltro('VENCIDO', this)">Vencidos</button>
-    </div>
+    <div class="header"><img src="https://i.ibb.co/5pWGBXK/1781697467655.png" class="logo" alt="David Barber Studio"></div>
+    <div class="buscador"><input type="text" id="busca" placeholder="Buscar cliente" oninput="filtrar()"><button class="btn-buscar" onclick="filtrar()">🔍</button></div>
+    <div class="filtros"><button class="filtro activo" onclick="cambiarFiltro('TODOS', this)">Todos</button><button class="filtro" onclick="cambiarFiltro('POR VENCER', this)">Por Vencer</button><button class="filtro" onclick="cambiarFiltro('VENCIDO', this)">Vencidos</button></div>
     <div id="listaClientes"></div>
   </div>
   <button class="fab" onclick="abrirModal()">+</button>
-  <div id="modalNuevo" class="modal">
-    <div class="modal-card">
-      <h3>Nuevo Cliente</h3>
-      <input id="nome" placeholder="Nombre completo" autocomplete="off">
-      <input id="tel" placeholder="WhatsApp" type="tel" autocomplete="off">
-      <select id="tipo"></select>
-      <input id="obs" placeholder="Observaciones" autocomplete="off">
-      <div class="modal-botones">
-        <button class="btn-cancelar" onclick="cerrarModal()">Cancelar</button>
-        <button class="btn-guardar" onclick="nuevoCliente()">Guardar</button>
-      </div>
-    </div>
-  </div>
+  <div id="modalNuevo" class="modal"><div class="modal-card"><h3>Nuevo Cliente</h3><input id="nome" placeholder="Nombre completo"><input id="tel" placeholder="WhatsApp" type="tel"><select id="tipo"></select><input id="obs" placeholder="Observaciones"><div class="modal-botones"><button class="btn-cancelar" onclick="cerrarModal()">Cancelar</button><button class="btn-guardar" onclick="nuevoCliente()">Guardar</button></div></div></div>
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz8JaNuoYU7FQdswXy9p_sxROUVyoZZfMbJD4qzQBTlmATkPJB3wYltTmIiMrX4-PICOQ/exec";
 let clientes = [], config = {}, filtroActual = 'TODOS';
-async function api(action, data={}) {
-  const url = `${SCRIPT_URL}?action=${action}&data=${encodeURIComponent(JSON.stringify(data))}&t=${Date.now()}`;
-  const r = await fetch(url);
-  return await r.json();
-}
-async function cargar() {
-  config = await api('getConfig');
-  document.getElementById('tipo').innerHTML = `<option value="${config.Paquete_1_Nombre}">${config.Paquete_1_Nombre}</option><option value="${config.Paquete_2_Nombre}">${config.Paquete_2_Nombre}</option>`;
-  clientes = await api('getClientes') || [];
-  mostrarClientes();
-}
-function mostrarClientes() {
-  const div = document.getElementById('listaClientes');
-  let lista = clientes;
-  const txt = document.getElementById('busca').value.toLowerCase().trim();
-  if(txt) lista = lista.filter(c => c.Nombre.toLowerCase().includes(txt) || c.WhatsApp.includes(txt));
-  if(filtroActual!== 'TODOS') { lista = lista.filter(c => c.Estado === filtroActual.replace(' ', '')); }
-  if(lista.length === 0) {
-    div.innerHTML = `<div class="vacio"><div class="vacio-emoji">💈</div><div class="vacio-texto">${txt || filtroActual!== 'TODOS'? 'No se encontraron clientes' : 'Toca + para agregar tu primer cliente'}</div></div>`;
-    return;
-  }
-  div.innerHTML = lista.map(c => `<div class="card-cliente"><div class="nombre">${c.Nombre}</div><span class="status ${c.Estado}">${c.Estado === 'VENCIDO'? 'VENCIDO' : c.dias_restantes + 'd'}</span><div class="paquete">${c.PaqueteActivo}</div><a href="https://wa.me/55${c.WhatsApp.replace(/\D/g,'')}" class="whatsapp">📱 ${c.WhatsApp}</a><div class="dato"><span>Cortes restantes:</span><span class="cortes-num">${c.CortesRestantes}/${c.CortesTotales}</span></div><div class="vencimiento">Vence: ${c.FechaVencimientoFormateada}</div><div class="acciones"><button class="btn-accion btn-corte" onclick="registrarCorte('${c.ID}')" ${c.CortesRestantes <= 0 || c.Estado === 'VENCIDO'? 'disabled' : ''}>✂️ Corte</button><button class="btn-accion btn-renovar" onclick="renovar('${c.ID}')">🔄 Renovar</button></div></div>`).join('');
-}
-function filtrar() { mostrarClientes(); }
-function cambiarFiltro(filtro, btn) { filtroActual = filtro; document.querySelectorAll('.filtro').forEach(b => b.classList.remove('activo')); btn.classList.add('activo'); mostrarClientes(); }
-async function registrarCorte(id) { if(!confirm('¿Registrar corte para este cliente?')) return; const r = await api('registrarCorte', {id}); if(r.error) alert(r.error); else cargar(); }
-async function renovar(id) {
-  const tipo = confirm(`Renovar membresía:\n\nOK = ${config.Paquete_1_Nombre}\nCancelar = ${config.Paquete_2_Nombre}`)? config.Paquete_1_Nombre : config.Paquete_2_Nombre;
-  await api('renovarMembresia', {id, tipo}); alert('Membresía renovada'); cargar();
-}
-function abrirModal() { document.getElementById('modalNuevo').classList.add('activo'); }
-function cerrarModal() { document.getElementById('modalNuevo').classList.remove('activo'); document.getElementById('nome').value = ''; document.getElementById('tel').value = ''; document.getElementById('obs').value = ''; }
-async function nuevoCliente() {
-  const datos = { Nombre: document.getElementById('nome').value, WhatsApp: document.getElementById('tel').value, PaqueteActivo: document.getElementById('tipo').value, Observaciones: document.getElementById('obs').value };
-  if(!datos.Nombre ||!datos.WhatsApp) return alert('Completa nombre y WhatsApp');
-  await api('agregarCliente', datos); cerrarModal(); cargar();
-}
+async function api(a,d={}){const u=`${SCRIPT_URL}?action=${a}&data=${encodeURIComponent(JSON.stringify(d))}&t=${Date.now()}`;const r=await fetch(u);return await r.json();}
+async function cargar(){config=await api('getConfig');document.getElementById('tipo').innerHTML=`<option value="${config.Paquete_1_Nombre}">${config.Paquete_1_Nombre}</option><option value="${config.Paquete_2_Nombre}">${config.Paquete_2_Nombre}</option>`;clientes=await api('getClientes')||[];mostrarClientes();}
+function mostrarClientes(){const div=document.getElementById('listaClientes');let l=clientes;const t=document.getElementById('busca').value.toLowerCase().trim();if(t)l=l.filter(c=>c.Nombre.toLowerCase().includes(t)||c.WhatsApp.includes(t));if(filtroActual!=='TODOS')l=l.filter(c=>c.Estado===filtroActual.replace(' ',''));if(l.length===0){div.innerHTML=`<div class="vacio"><div class="vacio-emoji">💈</div><div class="vacio-texto">No hay clientes</div></div>`;return;}div.innerHTML=l.map(c=>`<div class="card-cliente"><div class="nombre">${c.Nombre}</div><span class="status ${c.Estado}">${c.Estado==='VENCIDO'?'VENCIDO':c.dias_restantes+'d'}</span><div class="paquete">${c.PaqueteActivo}</div><a href="https://wa.me/55${c.WhatsApp.replace(/\D/g,'')}" class="whatsapp">📱 ${c.WhatsApp}</a><div class="dato"><span>Cortes:</span><span class="cortes-num">${c.CortesRestantes}/${c.CortesTotales}</span></div><div class="vencimiento">Vence: ${c.FechaVencimientoFormateada}</div><div class="acciones"><button class="btn-accion btn-corte" onclick="registrarCorte('${c.ID}')">✂️ Corte</button><button class="btn-accion btn-renovar" onclick="renovar('${c.ID}')">🔄 Renovar</button></div></div>`).join('');}
+function filtrar(){mostrarClientes();}
+function cambiarFiltro(f,b){filtroActual=f;document.querySelectorAll('.filtro').forEach(x=>x.classList.remove('activo'));b.classList.add('activo');mostrarClientes();}
+async function registrarCorte(id){if(!confirm('¿Registrar corte?'))return;await api('registrarCorte',{id});cargar();}
+async function renovar(id){const t=confirm(`OK = ${config.Paquete_1_Nombre}`)?config.Paquete_1_Nombre:config.Paquete_2_Nombre;await api('renovarMembresia',{id,tipo:t});cargar();}
+function abrirModal(){document.getElementById('modalNuevo').classList.add('activo');}
+function cerrarModal(){document.getElementById('modalNuevo').classList.remove('activo');}
+async function nuevoCliente(){const d={Nombre:nome.value,WhatsApp:tel.value,PaqueteActivo:tipo.value,Observaciones:obs.value};if(!d.Nombre||!d.WhatsApp)return alert('Falta datos');await api('agregarCliente',d);cerrarModal();cargar();}
 cargar();
-if ('serviceWorker' in navigator) { navigator.serviceWorker.register('https://davidbarberstudio.github.io/sw.js'); }
+if('serviceWorker' in navigator){navigator.serviceWorker.register('https://davidbarberstudio.github.io/sw.js');}
 </script>
 </body>
 </html>
