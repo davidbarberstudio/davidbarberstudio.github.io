@@ -1,0 +1,20 @@
+{
+  "name": "DBM - Membresía VIP",
+  "short_name": "DBM",
+  "start_url": "/membresia.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#C8A46A",
+  "icons": [
+    {
+      "src": "/dbm-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/dbm-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
