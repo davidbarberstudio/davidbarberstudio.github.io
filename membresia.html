@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-  <base target="_top">
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=480, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>DBM - Membresía VIP</title>
-  <!-- DBM PWA - agregado -->
-  <link rel="manifest" href="/manifest-membresia.json">
-  <meta name="theme-color" content="#C9A96A">
+  <link rel="manifest" href="https://davidbarberstudio.github.io/manifest-membresia.json">
+  <meta name="theme-color" content="#C9A96E">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <link rel="icon" href="/dbm-icon-192.png">
-  <link rel="apple-touch-icon" href="/dbm-icon-512.png">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="DBM VIP">
+  <link rel="icon" href="https://davidbarberstudio.github.io/dbm-icon-512.png">
+  <link rel="apple-touch-icon" href="https://davidbarberstudio.github.io/dbm-icon-512.png">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -55,7 +55,7 @@
 <body>
   <div class="app">
     <div class="header">
-      <img src="/dbm-icon-512.png" class="logo" alt="DBM" onerror="this.src='https://i.ibb.co/5pWGBXK/1781697467655.png'">
+      <img src="https://davidbarberstudio.github.io/dbm-icon-512.png" class="logo" alt="DBM">
       <div style="font-family:'Cinzel';color:#C9A96E;font-size:38px;letter-spacing:6px;margin-top:10px">DBM</div>
       <div style="font-size:18px;letter-spacing:4px;color:#888">MEMBRESÍA VIP</div>
     </div>
@@ -88,25 +88,26 @@
     </div>
   </div>
 <script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz8JaNuoYU7FQdswXy9p_sxROUVyoZZfMbJD4qzQBTlmATkPJB3wYltTmIiMrX4-PICOQ/exec";
 let clientes = [], config = {}, filtroActual = 'TODOS';
-function cargar() {
+async function api(action, data={}) {
+  const url = `${SCRIPT_URL}?action=${action}&data=${encodeURIComponent(JSON.stringify(data))}&t=${Date.now()}`;
+  const r = await fetch(url);
+  return await r.json();
+}
+async function cargar() {
   try {
-    google.script.run.withSuccessHandler(c => {
-      config = c || {};
-      const p1 = c.Paquete_1_Nombre || 'Mensal 5 cortes';
-      const p2 = c.Paquete_2_Nombre || 'Promo 3 cortes';
-      if(p1 && p2) {
-        document.getElementById('tipo').innerHTML = `<option value="${p1}">${p1} - ${c.Paquete_1_Cortes||5} cortes / ${c.Paquete_1_Dias||30} dias</option><option value="${p2}">${p2} - ${c.Paquete_2_Cortes||3} cortes / ${c.Paquete_2_Dias||30} dias</option>`;
-      }
-      google.script.run.withSuccessHandler(d => {
-        clientes = d || [];
-        mostrarClientes();
-      }).getClientes();
-    }).getConfig();
-  } catch(e) {
-    // Si no es Google Script, mantiene los 2 paquetes fijos
+    config = await api('getConfig');
+    const p1 = config.Paquete_1_Nombre || 'Mensal 5 cortes';
+    const p2 = config.Paquete_2_Nombre || 'Promo 3 cortes';
+    const c1 = config.Paquete_1_Cortes || 5;
+    const c2 = config.Paquete_2_Cortes || 3;
+    const d1 = config.Paquete_1_Dias || 30;
+    const d2 = config.Paquete_2_Dias || 30;
+    document.getElementById('tipo').innerHTML = `<option value="${p1}">${p1} - ${c1} cortes / ${d1} dias</option><option value="${p2}">${p2} - ${c2} cortes / ${d2} dias</option>`;
+    clientes = await api('getClientes');
     mostrarClientes();
-  }
+  } catch(e) { console.error(e); }
 }
 function mostrarClientes() {
   const div = document.getElementById('listaClientes');
@@ -123,7 +124,7 @@ function mostrarClientes() {
       <div class="nombre">${c.Nombre}</div>
       <span class="status ${c.Estado}">${c.Estado === 'VENCIDO'? 'VENCIDO' : c.dias_restantes + 'd'}</span>
       <div class="paquete">${c.PaqueteActivo}</div>
-      <a href="https://wa.me/55${c.WhatsApp.replace(/\D/g,'')}" class="whatsapp">📱 ${c.WhatsApp}</a>
+      <a href="https://wa.me/55${String(c.WhatsApp).replace(/\D/g,'')}" class="whatsapp">📱 ${c.WhatsApp}</a>
       <div class="dato"><span>Cortes restantes:</span><span class="cortes-num">${c.CortesRestantes}/${c.CortesTotales}</span></div>
       <div class="vencimiento">Vence: ${c.FechaVencimientoFormateada}</div>
       <div class="acciones">
@@ -135,13 +136,15 @@ function mostrarClientes() {
 }
 function filtrar() { mostrarClientes(); }
 function cambiarFiltro(filtro, btn) { filtroActual = filtro; document.querySelectorAll('.filtro').forEach(b => b.classList.remove('activo')); btn.classList.add('activo'); mostrarClientes(); }
-function registrarCorte(id) { if(!confirm('¿Registrar corte para este cliente?')) return; google.script.run.withSuccessHandler(r => { if(r.error) alert(r.error); else { cargar(); } }).registrarCorte(id); }
-function renovar(id) { const tipo = confirm(`Renovar membresía:\n\nOK = ${config.Paquete_1_Nombre||'Mensal 5 cortes'}\nCancelar = ${config.Paquete_2_Nombre||'Promo 3 cortes'}`)? (config.Paquete_1_Nombre||'Mensal 5 cortes') : (config.Paquete_2_Nombre||'Promo 3 cortes'); google.script.run.withSuccessHandler(() => { alert('Membresía renovada'); cargar(); }).renovarMembresia(id, tipo); }
+async function registrarCorte(id) { if(!confirm('¿Registrar corte?')) return; const r = await api('registrarCorte', {id}); if(r.error) alert(r.error); else cargar(); }
+async function renovar(id) { if(!confirm('¿Renovar membresía?')) return; await api('renovarMembresia', {id}); alert('Membresía renovada'); cargar(); }
 function abrirModal() { document.getElementById('modalNuevo').classList.add('activo'); }
 function cerrarModal() { document.getElementById('modalNuevo').classList.remove('activo'); document.getElementById('nome').value = ''; document.getElementById('tel').value = ''; document.getElementById('obs').value = ''; }
-function nuevoCliente() { const datos = { Nombre: document.getElementById('nome').value, WhatsApp: document.getElementById('tel').value, PaqueteActivo: document.getElementById('tipo').value, Observaciones: document.getElementById('obs').value }; if(!datos.Nombre ||!datos.WhatsApp) return alert('Completa nombre y WhatsApp'); google.script.run.withSuccessHandler(() => { cerrarModal(); cargar(); }).agregarCliente(datos); }
+async function nuevoCliente() { const datos = { Nombre: document.getElementById('nome').value, WhatsApp: document.getElementById('tel').value, PaqueteActivo: document.getElementById('tipo').value, Observaciones: document.getElementById('obs').value }; if(!datos.Nombre ||!datos.WhatsApp) return alert('Completa nombre y WhatsApp'); await api('agregarCliente', datos); cerrarModal(); cargar(); }
 cargar();
-if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/sw.js'); }
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('https://davidbarberstudio.github.io/sw.js');
+}
 </script>
 </body>
 </html>
