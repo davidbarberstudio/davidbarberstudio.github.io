@@ -5,21 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DBM - Membresía VIP</title>
 <link rel="manifest" href="https://davidbarberstudio.github.io/manifest-membresia.json">
-<meta name="theme-color" content="#C9A96E">
-<meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="icon" href="https://davidbarberstudio.github.io/dbm-icon-512.png">
 <link rel="apple-touch-icon" href="https://davidbarberstudio.github.io/dbm-icon-512.png">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Montserrat',sans-serif;background:#000;color:#fff;min-height:100vh;padding-bottom:80px}
-.app{max-width:480px;margin:0 auto;padding:16px}
-.header{text-align:center;border-bottom:2px solid #C9A96E;padding-bottom:12px;margin-bottom:16px}.logo{width:110px}
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Montserrat',sans-serif;background:#000;color:#fff;padding-bottom:80px}
+.app{max-width:480px;margin:0 auto;padding:16px}.header{text-align:center;border-bottom:2px solid #C9A96E;padding-bottom:12px;margin-bottom:16px}.logo{width:110px}
 .buscador{display:flex;gap:8px;margin-bottom:16px}.buscador input{flex:1;padding:14px;border-radius:12px;border:2px solid #C9A96E;background:#111;color:#fff}
 .btn-buscar{padding:14px 18px;border-radius:12px;background:#C9A96E;border:none;font-weight:700}
 .filtros{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}.filtro{padding:10px;border-radius:20px;background:#111;border:2px solid #444;color:#888;font-size:12px;font-weight:700}.filtro.activo{background:#C9A96E;color:#000;border-color:#C9A96E}
 .card-cliente{background:#0a0a0a;border:2px solid #C9A96E;border-radius:16px;padding:16px;margin-bottom:12px}
-.nombre{font-family:'Cinzel',serif;color:#C9A96E;font-size:18px}.paquete{font-size:12px;color:#aaa;margin-bottom:8px}
-.status{float:right;padding:4px 8px;border-radius:10px;font-size:11px;font-weight:700}.ACTIVO{background:#198754}.PORVENCER{background:#FF8C00;color:#000}.VENCIDO{background:#dc3545}
+.nombre{font-family:'Cinzel',serif;color:#C9A96E;font-size:18px}.status{float:right;padding:4px 8px;border-radius:10px;font-size:11px;font-weight:700}.ACTIVO{background:#198754}.PORVENCER{background:#FF8C00;color:#000}.VENCIDO{background:#dc3545}
 .whatsapp{color:#25D366;font-size:13px;display:block;margin:8px 0}.dato{display:flex;justify-content:space-between;font-size:13px}.cortes-num{font-size:20px;color:#C9A96E;font-weight:700}.vencimiento{font-size:11px;color:#999;margin:8px 0}
 .acciones{display:grid;grid-template-columns:1fr 1fr;gap:8px}.btn-accion{padding:12px;border-radius:10px;border:none;font-weight:700}.btn-corte{background:#198754;color:#fff}.btn-renovar{background:#C9A96E;color:#000}
 .fab{position:fixed;bottom:20px;right:16px;width:56px;height:56px;border-radius:50%;background:#C9A96E;border:none;font-size:28px}
@@ -34,23 +30,30 @@
 <div class="header"><img src="https://i.ibb.co/5pWGBXK/1781697467655.png" class="logo"></div>
 <div class="buscador"><input id="busca" placeholder="Buscar cliente" oninput="filtrar()"><button class="btn-buscar" onclick="filtrar()">🔍</button></div>
 <div class="filtros"><button class="filtro activo" onclick="cambiarFiltro('TODOS',this)">Todos</button><button class="filtro" onclick="cambiarFiltro('PORVENCER',this)">Por Vencer</button><button class="filtro" onclick="cambiarFiltro('VENCIDO',this)">Vencidos</button></div>
-<div id="listaClientes">Cargando clientes...</div>
+<div id="listaClientes">Cargando...</div>
 </div>
 <button class="fab" onclick="abrirModal()">+</button>
 <div id="modalNuevo" class="modal"><div class="modal-card"><h3>Nuevo Cliente</h3><input id="nome" placeholder="Nombre"><input id="tel" placeholder="WhatsApp"><select id="tipo"><option value="Mensal 5 cortes">Mensal 5 cortes</option><option value="Promo 3 cortes">Promo 3 cortes</option></select><input id="obs" placeholder="Observaciones"><div class="modal-botones"><button class="btn-cancelar" onclick="cerrarModal()">Cancelar</button><button class="btn-guardar" onclick="nuevoCliente()">Guardar</button></div></div></div>
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz8JaNuoYU7FQdswXy9p_sxROUVyoZZfMbJD4qzQBTlmATkPJB3wYltTmIiMrX4-PICOQ/exec";
 let clientes=[],filtroActual='TODOS';
-async function api(a,d={}){const r=await fetch(`${SCRIPT_URL}?action=${a}&data=${encodeURIComponent(JSON.stringify(d))}&t=${Date.now()}`);return await r.json();}
-async function cargar(){try{const data=await api('getClientes');clientes=Array.isArray(data)?data:[];mostrar();}catch(e){document.getElementById('listaClientes').innerHTML='Error cargando: '+e;}}
-function mostrar(){const div=document.getElementById('listaClientes');let l=clientes;const t=document.getElementById('busca').value.toLowerCase();if(t)l=l.filter(c=>(c.Nombre||'').toLowerCase().includes(t));if(filtroActual!=='TODOS')l=l.filter(c=>(c.Estado||'').includes(filtroActual));if(l.length==0){div.innerHTML='No hay clientes';return;}div.innerHTML=l.map(c=>{const rest=c["Cortes Restantes"]??c.CortesRestantes??0;const tot=c["Cortes Totales"]??c.CortesTotales??5;const venc=c["Fecha Vencimiento"]?new Date(c["Fecha Vencimiento"]).toLocaleDateString():c.FechaVencimientoFormateada||'';const paq=c["Paquete Activo"]||c.PaqueteActivo||'';return `<div class="card-cliente"><div class="nombre">${c.Nombre}</div><span class="status ${c.Estado}">${c.Estado}</span><div class="paquete">${paq}</div><div class="whatsapp">📱 ${c.WhatsApp}</div><div class="dato"><span>Restantes:</span><span class="cortes-num">${rest}/${tot}</span></div><div class="vencimiento">Vence: ${venc}</div><div class="acciones"><button class="btn-accion btn-corte" onclick="registrarCorte('${c.ID}')">✂️ Corte</button><button class="btn-accion btn-renovar" onclick="renovar('${c.ID}')">🔄 Renovar</button></div></div>`}).join('');}
+function apiJSONP(action,data={}){
+  return new Promise((res,rej)=>{
+    const cb='cb_'+Date.now();
+    window[cb]=(d)=>{res(d);delete window[cb];s.remove();};
+    const s=document.createElement('script');
+    s.src=`${SCRIPT_URL}?action=${action}&data=${encodeURIComponent(JSON.stringify(data))}&callback=${cb}&t=${Date.now()}`;
+    s.onerror=()=>rej('Error de red');document.body.appendChild(s);
+  });
+}
+async function cargar(){try{const data=await apiJSONP('getClientes');clientes=Array.isArray(data)?data:[];mostrar();}catch(e){document.getElementById('listaClientes').innerHTML='Error: '+e+'<br>Quita el modo avion y verifica que el Script este en Cualquier persona';}}
+function mostrar(){const div=document.getElementById('listaClientes');let l=clientes;const t=document.getElementById('busca').value.toLowerCase();if(t)l=l.filter(c=>(c.Nombre||'').toLowerCase().includes(t));if(filtroActual!=='TODOS')l=l.filter(c=>(c.Estado||'').includes(filtroActual));if(l.length==0){div.innerHTML='No hay clientes';return;}div.innerHTML=l.map(c=>{const rest=c["Cortes Restantes"]??c.CortesRestantes??0;const tot=c["Cortes Totales"]??c.CortesTotales??5;const venc=c["Fecha Vencimiento"]?new Date(c["Fecha Vencimiento"]).toLocaleDateString():'';const paq=c["Paquete Activo"]||'';return `<div class="card-cliente"><div class="nombre">${c.Nombre}</div><span class="status ${c.Estado}">${c.Estado}</span><div class="paquete">${paq}</div><div class="whatsapp">📱 ${c.WhatsApp}</div><div class="dato"><span>Restantes:</span><span class="cortes-num">${rest}/${tot}</span></div><div class="vencimiento">Vence: ${venc}</div><div class="acciones"><button class="btn-accion btn-corte" onclick="registrarCorte('${c.ID}')">✂️ Corte</button><button class="btn-accion btn-renovar" onclick="renovar('${c.ID}')">🔄 Renovar</button></div></div>`}).join('');}
 function filtrar(){mostrar();}function cambiarFiltro(f,b){filtroActual=f;document.querySelectorAll('.filtro').forEach(x=>x.classList.remove('activo'));b.classList.add('activo');mostrar();}
-async function registrarCorte(id){if(!confirm('¿Registrar corte?'))return;await api('registrarCorte',{id});cargar();}
-async function renovar(id){await api('renovarMembresia',{id,tipo:'Mensal 5 cortes'});cargar();}
+async function registrarCorte(id){if(!confirm('¿Registrar corte?'))return;await apiJSONP('registrarCorte',{id});cargar();}
+async function renovar(id){await apiJSONP('renovarMembresia',{id,tipo:'Mensal 5 cortes'});cargar();}
 function abrirModal(){document.getElementById('modalNuevo').classList.add('activo');}function cerrarModal(){document.getElementById('modalNuevo').classList.remove('activo');}
-async function nuevoCliente(){const d={Nombre:document.getElementById('nome').value,WhatsApp:document.getElementById('tel').value,PaqueteActivo:document.getElementById('tipo').value,Observaciones:document.getElementById('obs').value};if(!d.Nombre)return alert('Falta nombre');await api('agregarCliente',d);cerrarModal();cargar();}
+async function nuevoCliente(){const d={Nombre:nome.value,WhatsApp:tel.value,PaqueteActivo:tipo.value,Observaciones:obs.value};if(!d.Nombre)return alert('Falta nombre');await apiJSONP('agregarCliente',d);cerrarModal();cargar();}
 cargar();
-if('serviceWorker' in navigator){navigator.serviceWorker.register('https://davidbarberstudio.github.io/sw.js');}
 </script>
 </body>
 </html>
