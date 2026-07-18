@@ -3,29 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>DB - Membresías</title>
-<link rel="manifest" href="https://davidbarberstudio.github.io/manifest-membresia.json">
-<meta name="theme-color" content="#C9A96E">
-<link rel="icon" href="https://davidbarberstudio.github.io/dbm-icon-512.png">
+<script>
+// MATA EL CACHE VIEJO QUE TE DA ZOOM
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.getRegistrations().then(regs=>{
+    regs.forEach(r=>r.unregister());
+  });
+}
+if(window.caches){
+  caches.keys().then(k=>k.forEach(n=>caches.delete(n)));
+}
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}html,body{width:100%;background:#000}body{font-family:'Montserrat',sans-serif;color:#fff;min-height:100vh;padding-bottom:80px;overflow-x:hidden}
-.app{width:100%;max-width:480px;margin:0 auto;padding:16px 14px}.header{text-align:center;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid #C9A96E}.logo{width:110px}
-.buscador{display:flex;gap:8px;margin-bottom:16px}.buscador input{flex:1;padding:14px 16px;border-radius:12px;border:2px solid #C9A96E;background:#111;color:#fff;font-size:15px}
-.btn-buscar{padding:14px 18px;border-radius:12px;border:2px solid #C9A96E;background:#C9A96E;color:#000;font-weight:700}
-.filtros{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:18px}.filtro{padding:12px 6px;border-radius:20px;border:2px solid #444;background:#111;color:#888;font-size:12px;font-weight:700}.filtro.activo{background:#C9A96E;color:#000;border-color:#C9A96E}
-.card-cliente{background:#0a0a0a;border:2px solid #C9A96E;border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 0 20px rgba(201,169,110,0.2)}
-.nombre{font-family:'Cinzel',serif;font-weight:700;font-size:18px;color:#C9A96E;max-width:58%;display:inline-block;vertical-align:middle}.paquete{font-size:12px;color:#aaa;margin-bottom:10px}
-.status{float:right;padding:5px 10px;border-radius:12px;font-size:11px;font-weight:800;min-width:70px;text-align:center}
+*{box-sizing:border-box;margin:0;padding:0}html,body{width:100%;background:#000;overflow-x:hidden}body{font-family:'Montserrat',sans-serif;color:#fff;min-height:100vh;padding-bottom:90px}
+.app{width:100%;max-width:480px;margin:0 auto;padding:16px 14px}.header{text-align:center;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid #C9A96E}.logo{width:110px;max-width:100%}
+.buscador{display:flex;gap:8px;margin-bottom:16px}.buscador input{flex:1;min-width:0;padding:14px 16px;border-radius:12px;border:2px solid #C9A96E;background:#111;color:#fff;font-size:16px}
+.btn-buscar{padding:14px 18px;border-radius:12px;border:2px solid #C9A96E;background:#C9A96E;color:#000;font-weight:700;flex-shrink:0}
+.filtros{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:18px}.filtro{padding:12px 6px;border-radius:20px;border:2px solid #444;background:#111;color:#888;font-size:12px;font-weight:700;white-space:nowrap}.filtro.activo{background:#C9A96E;color:#000;border-color:#C9A96E}
+.card-cliente{background:#0a0a0a;border:2px solid #C9A96E;border-radius:16px;padding:16px;margin-bottom:14px;overflow:hidden}
+.nombre{font-family:'Cinzel',serif;font-weight:700;font-size:17px;color:#C9A96E;max-width:58%;display:inline-block;word-break:break-word}.paquete{font-size:12px;color:#aaa;margin-bottom:10px}
+.status{float:right;padding:5px 10px;border-radius:12px;font-size:11px;font-weight:800;min-width:80px;text-align:center}
 .ACTIVO{background:#198754;color:#fff}.PORVENCER{background:#FF8C00;color:#000}.VENCIDO{background:#dc3545;color:#fff}
-.whatsapp{color:#25D366;text-decoration:none;font-size:13px;display:block;margin-bottom:10px;font-weight:600}
+.whatsapp{color:#25D366;font-size:13px;display:block;margin-bottom:10px;font-weight:600;word-break:break-all}
 .dato{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;font-weight:600}.cortes-num{font-size:22px;color:#C9A96E;font-weight:700}.vencimiento{font-size:11px;color:#999;margin-bottom:12px}
-.acciones{display:grid;grid-template-columns:1fr 1fr;gap:8px}.btn-accion{padding:12px;border-radius:10px;border:none;font-size:13px;font-weight:700}.btn-corte{background:#198754;color:#fff}.btn-renovar{background:#C9A96E;color:#000}
-.fab{position:fixed;bottom:20px;right:16px;width:56px;height:56px;border-radius:50%;background:#C9A96E;color:#000;border:3px solid #000;font-size:28px}
-.modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.95);z-index:20;padding:14px}.modal.activo{display:flex;align-items:center;justify-content:center}
+.acciones{display:grid;grid-template-columns:1fr 1fr;gap:8px}.btn-accion{padding:12px 6px;border-radius:10px;border:none;font-size:12px;font-weight:700;white-space:nowrap}.btn-corte{background:#198754;color:#fff}.btn-renovar{background:#C9A96E;color:#000}
+.fab{position:fixed;bottom:20px;right:16px;width:56px;height:56px;border-radius:50%;background:#C9A96E;color:#000;border:3px solid #000;font-size:28px;z-index:10}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:20;padding:14px}.modal.activo{display:flex;align-items:center;justify-content:center}
 .modal-card{background:#0a0a0a;border:2px solid #C9A96E;border-radius:16px;padding:20px 16px;width:100%;max-width:400px}
 .modal-card h3{font-family:'Cinzel',serif;color:#C9A96E;margin-bottom:16px;text-align:center;font-size:20px}
-.modal-card input,.modal-card select{width:100%;padding:14px;margin:8px 0;border-radius:10px;border:2px solid #C9A96E;background:#000;color:#fff;font-size:14px}
+.modal-card input,.modal-card select{width:100%;padding:14px;margin:8px 0;border-radius:10px;border:2px solid #C9A96E;background:#000;color:#fff;font-size:16px}
 .modal-botones{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}.btn-guardar{background:#198754;color:#fff;padding:12px;border:none;border-radius:10px;font-weight:700}.btn-cancelar{background:#333;color:#fff;padding:12px;border:none;border-radius:10px;font-weight:700}
 </style>
 </head>
@@ -37,7 +48,7 @@
 <div id="listaClientes">Cargando...</div>
 </div>
 <button class="fab" onclick="abrirModal()">+</button>
-<div id="modalNuevo" class="modal"><div class="modal-card"><h3>Nuevo Cliente</h3><input id="nome" placeholder="Nombre completo"><input id="tel" placeholder="WhatsApp"><select id="tipo"><option value="Mensal 5 cortes">Mensal 5 cortes</option><option value="Promo 3 cortes">Promo 3 cortes</option></select><input id="obs" placeholder="Observaciones"><div class="modal-botones"><button class="btn-cancelar" onclick="cerrarModal()">Cancelar</button><button class="btn-guardar" onclick="nuevoCliente()">Guardar</button></div></div></div>
+<div id="modalNuevo" class="modal"><div class="modal-card"><h3>Nuevo Cliente</h3><input id="nome" placeholder="Nombre"><input id="tel" placeholder="WhatsApp"><select id="tipo"><option value="Mensal 5 cortes">Mensal 5 cortes</option><option value="Promo 3 cortes">Promo 3 cortes</option></select><input id="obs" placeholder="Observaciones"><div class="modal-botones"><button class="btn-cancelar" onclick="cerrarModal()">Cancelar</button><button class="btn-guardar" onclick="nuevoCliente()">Guardar</button></div></div></div>
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz8JaNuoYU7FQdswXy9p_sxROUVyoZZfMbJD4qzQBTlmATkPJB3wYltTmIiMrX4-PICOQ/exec";
 let clientes=[],filtroActual='TODOS';
@@ -46,28 +57,30 @@ function apiJSONP(action,data={}){
     const cb='cb_'+Date.now()+Math.floor(Math.random()*1000);
     window[cb]=(d)=>{res(d);delete window[cb];s.remove();};
     const s=document.createElement('script');
-    s.src=`${SCRIPT_URL}?action=${action}&data=${encodeURIComponent(JSON.stringify(data))}&callback=${cb}&t=${Date.now()}`;
+    s.src=`${SCRIPT_URL}?action=${action}&data=${encodeURIComponent(JSON.stringify(data))}&callback=${cb}&v=3&t=${Date.now()}`;
     s.onerror=()=>rej('Error');document.body.appendChild(s);
   });
 }
-async function cargar(){try{const d=await apiJSONP('getClientes');clientes=Array.isArray(d)?d:[];mostrar();}catch(e){}}
+async function cargar(){try{const d=await apiJSONP('getClientes');clientes=Array.isArray(d)?d:[];mostrar();}catch(e){document.getElementById('listaClientes').innerHTML='Error cargando, recarga';}}
 function mostrar(){
   const div=document.getElementById('listaClientes');
   let l=clientes;
   const t=document.getElementById('busca').value.toLowerCase().trim();
   if(t)l=l.filter(c=>(c.Nombre||'').toLowerCase().includes(t));
-  if(filtroActual==='POR VENCER') l=l.filter(c=>c.Estado==='POR VENCER');
-  else if(filtroActual==='VENCIDO') l=l.filter(c=>c.Estado==='VENCIDO');
+  if(filtroActual==='POR VENCER') l=l.filter(c=> c.dias_restantes>0 && c.dias_restantes<=7);
+  else if(filtroActual==='VENCIDO') l=l.filter(c=> c.dias_restantes<=0);
   if(l.length===0){div.innerHTML='<div style="text-align:center;padding:40px;color:#666">No hay clientes</div>';return;}
   div.innerHTML=l.map(c=>{
     const rest=c["Cortes Restantes"]??0;const tot=c["Cortes Totales"]??5;
-    const dias=c.dias_restantes??0;
+    let dias=c.dias_restantes;
+    if(dias==null) dias=0;
     let textoDias, claseEstado;
-    if(c.Estado==='VENCIDO'){textoDias='VENCIDO';claseEstado='VENCIDO';}
-    else if(c.Estado==='POR VENCER'){textoDias=dias+' días';claseEstado='PORVENCER';}
+    if(dias<=0){textoDias='VENCIDO';claseEstado='VENCIDO';}
+    else if(dias<=7){textoDias=dias+' días';claseEstado='PORVENCER';}
     else{textoDias=dias+' días';claseEstado='ACTIVO';}
-    const paq=c["Paquete Activo"]||'';const venc=c.FechaVencimientoFormateada||'';
-    return `<div class="card-cliente"><div class="nombre">${c.Nombre}</div><span class="status ${claseEstado}">${textoDias}</span><div class="paquete">${paq}</div><a href="https://wa.me/55${(c.WhatsApp+'').replace(/\D/g,'')}" class="whatsapp">📱 ${c.WhatsApp}</a><div class="dato"><span>Cortes:</span><span class="cortes-num">${rest}/${tot}</span></div><div class="vencimiento">Vence: ${venc} • Renov: ${c.Renovaciones||0}</div><div class="acciones"><button class="btn-accion btn-corte" onclick="registrarCorte('${c.ID}')">✂️ Corte</button><button class="btn-accion btn-renovar" onclick="renovar('${c.ID}','${paq}')">🔄 Renovar</button></div></div>`
+    const paq=c["Paquete Activo"]||'';
+    const fecha=c.FechaVencimientoFormateada||'-';
+    return `<div class="card-cliente"><div class="nombre">${c.Nombre}</div><span class="status ${claseEstado}">${textoDias}</span><div class="paquete">${paq}</div><div class="whatsapp">📱 ${c.WhatsApp}</div><div class="dato"><span>Cortes:</span><span class="cortes-num">${rest}/${tot}</span></div><div class="vencimiento">Vence: ${fecha} • Renov: ${c.Renovaciones||0}</div><div class="acciones"><button class="btn-accion btn-corte" onclick="registrarCorte('${c.ID}')">✂️ Corte</button><button class="btn-accion btn-renovar" onclick="renovar('${c.ID}','${paq}')">🔄 Renovar</button></div></div>`
   }).join('');
 }
 function filtrar(){mostrar();}
