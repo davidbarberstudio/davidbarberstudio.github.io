@@ -1,95 +1,137 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>DB - Membresías</title>
+<title>DB - Membresía VIP</title>
 <script>
-// MATA EL CACHE VIEJO QUE TE DA ZOOM
+// MATA CACHE VIEJO QUE TE DEJA EN BLANCO Y CON ZOOM
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.getRegistrations().then(regs=>{
-    regs.forEach(r=>r.unregister());
-  });
+  navigator.serviceWorker.getRegistrations().then(r=>r.forEach(reg=>reg.unregister()));
 }
-if(window.caches){
-  caches.keys().then(k=>k.forEach(n=>caches.delete(n)));
-}
+if(window.caches){ caches.keys().then(k=>k.forEach(n=>caches.delete(n))); }
 </script>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box;margin:0;padding:0}html,body{width:100%;background:#000;overflow-x:hidden}body{font-family:'Montserrat',sans-serif;color:#fff;min-height:100vh;padding-bottom:90px}
-.app{width:100%;max-width:480px;margin:0 auto;padding:16px 14px}.header{text-align:center;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid #C9A96E}.logo{width:110px;max-width:100%}
-.buscador{display:flex;gap:8px;margin-bottom:16px}.buscador input{flex:1;min-width:0;padding:14px 16px;border-radius:12px;border:2px solid #C9A96E;background:#111;color:#fff;font-size:16px}
-.btn-buscar{padding:14px 18px;border-radius:12px;border:2px solid #C9A96E;background:#C9A96E;color:#000;font-weight:700;flex-shrink:0}
-.filtros{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:18px}.filtro{padding:12px 6px;border-radius:20px;border:2px solid #444;background:#111;color:#888;font-size:12px;font-weight:700;white-space:nowrap}.filtro.activo{background:#C9A96E;color:#000;border-color:#C9A96E}
-.card-cliente{background:#0a0a0a;border:2px solid #C9A96E;border-radius:16px;padding:16px;margin-bottom:14px;overflow:hidden}
-.nombre{font-family:'Cinzel',serif;font-weight:700;font-size:17px;color:#C9A96E;max-width:58%;display:inline-block;word-break:break-word}.paquete{font-size:12px;color:#aaa;margin-bottom:10px}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;background:#000;overflow-x:hidden}
+body{font-family:'Montserrat',sans-serif;color:#fff;min-height:100vh;padding-bottom:90px}
+.app{width:100%;max-width:480px;margin:0 auto;padding:16px 14px}
+.header{text-align:center;margin-bottom:18px;padding-bottom:14px;border-bottom:2px solid #C9A96E}
+.logo{width:100px}
+.buscador{display:flex;gap:8px;margin-bottom:16px}
+.buscador input{flex:1;min-width:0;padding:14px 16px;border-radius:12px;border:2px solid #C9A96E;background:#111;color:#fff;font-size:16px}
+.btn-buscar{padding:14px 18px;border-radius:12px;border:2px solid #C9A96E;background:#C9A96E;color:#000;font-weight:700}
+.filtros{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:18px}
+.filtro{padding:11px 4px;border-radius:20px;border:2px solid #333;background:#111;color:#888;font-size:11px;font-weight:700}
+.filtro.activo{background:#C9A96E;color:#000;border-color:#C9A96E}
+.card-cliente{background:#0a0a0a;border:2px solid #C9A96E;border-radius:16px;padding:14px;margin-bottom:14px}
+.nombre{font-family:'Cinzel',serif;font-weight:700;font-size:16px;color:#C9A96E;display:inline-block;max-width:60%;word-break:break-word}
 .status{float:right;padding:5px 10px;border-radius:12px;font-size:11px;font-weight:800;min-width:80px;text-align:center}
 .ACTIVO{background:#198754;color:#fff}.PORVENCER{background:#FF8C00;color:#000}.VENCIDO{background:#dc3545;color:#fff}
-.whatsapp{color:#25D366;font-size:13px;display:block;margin-bottom:10px;font-weight:600;word-break:break-all}
-.dato{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;font-weight:600}.cortes-num{font-size:22px;color:#C9A96E;font-weight:700}.vencimiento{font-size:11px;color:#999;margin-bottom:12px}
-.acciones{display:grid;grid-template-columns:1fr 1fr;gap:8px}.btn-accion{padding:12px 6px;border-radius:10px;border:none;font-size:12px;font-weight:700;white-space:nowrap}.btn-corte{background:#198754;color:#fff}.btn-renovar{background:#C9A96E;color:#000}
+.paquete{font-size:12px;color:#aaa;margin:4px 0 8px}
+.whatsapp{color:#25D366;font-size:13px;font-weight:600;margin-bottom:8px;display:block}
+.dato{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;font-weight:600}
+.cortes-num{font-size:22px;color:#C9A96E;font-weight:700}
+.vencimiento{font-size:11px;color:#999;margin-bottom:12px}
+.acciones{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn-accion{padding:12px;border-radius:10px;border:none;font-size:12px;font-weight:700}
+.btn-corte{background:#198754;color:#fff}.btn-renovar{background:#C9A96E;color:#000}
 .fab{position:fixed;bottom:20px;right:16px;width:56px;height:56px;border-radius:50%;background:#C9A96E;color:#000;border:3px solid #000;font-size:28px;z-index:10}
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:20;padding:14px}.modal.activo{display:flex;align-items:center;justify-content:center}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:30;padding:14px}
+.modal.activo{display:flex;align-items:center;justify-content:center}
 .modal-card{background:#0a0a0a;border:2px solid #C9A96E;border-radius:16px;padding:20px 16px;width:100%;max-width:400px}
-.modal-card h3{font-family:'Cinzel',serif;color:#C9A96E;margin-bottom:16px;text-align:center;font-size:20px}
+.modal-card h3{font-family:'Cinzel',serif;color:#C9A96E;margin-bottom:16px;text-align:center}
 .modal-card input,.modal-card select{width:100%;padding:14px;margin:8px 0;border-radius:10px;border:2px solid #C9A96E;background:#000;color:#fff;font-size:16px}
-.modal-botones{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}.btn-guardar{background:#198754;color:#fff;padding:12px;border:none;border-radius:10px;font-weight:700}.btn-cancelar{background:#333;color:#fff;padding:12px;border:none;border-radius:10px;font-weight:700}
+.modal-botones{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.btn-guardar{background:#198754;color:#fff;padding:12px;border:none;border-radius:10px;font-weight:700}
+.btn-cancelar{background:#333;color:#fff;padding:12px;border:none;border-radius:10px;font-weight:700}
 </style>
 </head>
 <body>
 <div class="app">
-<div class="header"><img src="https://i.ibb.co/5pWGBXK/1781697467655.png" class="logo"></div>
+<div class="header"><img src="https://i.ibb.co/5pWGBXK/1781697467655.png" class="logo"><div style="font-family:Cinzel;color:#C9A96E;font-size:18px;margin-top:8px">DBM<br><span style="font-family:Montserrat;font-size:10px;letter-spacing:3px;color:#888">MEMBRESÍA VIP</span></div></div>
 <div class="buscador"><input type="text" id="busca" placeholder="Buscar cliente" oninput="filtrar()"><button class="btn-buscar" onclick="filtrar()">🔍</button></div>
-<div class="filtros"><button class="filtro activo" onclick="cambiarFiltro('TODOS', this)">Todos</button><button class="filtro" onclick="cambiarFiltro('POR VENCER', this)">Por Vencer</button><button class="filtro" onclick="cambiarFiltro('VENCIDO', this)">Vencidos</button></div>
-<div id="listaClientes">Cargando...</div>
+<div class="filtros">
+<button class="filtro activo" onclick="cambiarFiltro('TODOS', this)">Todos</button>
+<button class="filtro" onclick="cambiarFiltro('POR VENCER', this)">Por Vencer</button>
+<button class="filtro" onclick="cambiarFiltro('VENCIDO', this)">Vencidos</button>
+</div>
+<div id="listaClientes" style="color:#666;text-align:center;padding:30px">Cargando clientes...</div>
 </div>
 <button class="fab" onclick="abrirModal()">+</button>
-<div id="modalNuevo" class="modal"><div class="modal-card"><h3>Nuevo Cliente</h3><input id="nome" placeholder="Nombre"><input id="tel" placeholder="WhatsApp"><select id="tipo"><option value="Mensal 5 cortes">Mensal 5 cortes</option><option value="Promo 3 cortes">Promo 3 cortes</option></select><input id="obs" placeholder="Observaciones"><div class="modal-botones"><button class="btn-cancelar" onclick="cerrarModal()">Cancelar</button><button class="btn-guardar" onclick="nuevoCliente()">Guardar</button></div></div></div>
+<div id="modalNuevo" class="modal"><div class="modal-card"><h3>Nuevo Cliente</h3><input id="nome" placeholder="Nombre completo"><input id="tel" placeholder="WhatsApp"><select id="tipo"><option value="Mensal 5 cortes">Mensal 5 cortes</option><option value="Promo 3 cortes">Promo 3 cortes</option></select><input id="obs" placeholder="Observaciones"><div class="modal-botones"><button class="btn-cancelar" onclick="cerrarModal()">Cancelar</button><button class="btn-guardar" onclick="nuevoCliente()">Guardar</button></div></div></div>
+
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz8JaNuoYU7FQdswXy9p_sxROUVyoZZfMbJD4qzQBTlmATkPJB3wYltTmIiMrX4-PICOQ/exec";
 let clientes=[],filtroActual='TODOS';
+
 function apiJSONP(action,data={}){
   return new Promise((res,rej)=>{
     const cb='cb_'+Date.now()+Math.floor(Math.random()*1000);
     window[cb]=(d)=>{res(d);delete window[cb];s.remove();};
     const s=document.createElement('script');
-    s.src=`${SCRIPT_URL}?action=${action}&data=${encodeURIComponent(JSON.stringify(data))}&callback=${cb}&v=3&t=${Date.now()}`;
-    s.onerror=()=>rej('Error');document.body.appendChild(s);
+    s.src=`${SCRIPT_URL}?action=${action}&data=${encodeURIComponent(JSON.stringify(data))}&callback=${cb}&v=5&_=${Date.now()}`;
+    s.onerror=()=>rej('Error de red');
+    document.body.appendChild(s);
   });
 }
-async function cargar(){try{const d=await apiJSONP('getClientes');clientes=Array.isArray(d)?d:[];mostrar();}catch(e){document.getElementById('listaClientes').innerHTML='Error cargando, recarga';}}
+
+async function cargar(){
+  try{
+    const d=await apiJSONP('getClientes');
+    clientes=Array.isArray(d)?d:[];
+    mostrar();
+  }catch(e){
+    document.getElementById('listaClientes').innerHTML='<div style="color:#dc3545">Error de conexión. Desactiva bloqueador de anuncios.</div>';
+  }
+}
+
 function mostrar(){
   const div=document.getElementById('listaClientes');
-  let l=clientes;
+  let l=[...clientes];
   const t=document.getElementById('busca').value.toLowerCase().trim();
-  if(t)l=l.filter(c=>(c.Nombre||'').toLowerCase().includes(t));
+  if(t) l=l.filter(c=>(c.Nombre||'').toLowerCase().includes(t));
   if(filtroActual==='POR VENCER') l=l.filter(c=> c.dias_restantes>0 && c.dias_restantes<=7);
-  else if(filtroActual==='VENCIDO') l=l.filter(c=> c.dias_restantes<=0);
+  if(filtroActual==='VENCIDO') l=l.filter(c=> c.dias_restantes<=0);
   if(l.length===0){div.innerHTML='<div style="text-align:center;padding:40px;color:#666">No hay clientes</div>';return;}
   div.innerHTML=l.map(c=>{
-    const rest=c["Cortes Restantes"]??0;const tot=c["Cortes Totales"]??5;
+    const rest=c["Cortes Restantes"]??0;
+    const tot=c["Cortes Totales"]??5;
     let dias=c.dias_restantes;
     if(dias==null) dias=0;
-    let textoDias, claseEstado;
-    if(dias<=0){textoDias='VENCIDO';claseEstado='VENCIDO';}
-    else if(dias<=7){textoDias=dias+' días';claseEstado='PORVENCER';}
-    else{textoDias=dias+' días';claseEstado='ACTIVO';}
+    let textoDias, clase;
+    if(dias<=0){textoDias='VENCIDO';clase='VENCIDO';}
+    else if(dias<=7){textoDias=dias+' días';clase='PORVENCER';}
+    else{textoDias=dias+' días';clase='ACTIVO';}
     const paq=c["Paquete Activo"]||'';
     const fecha=c.FechaVencimientoFormateada||'-';
-    return `<div class="card-cliente"><div class="nombre">${c.Nombre}</div><span class="status ${claseEstado}">${textoDias}</span><div class="paquete">${paq}</div><div class="whatsapp">📱 ${c.WhatsApp}</div><div class="dato"><span>Cortes:</span><span class="cortes-num">${rest}/${tot}</span></div><div class="vencimiento">Vence: ${fecha} • Renov: ${c.Renovaciones||0}</div><div class="acciones"><button class="btn-accion btn-corte" onclick="registrarCorte('${c.ID}')">✂️ Corte</button><button class="btn-accion btn-renovar" onclick="renovar('${c.ID}','${paq}')">🔄 Renovar</button></div></div>`
+    return `<div class="card-cliente">
+      <div class="nombre">${c.Nombre}</div><span class="status ${clase}">${textoDias}</span>
+      <div class="paquete">${paq}</div>
+      <div class="whatsapp">📱 ${c.WhatsApp}</div>
+      <div class="dato"><span>Cortes:</span><span class="cortes-num">${rest}/${tot}</span></div>
+      <div class="vencimiento">Vence: ${fecha} • Renov: ${c.Renovaciones||0}</div>
+      <div class="acciones"><button class="btn-accion btn-corte" onclick="registrarCorte('${c.ID}')">✂️ Corte</button><button class="btn-accion btn-renovar" onclick="renovar('${c.ID}','${paq}')">🔄 Renovar</button></div>
+    </div>`;
   }).join('');
 }
+
 function filtrar(){mostrar();}
 function cambiarFiltro(f,b){filtroActual=f;document.querySelectorAll('.filtro').forEach(x=>x.classList.remove('activo'));b.classList.add('activo');mostrar();}
 async function registrarCorte(id){if(!confirm('¿Registrar corte?'))return;await apiJSONP('registrarCorte',{id});cargar();}
-async function renovar(id,paqueteActual){if(!confirm(`¿Renovar ${paqueteActual}?`))return;await apiJSONP('renovarMembresia',{id,tipo:paqueteActual});cargar();}
+async function renovar(id,paq){if(!confirm('¿Renovar '+paq+'?'))return;await apiJSONP('renovarMembresia',{id,tipo:paq});cargar();}
 function abrirModal(){document.getElementById('modalNuevo').classList.add('activo');}
 function cerrarModal(){document.getElementById('modalNuevo').classList.remove('activo');}
-async function nuevoCliente(){const d={Nombre:nome.value,WhatsApp:tel.value,PaqueteActivo:tipo.value,Observaciones:obs.value};if(!d.Nombre)return alert('Falta nombre');await apiJSONP('agregarCliente',d);cerrarModal();cargar();}
+async function nuevoCliente(){
+  const d={Nombre:document.getElementById('nome').value,WhatsApp:document.getElementById('tel').value,PaqueteActivo:document.getElementById('tipo').value,Observaciones:document.getElementById('obs').value};
+  if(!d.Nombre) return alert('Falta nombre');
+  await apiJSONP('agregarCliente',d);
+  cerrarModal();cargar();
+}
 cargar();
 </script>
 </body>
