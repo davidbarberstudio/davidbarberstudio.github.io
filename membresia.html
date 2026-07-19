@@ -3,29 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DBM - VIP</title>
-<link rel="icon" type="image/png" href="dbm-icon-192.png?v=13">
-<link rel="apple-touch-icon" href="dbm-icon-192.png?v=13">
-<meta name="theme-color" content="#000000">
+<title>DB - VIP</title>
+<link rel="icon" type="image/png" href="icono.png">
+<link rel="apple-touch-icon" href="icono.png">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}body{background:#000;color:#fff;font-family:Montserrat,sans-serif;padding-bottom:90px}
-.header{text-align:center;padding:16px 0;border-bottom:2px solid #C9A96E}.logo{width:95px}
+.header{text-align:center;padding:16px 0;border-bottom:2px solid #C9A96E}.logo{width:110px}
 .buscador{padding:12px;display:flex;gap:8px}.buscador input{flex:1;padding:14px;border-radius:12px;border:2px solid #C9A96E;background:#111;color:#fff;font-size:16px}
 .btn-buscar{padding:14px 18px;border-radius:12px;background:#C9A96E;border:none;font-weight:700}
 .filtros{padding:0 12px 12px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.filtro{padding:12px;border-radius:20px;border:2px solid #333;background:#111;color:#888;font-weight:700;font-size:12px}.filtro.activo{background:#C9A96E;color:#000;border-color:#C9A96E}
-#listaClientes{padding:12px}.card-cliente{width:100%;background:#0f0f0f;border:2px solid #C9A96E;border-radius:18px;padding:18px 16px;margin-bottom:14px}
-.card-top{display:flex;justify-content:space-between;align-items:flex-start}.nombre{font-family:Cinzel;font-size:19px;color:#C9A96E;font-weight:700}
-.status{padding:8px 14px;border-radius:12px;font-size:12px;font-weight:800;min-width:70px;text-align:center}.ACTIVO{background:#198754;color:#fff}.PORVENCER{background:#FFC107;color:#000}.VENCIDO{background:#dc3545;color:#fff}
-.paquete{font-size:13px;color:#aaa;margin:4px 0}.whatsapp{color:#00e676;font-weight:700;margin-bottom:8px;display:block;font-size:16px}
+#listaClientes{padding:12px}
+.card-cliente{width:100%;background:#0f0f0f;border:2px solid #C9A96E;border-radius:18px;padding:18px 16px;margin-bottom:14px}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start}
+.nombre{font-family:Cinzel;font-size:19px;color:#C9A96E;font-weight:700}
+.status{padding:8px 14px;border-radius:12px;font-size:12px;font-weight:800;min-width:70px;text-align:center}
+.ACTIVO{background:#198754;color:#fff}.PORVENCER{background:#FFC107;color:#000}.VENCIDO{background:#dc3545;color:#fff}
+.paquete{font-size:13px;color:#aaa;margin:4px 0}.whatsapp{color:#00e676;font-weight:700;margin-bottom:8px;display:block;font-size:16px;text-decoration:none}
 .dato{display:flex;justify-content:space-between;align-items:center;font-weight:600;margin:10px 0}.cortes-label{font-size:14px;color:#fff;font-weight:700}.cortes-num{font-size:36px;color:#C9A96E;font-weight:800}
-.vencimiento{font-size:13px;color:#aaa;margin-bottom:14px}.acciones{display:grid;grid-template-columns:1fr 1fr;gap:12px}.btn-accion{padding:15px;border-radius:12px;border:none;font-weight:700;font-size:15px}.btn-corte{background:#198754;color:#fff}.btn-renovar{background:#C9A96E;color:#000}
+.vencimiento{font-size:13px;color:#aaa;margin-bottom:14px}
+.acciones{display:grid;grid-template-columns:1fr 1fr;gap:12px}.btn-accion{padding:15px;border-radius:12px;border:none;font-weight:700;font-size:15px}.btn-corte{background:#198754;color:#fff}.btn-renovar{background:#C9A96E;color:#000}
 .fab{position:fixed;bottom:22px;right:22px;width:62px;height:62px;border-radius:50%;background:#C9A96E;color:#000;border:3px solid #000;font-size:32px;z-index:10}
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:99;padding:14px}.modal.activo{display:flex;align-items:center;justify-content:center}
 </style>
 </head>
 <body>
-<div class="header"><img src="dbm-icon-192.png" class="logo" style="border-radius:18px"><div style="font-family:Cinzel;color:#C9A96E;margin-top:6px">DBM<br><span style="font-family:Montserrat;font-size:10px;letter-spacing:3px;color:#888">MEMBRESÍA VIP</span></div></div>
+<div class="header"><img src="https://i.ibb.co/5pWGBXK/1781697467655.png" class="logo"><div style="font-family:Cinzel;color:#C9A96E;margin-top:6px">DBM<br><span style="font-family:Montserrat;font-size:10px;letter-spacing:3px;color:#888">MEMBRESÍA VIP</span></div></div>
 <div class="buscador"><input id="busca" placeholder="Buscar cliente" oninput="filtrar()"><button class="btn-buscar" onclick="filtrar()">🔍</button></div>
 <div class="filtros"><button class="filtro activo" onclick="cambiarFiltro('TODOS',this)">Todos</button><button class="filtro" onclick="cambiarFiltro('POR VENCER',this)">Por Vencer</button><button class="filtro" onclick="cambiarFiltro('VENCIDO',this)">Vencidos</button></div>
 <div id="listaClientes">Cargando...</div>
@@ -36,24 +39,29 @@ const SCRIPT_URL="https://script.google.com/macros/s/AKfycbz8JaNuoYU7FQdswXy9p_s
 let clientes=[],filtroActual='TODOS';
 function apiJSONP(a,d={}){return new Promise((res,rej)=>{const cb='cb_'+Date.now()+Math.floor(Math.random()*1000);window[cb]=(x)=>{res(x);delete window[cb];s.remove()};const s=document.createElement('script');s.src=`${SCRIPT_URL}?action=${a}&data=${encodeURIComponent(JSON.stringify(d))}&callback=${cb}&v=13&_=${Date.now()}`;s.onerror=()=>rej();document.body.appendChild(s)})}
 async function cargar(){try{const d=await apiJSONP('getClientes');clientes=Array.isArray(d)?d:[];mostrar()}catch(e){}}
+function limpiarNumero(n){ return (n||'').toString().replace(/\D/g,''); }
 function mostrar(){
   const div=document.getElementById('listaClientes');
-  let l=[...clientes]; const t=busca.value.toLowerCase();
+  let l=[...clientes];
+  const t=busca.value.toLowerCase();
   if(t)l=l.filter(c=>(c.Nombre||'').toLowerCase().includes(t));
   if(filtroActual==='POR VENCER')l=l.filter(c=>c.dias_restantes>0 && c.dias_restantes<=7 && (c.CortesRestantes||0)>0);
   if(filtroActual==='VENCIDO')l=l.filter(c=>c.dias_restantes<=0 || (c.CortesRestantes||0)<=0);
   if(!l.length){div.innerHTML='<div style="padding:20px;text-align:center">No hay clientes</div>';return}
   div.innerHTML=l.map(c=>{
-    let dias=c.dias_restantes; let cortes=c.CortesRestantes||0;
+    let dias=parseInt(c.dias_restantes);
+    let cortes=parseInt(c.CortesRestantes||0);
     let txt, cls;
+    // LOGICA CORREGIDA COMO PEDISTE
     if(cortes<=0 || dias<=0){ txt='VENCIDO'; cls='VENCIDO'; }
     else if(dias<=7){ txt=dias+'d'; cls='PORVENCER'; }
     else { txt=dias+'d'; cls='ACTIVO'; }
-    return `<div class="card-cliente"><div class="card-top"><div><div class="nombre">${c.Nombre}</div><div class="paquete">${c.PaqueteActivo||''}</div></div><span class="status ${cls}">${txt}</span></div><div class="whatsapp">📱 ${c.WhatsApp}</div><div class="dato"><span class="cortes-label">Cortes restantes:</span><span class="cortes-num">${cortes}/${c.CortesTotales||5}</span></div><div class="vencimiento">Vence: ${c.FechaVencimientoFormateada}</div><div class="acciones"><button class="btn-accion btn-corte" onclick="registrarCorte('${c.ID}')">✂️ Corte</button><button class="btn-accion btn-renovar" onclick="renovar('${c.ID}','${c.PaqueteActivo}')">🔄 Renovar</button></div></div>`
+    let numLimpio=limpiarNumero(c.WhatsApp);
+    return `<div class="card-cliente"><div class="card-top"><div><div class="nombre">${c.Nombre}</div><div class="paquete">${c.PaqueteActivo||''}</div></div><span class="status ${cls}">${txt}</span></div><a class="whatsapp" href="https://wa.me/55${numLimpio}" target="_blank">📱 ${c.WhatsApp}</a><div class="dato"><span class="cortes-label">Cortes restantes:</span><span class="cortes-num">${cortes}/${c.CortesTotales||5}</span></div><div class="vencimiento">Vence: ${c.FechaVencimientoFormateada}</div><div class="acciones"><button class="btn-accion btn-corte" onclick="registrarCorte('${c.ID}')">✂️ Corte</button><button class="btn-accion btn-renovar" onclick="renovar('${c.ID}','${c.PaqueteActivo}')">🔄 Renovar</button></div></div>`
   }).join('')
 }
 function filtrar(){mostrar()}function cambiarFiltro(f,b){filtroActual=f;document.querySelectorAll('.filtro').forEach(x=>x.classList.remove('activo'));b.classList.add('activo');mostrar()}
-async function registrarCorte(id){if(!confirm('¿Registrar corte?'))return;await apiJSONP('registrarCorte',{id});cargar()}
+async function registrarCorte(id){if(!confirm('¿Registrar corte?'))return;let r=await apiJSONP('registrarCorte',{id});if(r.error) alert(r.error); cargar()}
 async function renovar(id,paq){if(!confirm('¿Renovar?'))return;await apiJSONP('renovarMembresia',{id,tipo:paq});cargar()}
 function abrirModal(){modalNuevo.classList.add('activo')}function cerrarModal(){modalNuevo.classList.remove('activo')}
 async function nuevoCliente(){const d={Nombre:nome.value,WhatsApp:tel.value,PaqueteActivo:tipo.value};if(!d.Nombre)return alert('Falta nombre');await apiJSONP('agregarCliente',d);cerrarModal();cargar()}
