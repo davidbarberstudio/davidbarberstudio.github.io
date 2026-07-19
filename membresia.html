@@ -4,8 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DBM - VIP</title>
-<link rel="icon" type="image/png" href="dbm-icon-192.png?v=19">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}body{background:#000;color:#fff;font-family:Montserrat,sans-serif;padding-bottom:90px}
@@ -14,11 +12,11 @@
 .filtros{padding:0 12px 12px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.filtro{padding:12px;border-radius:20px;border:2px solid #333;background:#111;color:#888;font-weight:700;font-size:12px}.filtro.activo{background:#C9A96E;color:#000;border-color:#C9A96E}
 #listaClientes{padding:12px}.card-cliente{background:#0f0f0f;border:2px solid #C9A96E;border-radius:18px;padding:18px 16px;margin-bottom:14px}
 .card-top{display:flex;justify-content:space-between}.nombre{font-family:Cinzel;font-size:19px;color:#C9A96E}.status{padding:8px 14px;border-radius:12px;font-size:12px;font-weight:800;min-width:70px;text-align:center}.ACTIVO{background:#198754;color:#fff}.PORVENCER{background:#FFC107;color:#000}.VENCIDO{background:#dc3545;color:#fff}
-.whatsapp{color:#00e676;font-weight:700;margin:6px 0;display:block}.cortes-num{font-size:36px;color:#C9A96E;font-weight:800}.acoes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.btn-accion{padding:14px;border-radius:12px;border:none;font-weight:700;font-size:13px}.btn-corte{background:#198754;color:#fff}.btn-renovar{background:#C9A96E;color:#000}
+.whatsapp-link{color:#25D366;font-weight:700;margin:6px 0;display:block;text-decoration:none;font-size:15px}.cortes-num{font-size:36px;color:#C9A96E;font-weight:800}.acoes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.btn-accion{padding:14px;border-radius:12px;border:none;font-weight:700;font-size:13px}.btn-corte{background:#198754;color:#fff}.btn-renovar{background:#C9A96E;color:#000}
 .fab{position:fixed;bottom:22px;right:22px;width:62px;height:62px;border-radius:50%;background:#C9A96E;color:#000;font-size:32px}
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:99;padding:14px;align-items:center;justify-content:center}.modal.activo{display:flex}.modal-box{background:#111;border:2px solid #C9A96E;border-radius:18px;padding:22px;width:100%;max-width:400px;text-align:center}
-.preview{ background:#000; border:1px solid #333; border-radius:12px; padding:14px; text-align:left; font-size:13px; color:#fff; white-space:pre-wrap; margin:12px 0; font-family:monospace; }
-.btn-whats{background:#25D366;color:#fff;border:none;padding:16px;border-radius:12px;font-weight:800;width:100%;margin-top:12px;font-size:16px}.btn-sec{background:#333;color:#fff;border:none;padding:12px;border-radius:12px;width:100%;margin-top:8px}
+.preview{background:#000;border:1px solid #333;border-radius:12px;padding:14px;text-align:left;font-size:12px;color:#fff;white-space:pre-wrap;margin:12px 0;font-family:monospace;}
+.btn-whats{display:block;background:#25D366;color:#fff;padding:16px;border-radius:12px;font-weight:800;width:100%;margin-top:12px;font-size:16px;text-decoration:none;text-align:center}.btn-sec{background:#333;color:#fff;border:none;padding:12px;border-radius:12px;width:100%;margin-top:8px}
 </style>
 </head>
 <body>
@@ -30,14 +28,17 @@
 
 <div id="modalNovo" class="modal"><div class="modal-box"><h3 style="font-family:Cinzel;color:#C9A96E">Novo Cliente</h3><input id="nome" placeholder="Nome" style="width:100%;padding:14px;margin:8px 0;border-radius:10px;border:2px solid #C9A96E;background:#000;color:#fff"><input id="tel" placeholder="WhatsApp" style="width:100%;padding:14px;margin:8px 0;border-radius:10px;border:2px solid #C9A96E;background:#000;color:#fff"><select id="tipo" style="width:100%;padding:14px;border-radius:10px;border:2px solid #C9A96E;background:#000;color:#fff"><option>Mensal 5 cortes</option><option>Promo 3 cortes</option></select><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px"><button onclick="document.getElementById('modalNovo').classList.remove('activo')" style="padding:12px;border-radius:10px;background:#333;color:#fff;border:none">Cancelar</button><button onclick="novoCliente()" style="padding:12px;border-radius:10px;background:#198754;color:#fff;border:none">Salvar</button></div></div></div>
 
-<div id="modalComprovante" class="modal"><div class="modal-box"><h3 id="compTitulo" style="font-family:Cinzel;color:#C9A96E">Comprovante Gerado!</h3><div id="compPreview" class="preview"></div><button class="btn-whats" onclick="enviarWhatsApp()">📱 Enviar no WhatsApp do Cliente</button><button class="btn-sec" onclick="document.getElementById('modalComprovante').classList.remove('activo')">Fechar</button></div></div>
+<div id="modalComprovante" class="modal"><div class="modal-box"><h3 id="compTitulo" style="font-family:Cinzel;color:#C9A96E">Comprovante Gerado!</h3><div id="compPreview" class="preview"></div>
+<a id="btnEnviar" class="btn-whats" target="_blank" href="#">📱 Enviar no WhatsApp do Cliente</a>
+<button class="btn-sec" onclick="document.getElementById('modalComprovante').classList.remove('activo')">Fechar</button></div></div>
 
 <script>
 const SCRIPT_URL="https://script.google.com/macros/s/AKfycbz8JaNuoYU7FQdswXy9p_sxROUVyoZZfMbJD4qzQBTlmATkPJB3wYltTmIiMrX4-PICOQ/exec";
-let clientes=[], filtroActual='TODOS', ultimoTexto='', ultimoCliente=null;
+let clientes=[], filtroActual='TODOS';
 
-function apiJSONP(a,d={}){return new Promise((res,rej)=>{const cb='cb_'+Date.now();window[cb]=(x)=>{res(x);delete window[cb];s.remove()};const s=document.createElement('script');s.src=SCRIPT_URL+"?action="+a+"&data="+encodeURIComponent(JSON.stringify(d))+"&callback="+cb+"&v=19&_="+Date.now();document.body.appendChild(s)})}
+function apiJSONP(a,d={}){return new Promise((res)=>{const cb='cb_'+Date.now();window[cb]=(x)=>{res(x);delete window[cb];s.remove()};const s=document.createElement('script');s.src=SCRIPT_URL+"?action="+a+"&data="+encodeURIComponent(JSON.stringify(d))+"&callback="+cb+"&v=21&_="+Date.now();document.body.appendChild(s)})}
 async function carregar(){const d=await apiJSONP('getClientes');clientes=Array.isArray(d)?d:[];mostrar()}
+function getTelLink(tel){let n=(tel||'').replace(/\D/g,''); if(n.length==11||n.length==10) n='55'+n; return 'https://wa.me/'+n;}
 function mostrar(){
   const div=document.getElementById('listaClientes');
   let l=[...clientes]; const t=document.getElementById('busca').value.toLowerCase();
@@ -48,7 +49,8 @@ function mostrar(){
   div.innerHTML=l.map(c=>{
     let nome=c.Nome||c.Nombre; let cortes=c.CortesRestantes||0; let total=c.CortesTotales||5; let dias=c.dias_restantes;
     let txt=cortes<=0||dias<=0?'VENCIDO':dias+'d'; let cls=cortes<=0||dias<=0?'VENCIDO':dias<=7?'PORVENCER':'ACTIVO';
-    return `<div class="card-cliente"><div class="card-top"><div><div class="nombre">${nome}</div><div style="font-size:13px;color:#aaa">${c.PaqueteActivo||''}</div></div><span class="status ${cls}">${txt}</span></div><div class="whatsapp">📱 ${c.WhatsApp||''}</div><div style="display:flex;justify-content:space-between;margin:10px 0"><span>Cortes:</span><span class="cortes-num">${cortes}/${total}</span></div><div style="font-size:13px;color:#aaa;margin-bottom:12px">Vence: ${c.FechaVencimientoFormateada}</div><div class="acoes"><button class="btn-accion btn-corte" onclick="registrarCorte('${c.ID}')">✂️ Corte</button><button class="btn-accion btn-renovar" onclick="renovar('${c.ID}','${c.PaqueteActivo||''}')">🔄 Renovar</button></div></div>`;
+    let waLink=getTelLink(c.WhatsApp);
+    return `<div class="card-cliente"><div class="card-top"><div><div class="nombre">${nome}</div><div style="font-size:13px;color:#aaa">${c.PaqueteActivo||''}</div></div><span class="status ${cls}">${txt}</span></div><a class="whatsapp-link" href="${waLink}" target="_blank">📱 ${c.WhatsApp||''} - Toque para abrir WhatsApp</a><div style="display:flex;justify-content:space-between;margin:10px 0"><span>Cortes:</span><span class="cortes-num">${cortes}/${total}</span></div><div style="font-size:13px;color:#aaa;margin-bottom:12px">Vence: ${c.FechaVencimientoFormateada}</div><div class="acoes"><button class="btn-accion btn-corte" onclick="registrarCorte('${c.ID}')">✂️ Corte</button><button class="btn-accion btn-renovar" onclick="renovar('${c.ID}','${c.PaqueteActivo||''}')">🔄 Renovar</button></div></div>`;
   }).join('');
 }
 function cambiarFiltro(f,b){filtroActual=f;document.querySelectorAll('.filtro').forEach(x=>x.classList.remove('activo'));b.classList.add('activo');mostrar()}
@@ -87,8 +89,7 @@ function gerarComprovanteCorte(cliente){
 *Seus cortes acabaram!* Obrigado por fazer parte da familia DBM! 🙏
 Que tal renovar seu pacote VIP e continuar com estilo impecavel?
 
-Agradecemos a preferencia!
-@davidbarberstudio.br | Joinville - SC`;
+@davidbarberstudio.br`;
   } else {
     texto=`*DAVID BARBER STUDIO* 👑💈
 *COMPROVANTE DE CORTE*
@@ -103,12 +104,8 @@ Aproveite seu estilo VIP! ✂️
 
 @davidbarberstudio.br`;
   }
-  ultimoTexto=texto; ultimoCliente=cliente;
-  document.getElementById('compTitulo').innerText=cortes<=0?'Ultimo Corte!':'Corte Registrado!';
-  document.getElementById('compPreview').innerText=texto;
-  document.getElementById('modalComprovante').classList.add('activo');
+  mostrarModalComprovante(cliente, texto, cortes<=0?'Ultimo Corte!':'Corte Registrado!');
 }
-
 function gerarComprovanteRenovacao(cliente){
   const nome=cliente.Nome||cliente.Nombre; const total=cliente.CortesTotales||5; const vence=cliente.FechaVencimientoFormateada; const hoje=new Date().toLocaleDateString('pt-BR');
   const texto=`*DAVID BARBER STUDIO* 👑💈
@@ -124,28 +121,17 @@ function gerarComprovanteRenovacao(cliente){
 Obrigado por continuar escolhendo David Barber Studio!
 Bem-vindo de volta a familia DBM! 👑✂️
 
-@davidbarberstudio.br | Joinville - SC`;
-  ultimoTexto=texto; ultimoCliente=cliente;
-  document.getElementById('compTitulo').innerText='Membresia Renovada!';
-  document.getElementById('compPreview').innerText=texto;
-  document.getElementById('modalComprovante').classList.add('activo');
+@davidbarberstudio.br`;
+  mostrarModalComprovante(cliente, texto, 'Membresia Renovada!');
 }
-
-function enviarWhatsApp(){
-  if(!ultimoTexto || !ultimoCliente) return alert('Gera o comprovante primeiro');
-  let tel = (ultimoCliente.WhatsApp||'').replace(/\D/g,'');
-  // si ya tiene 12 o 13 dígitos (con 55), lo dejamos, si no le ponemos 55
-  if(tel.length === 11 || tel.length === 10) tel = '55' + tel;
-
-  const url = 'https://wa.me/' + tel + '?text=' + encodeURIComponent(ultimoTexto);
-  
-  // Método que funciona en Brave
-  window.open(url, '_blank');
-  
-  // Si Brave lo bloquea, intenta en la misma ventana después de 300ms
-  setTimeout(() => {
-    window.location.href = url;
-  }, 300);
+function mostrarModalComprovante(cliente, texto, titulo){
+  const tel=(cliente.WhatsApp||'').replace(/\D/g,'');
+  let telFull=tel.length==11||tel.length==10?'55'+tel:tel;
+  const url='https://wa.me/'+telFull+'?text='+encodeURIComponent(texto);
+  document.getElementById('compTitulo').innerText=titulo;
+  document.getElementById('compPreview').innerText=texto;
+  document.getElementById('btnEnviar').href=url;
+  document.getElementById('modalComprovante').classList.add('activo');
 }
 carregar();
 </script>
