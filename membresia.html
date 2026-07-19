@@ -132,11 +132,20 @@ Bem-vindo de volta a familia DBM! 👑✂️
 }
 
 function enviarWhatsApp(){
-  if(!ultimoTexto||!ultimoCliente) return;
-  let tel=(ultimoCliente.WhatsApp||'').replace(/\D/g,'');
-  if(tel.length<=11) tel='55'+tel;
-  const url='https://wa.me/'+tel+'?text='+encodeURIComponent(ultimoTexto);
-  const a=document.createElement('a'); a.href=url; a.target='_blank'; document.body.appendChild(a); a.click(); a.remove();
+  if(!ultimoTexto || !ultimoCliente) return alert('Gera o comprovante primeiro');
+  let tel = (ultimoCliente.WhatsApp||'').replace(/\D/g,'');
+  // si ya tiene 12 o 13 dígitos (con 55), lo dejamos, si no le ponemos 55
+  if(tel.length === 11 || tel.length === 10) tel = '55' + tel;
+
+  const url = 'https://wa.me/' + tel + '?text=' + encodeURIComponent(ultimoTexto);
+  
+  // Método que funciona en Brave
+  window.open(url, '_blank');
+  
+  // Si Brave lo bloquea, intenta en la misma ventana después de 300ms
+  setTimeout(() => {
+    window.location.href = url;
+  }, 300);
 }
 carregar();
 </script>
