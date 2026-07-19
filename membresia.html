@@ -14,28 +14,28 @@
 .card-top{display:flex;justify-content:space-between}.nombre{font-family:Cinzel;font-size:19px;color:#C9A96E}.status{padding:8px 14px;border-radius:12px;font-size:12px;font-weight:800;min-width:70px;text-align:center}.ACTIVO{background:#198754;color:#fff}.PORVENCER{background:#FFC107;color:#000}.VENCIDO{background:#dc3545;color:#fff}
 .whatsapp-link{color:#25D366;font-weight:700;margin:6px 0;display:block;text-decoration:none}
 .cortes-num{font-size:36px;color:#C9A96E;font-weight:800}.acoes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.btn-accion{padding:14px;border-radius:12px;border:none;font-weight:700;font-size:13px}.btn-corte{background:#198754;color:#fff}.btn-renovar{background:#C9A96E;color:#000}
-.fab{position:fixed;bottom:22px;right:22px;width:62px;height:62px;border-radius:50%;background:#C9A96E;color:#000;font-size:32px;border:none;z-index:10}
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:99;padding:14px;align-items:center;justify-content:center;overflow:auto}.modal.activo{display:flex}.modal-box{background:#111;border:2px solid #C9A96E;border-radius:18px;padding:22px;width:100%;max-width:400px;text-align:center;max-height:90vh;overflow:auto}
-.preview{background:#000;border:1px solid #333;border-radius:12px;padding:14px;text-align:left;font-size:12px;color:#fff;white-space:pre-wrap;margin:12px 0;font-family:monospace;}
+.fab{position:fixed;bottom:22px;right:22px;width:62px;height:62px;border-radius:50%;background:#C9A96E;color:#000;font-size:32px;border:none}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:99;padding:14px;align-items:center;justify-content:center}.modal.activo{display:flex}.modal-box{background:#111;border:2px solid #C9A96E;border-radius:18px;padding:22px;width:100%;max-width:400px;text-align:center}
+.preview{background:#000;border:1px solid #333;border-radius:12px;padding:14px;text-align:left;font-size:12px;color:#fff;white-space:pre-wrap;margin:12px 0;font-family:monospace}
 .btn-whats{display:block;background:#25D366;color:#fff;padding:16px;border-radius:12px;font-weight:800;width:100%;margin-top:12px;font-size:16px;text-decoration:none;text-align:center}.btn-sec{background:#333;color:#fff;border:none;padding:12px;border-radius:12px;width:100%;margin-top:8px}
 .input{width:100%;padding:14px;margin:6px 0;border-radius:10px;border:2px solid #C9A96E;background:#000;color:#fff}
 </style>
 </head>
 <body>
 <div class="header"><img src="https://i.ibb.co/5pWGBXK/1781697467655.png" class="logo"><div style="font-family:Cinzel;color:#C9A96E;margin-top:6px">DAVID BARBER STUDIO</div></div>
-<div class="buscador"><input id="busca" placeholder="Buscar cliente" oninput="mostrar()"><button style="padding:14px 18px;border-radius:12px;background:#C9A96E;border:none" onclick="carregar()">🔄</button></div>
+<div class="buscador"><input id="busca" placeholder="Buscar cliente" oninput="mostrar()"><button style="padding:14px 18px;border-radius:12px;background:#C9A96E;border:none" onclick="mostrar()">🔍</button></div>
 <div class="filtros"><button class="filtro activo" onclick="cambiarFiltro('TODOS',this)">Todos</button><button class="filtro" onclick="cambiarFiltro('POR VENCER',this)">Por Vencer</button><button class="filtro" onclick="cambiarFiltro('VENCIDO',this)">Vencidos</button></div>
-<div id="listaClientes" style="padding:20px;text-align:center">Carregando clientes... se demorar toque em 🔄</div>
+<div id="listaClientes">Carregando...</div>
 <button class="fab" onclick="document.getElementById('modalNovo').classList.add('activo')">+</button>
 
 <div id="modalNovo" class="modal"><div class="modal-box"><h3 style="font-family:Cinzel;color:#C9A96E">Novo Cliente</h3>
 <input id="nome" class="input" placeholder="Nome">
 <input id="tel" class="input" placeholder="WhatsApp">
 <select id="tipo" class="input"><option>Mensal 5 cortes</option><option>Promo 3 cortes</option><option>Corte Avulso</option></select>
-<textarea id="obs" class="input" placeholder="Observações (opcional)" rows="3"></textarea>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px"><button onclick="document.getElementById('modalNovo').classList.remove('activo')" style="padding:12px;border-radius:10px;background:#333;color:#fff;border:none">Cancelar</button><button onclick="novoCliente()" style="padding:12px;border-radius:10px;background:#198754;color:#fff;border:none">Salvar</button></div></div></div>
+<textarea id="obs" class="input" placeholder="Observações" rows="2"></textarea>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px"><button onclick="document.getElementById('modalNovo').classList.remove('activo')" class="btn-sec">Cancelar</button><button onclick="novoCliente()" style="padding:12px;border-radius:10px;background:#198754;color:#fff;border:none">Salvar</button></div></div></div>
 
-<div id="modalComprovante" class="modal"><div class="modal-box"><h3 id="compTitulo" style="font-family:Cinzel;color:#C9A96E">Comprovante Gerado!</h3><div id="compPreview" class="preview"></div>
+<div id="modalComprovante" class="modal"><div class="modal-box"><h3 id="compTitulo" style="font-family:Cinzel;color:#C9A96E">Comprovante</h3><div id="compPreview" class="preview"></div>
 <a id="btnEnviar" class="btn-whats" target="_blank" href="#">📱 Enviar no WhatsApp do Cliente</a>
 <button class="btn-sec" onclick="document.getElementById('modalComprovante').classList.remove('activo')">Fechar</button></div></div>
 
@@ -43,97 +43,118 @@
 const SCRIPT_URL="https://script.google.com/macros/s/AKfycbz8JaNuoYU7FQdswXy9p_sxROUVyoZZfMbJD4qzQBTlmATkPJB3wYltTmIiMrX4-PICOQ/exec";
 let clientes=[], filtroActual='TODOS';
 
-function api(action,data={}){
-  return new Promise((resolve)=>{
-    const cb='cb_'+Date.now()+'_'+Math.floor(Math.random()*99999);
-    let done=false;
-    const finish=(d)=>{
-      if(done) return; done=true;
-      try{ delete window[cb]; }catch(e){}
-      if(script && script.parentNode) script.parentNode.removeChild(script);
-      resolve(d);
-    };
-    window[cb]=(d)=>{
-      // Guarda cache siempre
-      if(action==='getClientes' && Array.isArray(d) && d.length>0){
-        localStorage.setItem('dbm_clientes_cache', JSON.stringify(d));
-        localStorage.setItem('dbm_cache_time', Date.now());
-      }
-      finish(d);
-    };
-    const script=document.createElement('script');
-    script.src=SCRIPT_URL+"?action="+action+"&data="+encodeURIComponent(JSON.stringify(data))+"&callback="+cb+"&v=24&_="+Date.now();
-    script.onerror=()=>finish([]);
-    document.body.appendChild(script);
-    setTimeout(()=>finish([]), 7000);
+// ESTA ES TU FUNCION ORIGINAL QUE TE FUNCIONABA SIEMPRE
+function apiJSONP(action,data={}){
+  return new Promise((res)=>{
+    const cb='cb_'+Date.now();
+    window[cb]=(x)=>{res(x);delete window[cb];s.remove()};
+    const s=document.createElement('script');
+    s.src=SCRIPT_URL+"?action="+action+"&data="+encodeURIComponent(JSON.stringify(data))+"&callback="+cb+"&_="+Date.now();
+    document.body.appendChild(s);
   });
 }
 
-async function carregar(){
-  // 1. Muestra cache inmediato para que no se quede cargando NUNCA
-  const cache=localStorage.getItem('dbm_clientes_cache');
-  if(cache){
-    try{
-      clientes=JSON.parse(cache);
-      mostrar();
-      document.getElementById('listaClientes').insertAdjacentHTML('afterbegin','<div style="text-align:center;font-size:11px;color:#C9A96E;margin-bottom:8px">Mostrando cache offline - atualizando...</div>');
-    }catch(e){}
-  }
-
-  // 2. Intenta actualizar del servidor
-  const d=await api('getClientes');
-  if(Array.isArray(d) && d.length>0){
-    clientes=d;
-    mostrar();
-  } else if(!cache){
-    document.getElementById('listaClientes').innerHTML='<div style="padding:30px;text-align:center">Sem conexão com Google Sheet<br><span style="font-size:12px;color:#aaa">Verifica tua internet e toca em Recarregar</span><br><br><button onclick="carregar()" style="padding:14px 22px;border-radius:10px;background:#C9A96E;border:none;font-weight:800">🔄 Tentar Novamente</button></div>';
-  }
-}
-
-function getTelLink(tel){let n=(tel||'').replace(/\D/g,''); if(n.length==11||n.length==10) n='55'+n; return 'https://wa.me/'+n;}
+async function carregar(){ const d=await apiJSONP('getClientes'); clientes=Array.isArray(d)?d:[]; mostrar(); }
 function mostrar(){
   const div=document.getElementById('listaClientes');
-  if(!clientes || clientes.length==0){ div.innerHTML='<div style="padding:20px;text-align:center">Nenhum cliente<br><button onclick="carregar()" style="margin-top:10px;padding:10px 18px;border-radius:8px;background:#C9A96E;border:none">Recarregar</button></div>'; return; }
   let l=[...clientes]; const t=document.getElementById('busca').value.toLowerCase();
   if(t)l=l.filter(c=>(c.Nome||c.Nombre||'').toLowerCase().includes(t));
   if(filtroActual==='POR VENCER')l=l.filter(c=>c.dias_restantes>0&&c.dias_restantes<=7&&(c.CortesRestantes||0)>0);
   if(filtroActual==='VENCIDO')l=l.filter(c=>c.dias_restantes<=0||(c.CortesRestantes||0)<=0);
+  if(!l.length){div.innerHTML='<div style="padding:20px;text-align:center">Nenhum cliente</div>';return}
   div.innerHTML=l.map(c=>{
     let nome=c.Nome||c.Nombre; let cortes=c.CortesRestantes||0; let total=c.CortesTotales||5; let dias=c.dias_restantes;
     let txt=cortes<=0||dias<=0?'VENCIDO':dias+'d'; let cls=cortes<=0||dias<=0?'VENCIDO':dias<=7?'PORVENCER':'ACTIVO';
-    let waLink=getTelLink(c.WhatsApp);
-    return `<div class="card-cliente"><div class="card-top"><div><div class="nombre">${nome}</div><div style="font-size:13px;color:#aaa">${c.PaqueteActivo||''} ${c.Observacoes||c.Observaciones?'- '+(c.Observacoes||c.Observaciones):''}</div></div><span class="status ${cls}">${txt}</span></div><a class="whatsapp-link" href="${waLink}" target="_blank">📱 ${c.WhatsApp||''} - Toque para abrir WhatsApp</a><div style="display:flex;justify-content:space-between;margin:10px 0"><span>Cortes:</span><span class="cortes-num">${cortes}/${total}</span></div><div style="font-size:13px;color:#aaa;margin-bottom:12px">Vence: ${c.FechaVencimientoFormateada||''}</div><div class="acoes"><button class="btn-accion btn-corte" onclick="registrarCorte('${c.ID}')">✂️ Corte</button><button class="btn-accion btn-renovar" onclick="renovar('${c.ID}','${c.PaqueteActivo||''}')">🔄 Renovar</button></div></div>`;
+    let telOnly=(c.WhatsApp||'').replace(/\D/g,''); let telLink=telOnly.length==10||telOnly.length==11?'55'+telOnly:telOnly;
+    return `<div class="card-cliente"><div class="card-top"><div><div class="nombre">${nome}</div><div style="font-size:12px;color:#aaa">${c.PaqueteActivo||''} ${c.Observacoes?'- '+c.Observacoes:''}</div></div><span class="status ${cls}">${txt}</span></div><a class="whatsapp-link" href="https://wa.me/${telLink}" target="_blank">📱 ${c.WhatsApp||''} - Toque para abrir WhatsApp</a><div style="display:flex;justify-content:space-between;margin:10px 0"><span>Cortes:</span><span class="cortes-num">${cortes}/${total}</span></div><div style="font-size:13px;color:#aaa;margin-bottom:12px">Vence: ${c.FechaVencimientoFormateada}</div><div class="acoes"><button class="btn-accion btn-corte" onclick="registrarCorte('${c.ID}')">✂️ Corte</button><button class="btn-accion btn-renovar" onclick="renovar('${c.ID}','${c.PaqueteActivo||''}')">🔄 Renovar</button></div></div>`;
   }).join('');
 }
 function cambiarFiltro(f,b){filtroActual=f;document.querySelectorAll('.filtro').forEach(x=>x.classList.remove('activo'));b.classList.add('activo');mostrar()}
 function getClienteById(id){return clientes.find(c=>c.ID===id)}
-async function registrarCorte(id){ if(!confirm('Registrar corte?'))return; await api('registrarCorte',{id}); await carregar(); let c=getClienteById(id); if(c) gerarComprovanteCorte(c); }
-async function renovar(id,paq){ if(!confirm('Renovar membresia?'))return; await api('renovarMembresia',{id,tipo:paq}); await carregar(); let c=getClienteById(id); if(c) gerarComprovanteRenovacao(c); }
+
+async function registrarCorte(id){
+  if(!confirm('Registrar corte?'))return;
+  await apiJSONP('registrarCorte',{id});
+  await carregar();
+  let c=getClienteById(id); if(c) comprovanteCorte(c);
+}
+async function renovar(id,paq){
+  if(!confirm('Renovar membresia?'))return;
+  await apiJSONP('renovarMembresia',{id,tipo:paq});
+  await carregar();
+  let c=getClienteById(id); if(c) comprovanteRenovacao(c);
+}
 async function novoCliente(){
   const d={Nombre:document.getElementById('nome').value,WhatsApp:document.getElementById('tel').value,PaqueteActivo:document.getElementById('tipo').value,Observacoes:document.getElementById('obs').value};
-  if(!d.Nombre)return alert('Falta nome'); await api('agregarCliente',d);
-  document.getElementById('modalNovo').classList.remove('activo'); document.getElementById('nome').value=''; document.getElementById('tel').value=''; document.getElementById('obs').value=''; carregar();
+  if(!d.Nombre)return alert('Falta nome'); await apiJSONP('agregarCliente',d);
+  document.getElementById('modalNovo').classList.remove('activo'); carregar();
 }
-function gerarComprovanteCorte(cliente){
+
+// AQUI ESTA LO NUEVO QUE PEDISTE - COMPROVANTE EN PORTUGUES
+function comprovanteCorte(cliente){
   const nome=cliente.Nome||cliente.Nombre; const cortes=cliente.CortesRestantes||0; const total=cliente.CortesTotales||5;
   const vence=cliente.FechaVencimientoFormateada; const hoje=new Date().toLocaleDateString('pt-BR');
   let bol=''; for(let i=0;i<total;i++) bol+= i<(total-cortes)?'●':'○';
-  let texto=cortes<=0?`*DAVID BARBER STUDIO* 👑💈\n*COMPROVANTE - ULTIMO CORTE*\n\n*Cliente:* ${nome}\n*Data:* ${hoje}\n*Cortes:* *${cortes} de ${total}* ${bol}\n*Vencimento:* ${vence}\n\n*Seus cortes acabaram!* Obrigado por fazer parte da familia DBM! 🙏\nQue tal renovar seu pacote VIP?\n\n@davidbarberstudio.br`:`*DAVID BARBER STUDIO* 👑💈\n*COMPROVANTE DE CORTE*\n\n*Cliente:* ${nome}\n*Data:* ${hoje}\n*Restam:* *${cortes} de ${total} cortes* ${bol}\n*Vencimento:* ${vence}\n\nObrigado por escolher David Barber Studio!\nAproveite seu estilo VIP! ✂️\n\n@davidbarberstudio.br`;
-  mostrarModalComprovante(cliente, texto, cortes<=0?'Ultimo Corte!':'Corte Registrado!');
+  let texto='';
+  if(cortes<=0){
+    texto=`*DAVID BARBER STUDIO* 👑💈
+*COMPROVANTE - ULTIMO CORTE*
+
+*Cliente:* ${nome}
+*Data:* ${hoje}
+*Cortes:* *${cortes} de ${total}* ${bol}
+*Vencimento:* ${vence}
+
+*Seus cortes acabaram!* 😔
+Obrigado por fazer parte da familia David Barber Studio! Foi um prazer te atender.
+Que tal renovar seu pacote VIP e continuar com estilo impecavel? 💈✂️
+
+Te esperamos em breve!
+@davidbarberstudio.br - Joinville`;
+  } else {
+    texto=`*DAVID BARBER STUDIO* 👑💈
+*COMPROVANTE DE CORTE*
+
+*Cliente:* ${nome}
+*Data:* ${hoje}
+*Restam:* *${cortes} de ${total} cortes* ${bol}
+*Vencimento:* ${vence}
+
+Obrigado por escolher David Barber Studio!
+Aproveite seu estilo VIP! ✂️
+
+@davidbarberstudio.br`;
+  }
+  abrirModalComprovante(cliente,texto, cortes<=0?'Pacote Finalizado!' : 'Corte Registrado!');
 }
-function gerarComprovanteRenovacao(cliente){
+
+function comprovanteRenovacao(cliente){
   const nome=cliente.Nome||cliente.Nombre; const total=cliente.CortesTotales||5; const vence=cliente.FechaVencimientoFormateada; const hoje=new Date().toLocaleDateString('pt-BR');
-  const texto=`*DAVID BARBER STUDIO* 👑💈\n*MEMBRESIA VIP - RENOVADA*\n\n*Cliente:* ${nome}\n*Pacote:* ${cliente.PaqueteActivo||''} - ${total} cortes\n*Inicio:* ${hoje}\n*Vencimento:* ${vence}\n\n*${total} CORTES DISPONIVEIS - APROVEITE!*\n\nObrigado por continuar escolhendo David Barber Studio!\nBem-vindo de volta a familia DBM! 👑✂️\n\n@davidbarberstudio.br`;
-  mostrarModalComprovante(cliente, texto, 'Membresia Renovada!');
+  const texto=`*DAVID BARBER STUDIO* 👑💈
+*MEMBRESIA VIP RENOVADA*
+
+*Cliente:* ${nome}
+*Pacote:* ${cliente.PaqueteActivo||''} - ${total} cortes
+*Inicio:* ${hoje}
+*Vencimento:* ${vence}
+
+*${total} CORTES DISPONIVEIS!*
+
+Obrigado por continuar com a gente! Bem-vindo de volta a familia DBM! 👑✂️
+
+@davidbarberstudio.br`;
+  abrirModalComprovante(cliente,texto,'Membresia Renovada!');
 }
-function mostrarModalComprovante(cliente, texto, titulo){
-  let tel=(cliente.WhatsApp||'').replace(/\D/g,''); if(tel.length==11||tel.length==10) tel='55'+tel;
+
+function abrirModalComprovante(cliente, texto, titulo){
+  let tel=(cliente.WhatsApp||'').replace(/\D/g,''); if(tel.length==10||tel.length==11) tel='55'+tel;
   const url='https://wa.me/'+tel+'?text='+encodeURIComponent(texto);
   document.getElementById('compTitulo').innerText=titulo;
   document.getElementById('compPreview').innerText=texto;
   document.getElementById('btnEnviar').href=url;
   document.getElementById('modalComprovante').classList.add('activo');
 }
+
 carregar();
 </script>
 </body>
