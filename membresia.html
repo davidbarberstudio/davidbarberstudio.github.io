@@ -31,7 +31,7 @@
 <div id="modalNovo" class="modal"><div class="modal-box"><h3 style="font-family:Cinzel;color:#C9A96E">Novo Cliente</h3>
 <input id="nome" class="input" placeholder="Nome">
 <input id="tel" class="input" placeholder="WhatsApp">
-<select id="tipo" class="input"><option>Mensal 5 cortes</option><option>Promo 3 cortes</option><option>Corte Avulso</option></select>
+<select id="tipo" class="input"><option>Mensal 5 cortes</option><option>Promo 3 cortes</option></select>
 <textarea id="obs" class="input" placeholder="Observações" rows="2"></textarea>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px"><button onclick="document.getElementById('modalNovo').classList.remove('activo')" class="btn-sec">Cancelar</button><button onclick="novoCliente()" style="padding:12px;border-radius:10px;background:#198754;color:#fff;border:none">Salvar</button></div></div></div>
 
@@ -42,16 +42,12 @@
 <script>
 const SCRIPT_URL="https://script.google.com/macros/s/AKfycbz8JaNuoYU7FQdswXy9p_sxROUVyoZZfMbJD4qzQBTlmATkPJB3wYltTmIiMrX4-PICOQ/exec";
 let clientes=[], filtroActual='TODOS';
-
-// NUEVA FUNCION QUE USA FETCH DIRECTO COMO TU CAPTURA
 async function api(action, data={}){
   try{
     let url = SCRIPT_URL + "?action=" + action + "&data=" + encodeURIComponent(JSON.stringify(data)) + "&_=" + Date.now();
-    // Para getClientes no necesitamos data
     if(action==='getClientes') url = SCRIPT_URL + "?action=getClientes&_=" + Date.now();
     const res = await fetch(url);
     const text = await res.text();
-    // Intenta parsear, si viene con callback lo limpia
     try{
       if(text.trim().startsWith('{') || text.trim().startsWith('[')){
         return JSON.parse(text);
@@ -60,15 +56,10 @@ async function api(action, data={}){
         if(ini>-1 && fin>-1) return JSON.parse(text.substring(ini+1, fin));
         return JSON.parse(text);
       }
-    }catch(e){ console.log("Respuesta cruda:", text.substring(0,200)); return []; }
-  }catch(e){ console.error(e); return []; }
+    }catch(e){ return []; }
+  }catch(e){ return []; }
 }
-
-async function carregar(){
-  const d=await api('getClientes');
-  clientes=Array.isArray(d)?d:(d.clientes||[]);
-  mostrar();
-}
+async function carregar(){ const d=await api('getClientes'); clientes=Array.isArray(d)?d:(d.clientes||[]); mostrar(); }
 function mostrar(){
   const div=document.getElementById('listaClientes');
   let l=[...clientes]; const t=document.getElementById('busca').value.toLowerCase();
@@ -80,7 +71,7 @@ function mostrar(){
     let nome=c.Nome||c.Nombre; let cortes=c.CortesRestantes||0; let total=c.CortesTotales||5; let dias=c.dias_restantes;
     let txt=cortes<=0||dias<=0?'VENCIDO':dias+'d'; let cls=cortes<=0||dias<=0?'VENCIDO':dias<=7?'PORVENCER':'ACTIVO';
     let telOnly=(c.WhatsApp||'').toString().replace(/\D/g,''); let telLink=telOnly.length==10||telOnly.length==11?'55'+telOnly:telOnly;
-    return `<div class="card-cliente"><div class="card-top"><div><div class="nombre">${nome}</div><div style="font-size:12px;color:#aaa">${c.PaqueteActivo||''} ${c.Observacoes?'- '+c.Observacoes:''}</div></div><span class="status ${cls}">${txt}</span></div><a class="whatsapp-link" href="https://wa.me/${telLink}" target="_blank">📱 ${c.WhatsApp} - Toque para abrir WhatsApp</a><div style="display:flex;justify-content:space-between;margin:10px 0"><span>Cortes:</span><span class="cortes-num">${cortes}/${total}</span></div><div style="font-size:13px;color:#aaa;margin-bottom:12px">Vence: ${c.FechaVencimientoFormateada}</div><div class="acoes"><button class="btn-accion btn-corte" onclick="registrarCorte('${c.ID}')">✂️ Corte</button><button class="btn-accion btn-renovar" onclick="renovar('${c.ID}','${c.PaqueteActivo||''}')">🔄 Renovar</button></div></div>`;
+    return `<div class="card-cliente"><div class="card-top"><div><div class="nombre">${nome}</div><div style="font-size:12px;color:#aaa">${c.PaqueteActivo||''} ${c.Observacoes?'- '+c.Observacoes:''}</div></div><span class="status ${cls}">${txt}</span></div><a class="whatsapp-link" href="https://wa.me/${telLink}" target="_blank">📱 ${c.WhatsApp}</a><div style="display:flex;justify-content:space-between;margin:10px 0"><span>Cortes:</span><span class="cortes-num">${cortes}/${total}</span></div><div style="font-size:13px;color:#aaa;margin-bottom:12px">Vence: ${c.FechaVencimientoFormateada}</div><div class="acoes"><button class="btn-accion btn-corte" onclick="registrarCorte('${c.ID}')">✂️ Corte</button><button class="btn-accion btn-renovar" onclick="renovar('${c.ID}','${c.PaqueteActivo||''}')">🔄 Renovar</button></div></div>`;
   }).join('');
 }
 function cambiarFiltro(f,b){filtroActual=f;document.querySelectorAll('.filtro').forEach(x=>x.classList.remove('activo'));b.classList.add('activo');mostrar()}
