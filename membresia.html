@@ -23,9 +23,9 @@
 </head>
 <body>
 <div class="header"><img src="https://i.ibb.co/5pWGBXK/1781697467655.png" class="logo"><div style="font-family:Cinzel;color:#C9A96E;margin-top:6px">DAVID BARBER STUDIO</div></div>
-<div class="buscador"><input id="busca" placeholder="Buscar cliente" oninput="mostrar()"><button style="padding:14px 18px;border-radius:12px;background:#C9A96E;border:none" onclick="mostrar()">🔍</button></div>
+<div class="buscador"><input id="busca" placeholder="Buscar cliente" oninput="mostrar()"><button style="padding:14px 18px;border-radius:12px;background:#C9A96E;border:none" onclick="carregar()">🔄</button></div>
 <div class="filtros"><button class="filtro activo" onclick="cambiarFiltro('TODOS',this)">Todos</button><button class="filtro" onclick="cambiarFiltro('POR VENCER',this)">Por Vencer</button><button class="filtro" onclick="cambiarFiltro('VENCIDO',this)">Vencidos</button></div>
-<div id="listaClientes" style="padding:20px;text-align:center">Carregando clientes... aguarde</div>
+<div id="listaClientes" style="padding:20px;text-align:center">Carregando clientes... se demorar toque em 🔄</div>
 <button class="fab" onclick="document.getElementById('modalNovo').classList.add('activo')">+</button>
 
 <div id="modalNovo" class="modal"><div class="modal-box"><h3 style="font-family:Cinzel;color:#C9A96E">Novo Cliente</h3>
@@ -43,82 +43,75 @@
 const SCRIPT_URL="https://script.google.com/macros/s/AKfycbz8JaNuoYU7FQdswXy9p_sxROUVyoZZfMbJD4qzQBTlmATkPJB3wYltTmIiMrX4-PICOQ/exec";
 let clientes=[], filtroActual='TODOS';
 
-function apiJSONPBlindado(action,data={}){
+function api(action,data={}){
   return new Promise((resolve)=>{
-    let terminado=false;
-    const callbackName='cb_'+Date.now()+'_'+Math.floor(Math.random()*9999);
-    const urlNormal=SCRIPT_URL+"?action="+action+"&data="+encodeURIComponent(JSON.stringify(data))+"&callback="+callbackName+"&v=23&_="+Date.now();
-    const urlProxy="https://api.allorigins.win/get?url="+encodeURIComponent(urlNormal);
-
-    function finalizar(d){
-      if(terminado) return;
-      terminado=true;
-      try{ delete window[callbackName]; }catch(e){}
+    const cb='cb_'+Date.now()+'_'+Math.floor(Math.random()*99999);
+    let done=false;
+    const finish=(d)=>{
+      if(done) return; done=true;
+      try{ delete window[cb]; }catch(e){}
+      if(script && script.parentNode) script.parentNode.removeChild(script);
       resolve(d);
-    }
-
-    window[callbackName]=function(d){
-      finalizar(d);
-      if(s && s.parentNode) s.parentNode.removeChild(s);
     };
-
-    // Intento 1: JSONP directo (funciona con WiFi aunque tengas avión)
-    const s=document.createElement('script');
-    s.src=urlNormal;
-    s.onerror=()=>{
-      // Intento 2: por proxy que burla el escudo de Brave
-      fetch(urlProxy).then(r=>r.json()).then(j=>{
-        try{
-          const texto=j.contents;
-          // extrae el JSON dentro del callback
-          const ini=texto.indexOf('('); const fin=texto.lastIndexOf(')');
-          if(ini>-1 && fin>-1){
-            const jsonStr=texto.substring(ini+1,fin);
-            const obj=JSON.parse(jsonStr);
-            finalizar(obj);
-          } else finalizar([]);
-        }catch(e){ finalizar([]); }
-      }).catch(()=>finalizar([]));
-    };
-    document.body.appendChild(s);
-
-    // Si nada responde en 12 segundos, no se queda cargando para siempre
-    setTimeout(()=>{
-      if(!terminado){
-        document.getElementById('listaClientes').innerHTML='<div style="text-align:center;padding:20px"><div style="color:#C9A96E;margin-bottom:12px">Conexão lenta...</div><button onclick="carregar()" style="padding:12px 20px;border-radius:10px;background:#C9A96E;border:none;font-weight:700">Tentar Novamente</button></div>';
+    window[cb]=(d)=>{
+      // Guarda cache siempre
+      if(action==='getClientes' && Array.isArray(d) && d.length>0){
+        localStorage.setItem('dbm_clientes_cache', JSON.stringify(d));
+        localStorage.setItem('dbm_cache_time', Date.now());
       }
-    },12000);
+      finish(d);
+    };
+    const script=document.createElement('script');
+    script.src=SCRIPT_URL+"?action="+action+"&data="+encodeURIComponent(JSON.stringify(data))+"&callback="+cb+"&v=24&_="+Date.now();
+    script.onerror=()=>finish([]);
+    document.body.appendChild(script);
+    setTimeout(()=>finish([]), 7000);
   });
 }
 
 async function carregar(){
-  document.getElementById('listaClientes').innerHTML='<div style="padding:20px;text-align:center">Carregando clientes...</div>';
-  const d=await apiJSONPBlindado('getClientes');
-  clientes=Array.isArray(d)?d:(d.clientes||d.data||[]);
-  mostrar();
+  // 1. Muestra cache inmediato para que no se quede cargando NUNCA
+  const cache=localStorage.getItem('dbm_clientes_cache');
+  if(cache){
+    try{
+      clientes=JSON.parse(cache);
+      mostrar();
+      document.getElementById('listaClientes').insertAdjacentHTML('afterbegin','<div style="text-align:center;font-size:11px;color:#C9A96E;margin-bottom:8px">Mostrando cache offline - atualizando...</div>');
+    }catch(e){}
+  }
+
+  // 2. Intenta actualizar del servidor
+  const d=await api('getClientes');
+  if(Array.isArray(d) && d.length>0){
+    clientes=d;
+    mostrar();
+  } else if(!cache){
+    document.getElementById('listaClientes').innerHTML='<div style="padding:30px;text-align:center">Sem conexão com Google Sheet<br><span style="font-size:12px;color:#aaa">Verifica tua internet e toca em Recarregar</span><br><br><button onclick="carregar()" style="padding:14px 22px;border-radius:10px;background:#C9A96E;border:none;font-weight:800">🔄 Tentar Novamente</button></div>';
+  }
 }
+
 function getTelLink(tel){let n=(tel||'').replace(/\D/g,''); if(n.length==11||n.length==10) n='55'+n; return 'https://wa.me/'+n;}
 function mostrar(){
   const div=document.getElementById('listaClientes');
+  if(!clientes || clientes.length==0){ div.innerHTML='<div style="padding:20px;text-align:center">Nenhum cliente<br><button onclick="carregar()" style="margin-top:10px;padding:10px 18px;border-radius:8px;background:#C9A96E;border:none">Recarregar</button></div>'; return; }
   let l=[...clientes]; const t=document.getElementById('busca').value.toLowerCase();
   if(t)l=l.filter(c=>(c.Nome||c.Nombre||'').toLowerCase().includes(t));
   if(filtroActual==='POR VENCER')l=l.filter(c=>c.dias_restantes>0&&c.dias_restantes<=7&&(c.CortesRestantes||0)>0);
   if(filtroActual==='VENCIDO')l=l.filter(c=>c.dias_restantes<=0||(c.CortesRestantes||0)<=0);
-  if(!l.length){div.innerHTML='<div style="padding:20px;text-align:center">Nenhum cliente encontrado<br><button onclick="carregar()" style="margin-top:12px;padding:10px 18px;border-radius:8px;background:#C9A96E;border:none">Recarregar</button></div>';return}
   div.innerHTML=l.map(c=>{
     let nome=c.Nome||c.Nombre; let cortes=c.CortesRestantes||0; let total=c.CortesTotales||5; let dias=c.dias_restantes;
     let txt=cortes<=0||dias<=0?'VENCIDO':dias+'d'; let cls=cortes<=0||dias<=0?'VENCIDO':dias<=7?'PORVENCER':'ACTIVO';
     let waLink=getTelLink(c.WhatsApp);
-    return `<div class="card-cliente"><div class="card-top"><div><div class="nombre">${nome}</div><div style="font-size:13px;color:#aaa">${c.PaqueteActivo||''} ${c.Observacoes||c.Observaciones?'- '+(c.Observacoes||c.Observaciones):''}</div></div><span class="status ${cls}">${txt}</span></div><a class="whatsapp-link" href="${waLink}" target="_blank">📱 ${c.WhatsApp||''} - Toque para abrir WhatsApp</a><div style="display:flex;justify-content:space-between;margin:10px 0"><span>Cortes:</span><span class="cortes-num">${cortes}/${total}</span></div><div style="font-size:13px;color:#aaa;margin-bottom:12px">Vence: ${c.FechaVencimientoFormateada}</div><div class="acoes"><button class="btn-accion btn-corte" onclick="registrarCorte('${c.ID}')">✂️ Corte</button><button class="btn-accion btn-renovar" onclick="renovar('${c.ID}','${c.PaqueteActivo||''}')">🔄 Renovar</button></div></div>`;
+    return `<div class="card-cliente"><div class="card-top"><div><div class="nombre">${nome}</div><div style="font-size:13px;color:#aaa">${c.PaqueteActivo||''} ${c.Observacoes||c.Observaciones?'- '+(c.Observacoes||c.Observaciones):''}</div></div><span class="status ${cls}">${txt}</span></div><a class="whatsapp-link" href="${waLink}" target="_blank">📱 ${c.WhatsApp||''} - Toque para abrir WhatsApp</a><div style="display:flex;justify-content:space-between;margin:10px 0"><span>Cortes:</span><span class="cortes-num">${cortes}/${total}</span></div><div style="font-size:13px;color:#aaa;margin-bottom:12px">Vence: ${c.FechaVencimientoFormateada||''}</div><div class="acoes"><button class="btn-accion btn-corte" onclick="registrarCorte('${c.ID}')">✂️ Corte</button><button class="btn-accion btn-renovar" onclick="renovar('${c.ID}','${c.PaqueteActivo||''}')">🔄 Renovar</button></div></div>`;
   }).join('');
 }
 function cambiarFiltro(f,b){filtroActual=f;document.querySelectorAll('.filtro').forEach(x=>x.classList.remove('activo'));b.classList.add('activo');mostrar()}
 function getClienteById(id){return clientes.find(c=>c.ID===id)}
-async function registrarCorte(id){ if(!confirm('Registrar corte?'))return; await apiJSONPBlindado('registrarCorte',{id}); await carregar(); let c=getClienteById(id); if(c) gerarComprovanteCorte(c); }
-async function renovar(id,paq){ if(!confirm('Renovar membresia?'))return; await apiJSONPBlindado('renovarMembresia',{id,tipo:paq}); await carregar(); let c=getClienteById(id); if(c) gerarComprovanteRenovacao(c); }
+async function registrarCorte(id){ if(!confirm('Registrar corte?'))return; await api('registrarCorte',{id}); await carregar(); let c=getClienteById(id); if(c) gerarComprovanteCorte(c); }
+async function renovar(id,paq){ if(!confirm('Renovar membresia?'))return; await api('renovarMembresia',{id,tipo:paq}); await carregar(); let c=getClienteById(id); if(c) gerarComprovanteRenovacao(c); }
 async function novoCliente(){
   const d={Nombre:document.getElementById('nome').value,WhatsApp:document.getElementById('tel').value,PaqueteActivo:document.getElementById('tipo').value,Observacoes:document.getElementById('obs').value};
-  if(!d.Nombre)return alert('Falta nome'); await apiJSONPBlindado('agregarCliente',d);
+  if(!d.Nombre)return alert('Falta nome'); await api('agregarCliente',d);
   document.getElementById('modalNovo').classList.remove('activo'); document.getElementById('nome').value=''; document.getElementById('tel').value=''; document.getElementById('obs').value=''; carregar();
 }
 function gerarComprovanteCorte(cliente){
