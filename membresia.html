@@ -3,69 +3,129 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DB - VIP</title>
-<link rel="icon" type="image/png" href="icono.png">
-<link rel="apple-touch-icon" href="icono.png">
+<title>DBM - VIP</title>
+<link rel="icon" type="image/png" href="dbm-icon-192.png?v=16">
+<link rel="apple-touch-icon" href="dbm-icon-192.png?v=16">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}body{background:#000;color:#fff;font-family:Montserrat,sans-serif;padding-bottom:90px}
 .header{text-align:center;padding:16px 0;border-bottom:2px solid #C9A96E}.logo{width:110px}
-.buscador{padding:12px;display:flex;gap:8px}.buscador input{flex:1;padding:14px;border-radius:12px;border:2px solid #C9A96E;background:#111;color:#fff;font-size:16px}
-.btn-buscar{padding:14px 18px;border-radius:12px;background:#C9A96E;border:none;font-weight:700}
+.buscador{padding:12px;display:flex;gap:8px}.buscador input{flex:1;padding:14px;border-radius:12px;border:2px solid #C9A96E;background:#111;color:#fff}
 .filtros{padding:0 12px 12px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.filtro{padding:12px;border-radius:20px;border:2px solid #333;background:#111;color:#888;font-weight:700;font-size:12px}.filtro.activo{background:#C9A96E;color:#000;border-color:#C9A96E}
-#listaClientes{padding:12px}
-.card-cliente{width:100%;background:#0f0f0f;border:2px solid #C9A96E;border-radius:18px;padding:18px 16px;margin-bottom:14px}
-.card-top{display:flex;justify-content:space-between;align-items:flex-start}
-.nombre{font-family:Cinzel;font-size:19px;color:#C9A96E;font-weight:700}
-.status{padding:8px 14px;border-radius:12px;font-size:12px;font-weight:800;min-width:70px;text-align:center}
-.ACTIVO{background:#198754;color:#fff}.PORVENCER{background:#FFC107;color:#000}.VENCIDO{background:#dc3545;color:#fff}
-.paquete{font-size:13px;color:#aaa;margin:4px 0}.whatsapp{color:#00e676;font-weight:700;margin-bottom:8px;display:block;font-size:16px;text-decoration:none}
-.dato{display:flex;justify-content:space-between;align-items:center;font-weight:600;margin:10px 0}.cortes-label{font-size:14px;color:#fff;font-weight:700}.cortes-num{font-size:36px;color:#C9A96E;font-weight:800}
-.vencimiento{font-size:13px;color:#aaa;margin-bottom:14px}
-.acciones{display:grid;grid-template-columns:1fr 1fr;gap:12px}.btn-accion{padding:15px;border-radius:12px;border:none;font-weight:700;font-size:15px}.btn-corte{background:#198754;color:#fff}.btn-renovar{background:#C9A96E;color:#000}
-.fab{position:fixed;bottom:22px;right:22px;width:62px;height:62px;border-radius:50%;background:#C9A96E;color:#000;border:3px solid #000;font-size:32px;z-index:10}
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:99;padding:14px}.modal.activo{display:flex;align-items:center;justify-content:center}
+#listaClientes{padding:12px}.card-cliente{background:#0f0f0f;border:2px solid #C9A96E;border-radius:18px;padding:18px 16px;margin-bottom:14px}
+.card-top{display:flex;justify-content:space-between}.nombre{font-family:Cinzel;font-size:19px;color:#C9A96E}.status{padding:8px 14px;border-radius:12px;font-size:12px;font-weight:800;min-width:70px;text-align:center}.ACTIVO{background:#198754;color:#fff}.PORVENCER{background:#FFC107;color:#000}.VENCIDO{background:#dc3545;color:#fff}
+.whatsapp{color:#00e676;font-weight:700;margin:6px 0;display:block}.cortes-num{font-size:36px;color:#C9A96E;font-weight:800}.acoes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}.btn-accion{padding:14px;border-radius:12px;border:none;font-weight:700;font-size:12px}.btn-corte{background:#198754;color:#fff}.btn-renovar{background:#C9A96E;color:#000}.btn-pdf{background:#222;color:#C9A96E;border:1px solid #C9A96E}
+.fab{position:fixed;bottom:22px;right:22px;width:62px;height:62px;border-radius:50%;background:#C9A96E;color:#000;font-size:32px}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:99;padding:14px;align-items:center;justify-content:center}.modal.activo{display:flex}.modal-box{background:#111;border:2px solid #C9A96E;border-radius:18px;padding:22px;width:100%;max-width:400px;text-align:center}.btn-whats{background:#25D366;color:#fff;border:none;padding:16px;border-radius:12px;font-weight:800;width:100%;margin-top:12px}.btn-sec{background:#333;color:#fff;border:none;padding:12px;border-radius:12px;width:100%;margin-top:8px}
 </style>
 </head>
 <body>
-<div class="header"><img src="https://i.ibb.co/5pWGBXK/1781697467655.png" class="logo"><div style="font-family:Cinzel;color:#C9A96E;margin-top:6px">DBM<br><span style="font-family:Montserrat;font-size:10px;letter-spacing:3px;color:#888">MEMBRESÍA VIP</span></div></div>
-<div class="buscador"><input id="busca" placeholder="Buscar cliente" oninput="filtrar()"><button class="btn-buscar" onclick="filtrar()">🔍</button></div>
+<div class="header"><img src="https://i.ibb.co/5pWGBXK/1781697467655.png" id="logoTop" class="logo"><div style="font-family:Cinzel;color:#C9A96E;margin-top:6px">DAVID BARBER STUDIO</div></div>
+<div class="buscador"><input id="busca" placeholder="Buscar cliente" oninput="mostrar()"><button class="btn-buscar" style="padding:14px 18px;border-radius:12px;background:#C9A96E;border:none" onclick="mostrar()">🔍</button></div>
 <div class="filtros"><button class="filtro activo" onclick="cambiarFiltro('TODOS',this)">Todos</button><button class="filtro" onclick="cambiarFiltro('POR VENCER',this)">Por Vencer</button><button class="filtro" onclick="cambiarFiltro('VENCIDO',this)">Vencidos</button></div>
-<div id="listaClientes">Cargando...</div>
-<button class="fab" onclick="abrirModal()">+</button>
-<div id="modalNuevo" class="modal"><div style="background:#0a0a0a;border:2px solid #C9A96E;border-radius:16px;padding:20px;width:100%;max-width:400px"><h3 style="font-family:Cinzel;color:#C9A96E;text-align:center">Nuevo Cliente</h3><input id="nome" placeholder="Nombre" style="width:100%;padding:14px;margin:8px 0;border-radius:10px;border:2px solid #C9A96E;background:#000;color:#fff"><input id="tel" placeholder="WhatsApp" style="width:100%;padding:14px;margin:8px 0;border-radius:10px;border:2px solid #C9A96E;background:#000;color:#fff"><select id="tipo" style="width:100%;padding:14px;margin:8px 0;border-radius:10px;border:2px solid #C9A96E;background:#000;color:#fff"><option>Mensal 5 cortes</option><option>Promo 3 cortes</option></select><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px"><button onclick="cerrarModal()" style="padding:12px;border-radius:10px;background:#333;color:#fff;border:none">Cancelar</button><button onclick="nuevoCliente()" style="padding:12px;border-radius:10px;background:#198754;color:#fff;border:none;font-weight:700">Guardar</button></div></div></div>
+<div id="listaClientes">Carregando...</div>
+<button class="fab" onclick="document.getElementById('modalNovo').classList.add('activo')">+</button>
+
+<div id="modalNovo" class="modal"><div class="modal-box"><h3 style="font-family:Cinzel;color:#C9A96E">Novo Cliente</h3><input id="nome" placeholder="Nome" style="width:100%;padding:14px;margin:8px 0;border-radius:10px;border:2px solid #C9A96E;background:#000;color:#fff"><input id="tel" placeholder="WhatsApp" style="width:100%;padding:14px;margin:8px 0;border-radius:10px;border:2px solid #C9A96E;background:#000;color:#fff"><select id="tipo" style="width:100%;padding:14px;border-radius:10px;border:2px solid #C9A96E;background:#000;color:#fff"><option>Mensal 5 cortes</option><option>Promo 3 cortes</option></select><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px"><button onclick="document.getElementById('modalNovo').classList.remove('activo')" style="padding:12px;border-radius:10px;background:#333;color:#fff;border:none">Cancelar</button><button onclick="novoCliente()" style="padding:12px;border-radius:10px;background:#198754;color:#fff;border:none">Salvar</button></div></div></div>
+
+<div id="modalPDF" class="modal"><div class="modal-box"><h3 id="pdfTitulo" style="font-family:Cinzel;color:#C9A96E">Comprovante Gerado!</h3><p id="pdfMsg" style="color:#ccc;margin:12px 0;font-size:14px"></p><p id="pdfInfo" style="color:#C9A96E;font-size:13px"></p><button class="btn-whats" onclick="enviarWhatsApp()">📱 Enviar no WhatsApp do Cliente</button><button class="btn-sec" onclick="baixarPDF()">⬇️ Baixar PDF</button><button class="btn-sec" onclick="document.getElementById('modalPDF').classList.remove('activo')">Fechar</button></div></div>
+
 <script>
 const SCRIPT_URL="https://script.google.com/macros/s/AKfycbz8JaNuoYU7FQdswXy9p_sxROUVyoZZfMbJD4qzQBTlmATkPJB3wYltTmIiMrX4-PICOQ/exec";
-let clientes=[],filtroActual='TODOS';
-function apiJSONP(a,d={}){return new Promise((res,rej)=>{const cb='cb_'+Date.now()+Math.floor(Math.random()*1000);window[cb]=(x)=>{res(x);delete window[cb];s.remove()};const s=document.createElement('script');s.src=`${SCRIPT_URL}?action=${a}&data=${encodeURIComponent(JSON.stringify(d))}&callback=${cb}&v=13&_=${Date.now()}`;s.onerror=()=>rej();document.body.appendChild(s)})}
-async function cargar(){try{const d=await apiJSONP('getClientes');clientes=Array.isArray(d)?d:[];mostrar()}catch(e){}}
-function limpiarNumero(n){ return (n||'').toString().replace(/\D/g,''); }
+let clientes=[], filtroActual='TODOS', ultimoPDF=null, ultimoCliente=null, LOGO_BASE64="";
+
+async function carregarLogo(){
+  try{
+    const url="https://i.ibb.co/5pWGBXK/1781697467655.png";
+    const res=await fetch(url);
+    const blob=await res.blob();
+    const reader=new FileReader();
+    reader.onloadend=()=>{ LOGO_BASE64=reader.result; };
+    reader.readAsDataURL(blob);
+  }catch(e){ LOGO_BASE64=""; }
+}
+carregarLogo();
+
+function apiJSONP(a,d={}){return new Promise((res,rej)=>{const cb='cb_'+Date.now();window[cb]=(x)=>{res(x);delete window[cb];s.remove()};const s=document.createElement('script');s.src=SCRIPT_URL+"?action="+a+"&data="+encodeURIComponent(JSON.stringify(d))+"&callback="+cb+"&v=16&_="+Date.now();document.body.appendChild(s)})}
+async function carregar(){const d=await apiJSONP('getClientes');clientes=Array.isArray(d)?d:[];mostrar()}
 function mostrar(){
   const div=document.getElementById('listaClientes');
-  let l=[...clientes];
-  const t=busca.value.toLowerCase();
-  if(t)l=l.filter(c=>(c.Nombre||'').toLowerCase().includes(t));
-  if(filtroActual==='POR VENCER')l=l.filter(c=>c.dias_restantes>0 && c.dias_restantes<=7 && (c.CortesRestantes||0)>0);
-  if(filtroActual==='VENCIDO')l=l.filter(c=>c.dias_restantes<=0 || (c.CortesRestantes||0)<=0);
-  if(!l.length){div.innerHTML='<div style="padding:20px;text-align:center">No hay clientes</div>';return}
+  let l=[...clientes]; const t=document.getElementById('busca').value.toLowerCase();
+  if(t)l=l.filter(c=>(c.Nome||c.Nombre||'').toLowerCase().includes(t));
+  if(filtroActual==='POR VENCER')l=l.filter(c=>c.dias_restantes>0&&c.dias_restantes<=7&&(c.CortesRestantes||0)>0);
+  if(filtroActual==='VENCIDO')l=l.filter(c=>c.dias_restantes<=0||(c.CortesRestantes||0)<=0);
+  if(!l.length){div.innerHTML='<div style="padding:20px;text-align:center">Nenhum cliente</div>';return}
   div.innerHTML=l.map(c=>{
-    let dias=parseInt(c.dias_restantes);
-    let cortes=parseInt(c.CortesRestantes||0);
-    let txt, cls;
-    // LOGICA CORREGIDA COMO PEDISTE
-    if(cortes<=0 || dias<=0){ txt='VENCIDO'; cls='VENCIDO'; }
-    else if(dias<=7){ txt=dias+'d'; cls='PORVENCER'; }
-    else { txt=dias+'d'; cls='ACTIVO'; }
-    let numLimpio=limpiarNumero(c.WhatsApp);
-    return `<div class="card-cliente"><div class="card-top"><div><div class="nombre">${c.Nombre}</div><div class="paquete">${c.PaqueteActivo||''}</div></div><span class="status ${cls}">${txt}</span></div><a class="whatsapp" href="https://wa.me/55${numLimpio}" target="_blank">📱 ${c.WhatsApp}</a><div class="dato"><span class="cortes-label">Cortes restantes:</span><span class="cortes-num">${cortes}/${c.CortesTotales||5}</span></div><div class="vencimiento">Vence: ${c.FechaVencimientoFormateada}</div><div class="acciones"><button class="btn-accion btn-corte" onclick="registrarCorte('${c.ID}')">✂️ Corte</button><button class="btn-accion btn-renovar" onclick="renovar('${c.ID}','${c.PaqueteActivo}')">🔄 Renovar</button></div></div>`
-  }).join('')
+    let nome=c.Nome||c.Nombre; let cortes=c.CortesRestantes||0; let total=c.CortesTotales||5; let dias=c.dias_restantes;
+    let txt=cortes<=0||dias<=0?'VENCIDO':dias+'d'; let cls=cortes<=0||dias<=0?'VENCIDO':dias<=7?'PORVENCER':'ACTIVO';
+    return `<div class="card-cliente"><div class="card-top"><div><div class="nombre">${nome}</div><div style="font-size:13px;color:#aaa">${c.PaqueteActivo||''}</div></div><span class="status ${cls}">${txt}</span></div><div class="whatsapp">📱 ${c.WhatsApp||''}</div><div style="display:flex;justify-content:space-between;margin:10px 0"><span style="color:#fff">Cortes:</span><span class="cortes-num">${cortes}/${total}</span></div><div style="font-size:13px;color:#aaa;margin-bottom:12px">Vence: ${c.FechaVencimientoFormateada}</div><div class="acoes"><button class="btn-accion btn-corte" onclick="registrarCorte('${c.ID}')">✂️ Corte</button><button class="btn-accion btn-renovar" onclick="renovar('${c.ID}','${c.PaqueteActivo||''}')">🔄 Renovar</button><button class="btn-accion btn-pdf" onclick="gerarPDFCorteManual('${c.ID}')">🧾 PDF</button></div></div>`;
+  }).join('');
 }
-function filtrar(){mostrar()}function cambiarFiltro(f,b){filtroActual=f;document.querySelectorAll('.filtro').forEach(x=>x.classList.remove('activo'));b.classList.add('activo');mostrar()}
-async function registrarCorte(id){if(!confirm('¿Registrar corte?'))return;let r=await apiJSONP('registrarCorte',{id});if(r.error) alert(r.error); cargar()}
-async function renovar(id,paq){if(!confirm('¿Renovar?'))return;await apiJSONP('renovarMembresia',{id,tipo:paq});cargar()}
-function abrirModal(){modalNuevo.classList.add('activo')}function cerrarModal(){modalNuevo.classList.remove('activo')}
-async function nuevoCliente(){const d={Nombre:nome.value,WhatsApp:tel.value,PaqueteActivo:tipo.value};if(!d.Nombre)return alert('Falta nombre');await apiJSONP('agregarCliente',d);cerrarModal();cargar()}
-cargar();
+function cambiarFiltro(f,b){filtroActual=f;document.querySelectorAll('.filtro').forEach(x=>x.classList.remove('activo'));b.classList.add('activo');mostrar()}
+function getClienteById(id){return clientes.find(c=>c.ID===id)}
+async function registrarCorte(id){
+  if(!confirm('Registrar corte?'))return;
+  let r=await apiJSONP('registrarCorte',{id}); await carregar();
+  let c=getClienteById(id); if(c) gerarPDFCorte(c,true);
+}
+async function renovar(id,paq){
+  if(!confirm('Renovar?'))return;
+  let r=await apiJSONP('renovarMembresia',{id,tipo:paq}); await carregar();
+  let c=getClienteById(id); if(c) gerarPDFRenovacao(c,true);
+}
+async function novoCliente(){
+  const d={Nombre:document.getElementById('nome').value,WhatsApp:document.getElementById('tel').value,PaqueteActivo:document.getElementById('tipo').value};
+  if(!d.Nombre)return alert('Falta nome'); await apiJSONP('agregarCliente',d);
+  document.getElementById('modalNovo').classList.remove('activo'); carregar();
+}
+function gerarPDFCorteManual(id){let c=getClienteById(id); if(c) gerarPDFCorte(c,true);}
+
+function gerarPDFCorte(cliente, modal){
+  const {jsPDF}=window.jspdf; const doc=new jsPDF();
+  doc.setFillColor(0,0,0); doc.rect(0,0,210,297,'F'); doc.setDrawColor(201,169,110); doc.setLineWidth(1.5); doc.rect(5,5,200,287);
+  if(LOGO_BASE64){try{doc.addImage(LOGO_BASE64,'PNG',65,10,80,80);}catch(e){}}
+  doc.setFont('helvetica','bold'); doc.setTextColor(201,169,110); doc.setFontSize(18); doc.text('DAVID BARBER STUDIO',105,100,{align:'center'});
+  doc.setFontSize(8); doc.setTextColor(150,150,150); doc.text('ESTILO, PRECISAO E CONFIANCA.',105,105,{align:'center'});
+  doc.setFontSize(13); doc.setTextColor(255,255,255); doc.text('COMPROVANTE DE CORTE',105,115,{align:'center'});
+  const nome=cliente.Nome||cliente.Nombre; const cortes=cliente.CortesRestantes||0; const total=cliente.CortesTotales||5;
+  const vence=cliente.FechaVencimientoFormateada; const hoje=new Date().toLocaleDateString('pt-BR');
+  doc.setFontSize(10); doc.setTextColor(200,200,200); let y=125;
+  doc.text('Cliente: '+nome,15,y); y+=6; doc.text('WhatsApp: '+(cliente.WhatsApp||''),15,y); y+=6; doc.text('Data: '+hoje+' | Vencimento: '+vence,15,y); y+=12;
+  doc.setFontSize(20); doc.setTextColor(201,169,110); doc.text('Restam: '+cortes+' de '+total+' cortes',105,y,{align:'center'}); y+=10;
+  let bol=''; for(let i=0;i<total;i++) bol+= i<(total-cortes)?'● ':'○ '; doc.setFontSize(16); doc.text(bol.trim(),105,y,{align:'center'}); y+=14;
+  if(cortes<=0){ doc.setFontSize(11); doc.setTextColor(255,80,80); doc.text('Seus cortes acabaram! Obrigado por fazer parte',105,y,{align:'center'}); y+=6; doc.text('da familia DBM. Renove seu pacote VIP?',105,y,{align:'center'}); y+=6; doc.text('Continue com estilo impecavel! 👑',105,y,{align:'center'}); }
+  else if(cortes==1){ doc.setFontSize(11); doc.setTextColor(255,193,7); doc.text('Resta apenas 1 corte! Garanta sua renovacao',105,y,{align:'center'}); }
+  else{ doc.setFontSize(10); doc.setTextColor(180,180,180); doc.text('Obrigado por escolher David Barber Studio.',105,y,{align:'center'}); }
+  const blob=doc.output('blob'); ultimoPDF={blob,nome:'Corte-'+nome+'-'+hoje+'.pdf'}; ultimoCliente=cliente;
+  if(modal){ document.getElementById('pdfTitulo').innerText=cortes<=0?'Ultimo Corte!':'Corte Registrado!'; document.getElementById('pdfMsg').innerText=cortes<=0?'Seus cortes acabaram! Convide a renovar.':'Restam '+cortes+' de '+total+' cortes.'; document.getElementById('pdfInfo').innerText=nome+' - '+cortes+'/'+total; document.getElementById('modalPDF').classList.add('activo'); } else doc.save(ultimoPDF.nome);
+}
+function gerarPDFRenovacao(cliente, modal){
+  const {jsPDF}=window.jspdf; const doc=new jsPDF();
+  doc.setFillColor(0,0,0); doc.rect(0,0,210,297,'F'); doc.setDrawColor(201,169,110); doc.setLineWidth(1.5); doc.rect(5,5,200,287);
+  if(LOGO_BASE64){try{doc.addImage(LOGO_BASE64,'PNG',65,10,80,80);}catch(e){}}
+  doc.setFont('helvetica','bold'); doc.setTextColor(201,169,110); doc.setFontSize(18); doc.text('DAVID BARBER STUDIO',105,100,{align:'center'});
+  doc.setFontSize(14); doc.setTextColor(255,255,255); doc.text('MEMBRESIA VIP - RENOVADA',105,115,{align:'center'});
+  const nome=cliente.Nome||cliente.Nombre; const total=cliente.CortesTotales||5; const vence=cliente.FechaVencimientoFormateada; const hoje=new Date().toLocaleDateString('pt-BR');
+  doc.setFontSize(10); doc.setTextColor(200,200,200); let y=128;
+  doc.text('Cliente: '+nome,15,y); y+=6; doc.text('Pacote: '+(cliente.PaqueteActivo||'')+' - '+total+' cortes',15,y); y+=6; doc.text('Inicio: '+hoje+' | Vencimento: '+vence,15,y); y+=14;
+  doc.setFillColor(201,169,110); doc.rect(15,y,180,10,'F'); doc.setTextColor(0,0,0); doc.setFontSize(11); doc.text(' '+total+' CORTES DISPONIVEIS',15,y+7); y+=18;
+  doc.setTextColor(180,180,180); doc.setFontSize(10); doc.text('Obrigado por continuar escolhendo David Barber Studio.',105,y,{align:'center'}); y+=6; doc.text('Bem-vindo de volta a familia DBM! 👑✂️',105,y,{align:'center'});
+  const blob=doc.output('blob'); ultimoPDF={blob,nome:'Renovacao-'+nome+'-'+hoje+'.pdf'}; ultimoCliente=cliente;
+  if(modal){ document.getElementById('pdfTitulo').innerText='Membresia Renovada!'; document.getElementById('pdfMsg').innerText='Renovacao com sucesso!'; document.getElementById('pdfInfo').innerText=nome+' - '+total+' cortes - Vence '+vence; document.getElementById('modalPDF').classList.add('activo'); } else doc.save(ultimoPDF.nome);
+}
+async function enviarWhatsApp(){
+  if(!ultimoPDF||!ultimoCliente)return;
+  const tel=(ultimoCliente.WhatsApp||'').replace(/\D/g,'');
+  let texto=ultimoPDF.nome.includes('Corte')?`Olá ${ultimoCliente.Nome||ultimoCliente.Nombre}! ✂️ Restam ${ultimoCliente.CortesRestantes} de ${ultimoCliente.CortesTotales} cortes. Vence: ${ultimoCliente.FechaVencimientoFormateada}. Obrigado por escolher David Barber Studio!`: `Olá ${ultimoCliente.Nome||ultimoCliente.Nombre}! 👑 Sua membresia foi renovada! ${ultimoCliente.CortesTotales} cortes. Vence: ${ultimoCliente.FechaVencimientoFormateada}. Bem-vindo de volta!`;
+  if(navigator.canShare && navigator.canShare({files:[new File([ultimoPDF.blob],ultimoPDF.nome,{type:'application/pdf'})]})){
+    try{ const file=new File([ultimoPDF.blob],ultimoPDF.nome,{type:'application/pdf'}); await navigator.share({files:[file],text:texto}); return;}catch(e){}
+  }
+  const url=URL.createObjectURL(ultimoPDF.blob); const a=document.createElement('a'); a.href=url; a.download=ultimoPDF.nome; a.click();
+  setTimeout(()=>{window.open('https://wa.me/'+tel+'?text='+encodeURIComponent(texto),'_blank');},800);
+}
+function baixarPDF(){ if(!ultimoPDF)return; const url=URL.createObjectURL(ultimoPDF.blob); const a=document.createElement('a'); a.href=url; a.download=ultimoPDF.nome; a.click(); }
+carregar();
 </script>
 </body>
 </html>
