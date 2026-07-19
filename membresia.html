@@ -4,8 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DBM - VIP</title>
-<link rel="icon" type="image/png" href="dbm-icon-192.png?v=16">
-<link rel="apple-touch-icon" href="dbm-icon-192.png?v=16">
+<link rel="icon" type="image/png" href="dbm-icon-192.png?v=19">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 <style>
@@ -15,39 +14,29 @@
 .filtros{padding:0 12px 12px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.filtro{padding:12px;border-radius:20px;border:2px solid #333;background:#111;color:#888;font-weight:700;font-size:12px}.filtro.activo{background:#C9A96E;color:#000;border-color:#C9A96E}
 #listaClientes{padding:12px}.card-cliente{background:#0f0f0f;border:2px solid #C9A96E;border-radius:18px;padding:18px 16px;margin-bottom:14px}
 .card-top{display:flex;justify-content:space-between}.nombre{font-family:Cinzel;font-size:19px;color:#C9A96E}.status{padding:8px 14px;border-radius:12px;font-size:12px;font-weight:800;min-width:70px;text-align:center}.ACTIVO{background:#198754;color:#fff}.PORVENCER{background:#FFC107;color:#000}.VENCIDO{background:#dc3545;color:#fff}
-.whatsapp{color:#00e676;font-weight:700;margin:6px 0;display:block}.cortes-num{font-size:36px;color:#C9A96E;font-weight:800}.acoes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}.btn-accion{padding:14px;border-radius:12px;border:none;font-weight:700;font-size:12px}.btn-corte{background:#198754;color:#fff}.btn-renovar{background:#C9A96E;color:#000}.btn-pdf{background:#222;color:#C9A96E;border:1px solid #C9A96E}
+.whatsapp{color:#00e676;font-weight:700;margin:6px 0;display:block}.cortes-num{font-size:36px;color:#C9A96E;font-weight:800}.acoes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.btn-accion{padding:14px;border-radius:12px;border:none;font-weight:700;font-size:13px}.btn-corte{background:#198754;color:#fff}.btn-renovar{background:#C9A96E;color:#000}
 .fab{position:fixed;bottom:22px;right:22px;width:62px;height:62px;border-radius:50%;background:#C9A96E;color:#000;font-size:32px}
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:99;padding:14px;align-items:center;justify-content:center}.modal.activo{display:flex}.modal-box{background:#111;border:2px solid #C9A96E;border-radius:18px;padding:22px;width:100%;max-width:400px;text-align:center}.btn-whats{background:#25D366;color:#fff;border:none;padding:16px;border-radius:12px;font-weight:800;width:100%;margin-top:12px}.btn-sec{background:#333;color:#fff;border:none;padding:12px;border-radius:12px;width:100%;margin-top:8px}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:99;padding:14px;align-items:center;justify-content:center}.modal.activo{display:flex}.modal-box{background:#111;border:2px solid #C9A96E;border-radius:18px;padding:22px;width:100%;max-width:400px;text-align:center}
+.preview{ background:#000; border:1px solid #333; border-radius:12px; padding:14px; text-align:left; font-size:13px; color:#fff; white-space:pre-wrap; margin:12px 0; font-family:monospace; }
+.btn-whats{background:#25D366;color:#fff;border:none;padding:16px;border-radius:12px;font-weight:800;width:100%;margin-top:12px;font-size:16px}.btn-sec{background:#333;color:#fff;border:none;padding:12px;border-radius:12px;width:100%;margin-top:8px}
 </style>
 </head>
 <body>
-<div class="header"><img src="https://i.ibb.co/5pWGBXK/1781697467655.png" id="logoTop" class="logo"><div style="font-family:Cinzel;color:#C9A96E;margin-top:6px">DAVID BARBER STUDIO</div></div>
-<div class="buscador"><input id="busca" placeholder="Buscar cliente" oninput="mostrar()"><button class="btn-buscar" style="padding:14px 18px;border-radius:12px;background:#C9A96E;border:none" onclick="mostrar()">🔍</button></div>
+<div class="header"><img src="https://i.ibb.co/5pWGBXK/1781697467655.png" class="logo"><div style="font-family:Cinzel;color:#C9A96E;margin-top:6px">DAVID BARBER STUDIO</div></div>
+<div class="buscador"><input id="busca" placeholder="Buscar cliente" oninput="mostrar()"><button style="padding:14px 18px;border-radius:12px;background:#C9A96E;border:none" onclick="mostrar()">🔍</button></div>
 <div class="filtros"><button class="filtro activo" onclick="cambiarFiltro('TODOS',this)">Todos</button><button class="filtro" onclick="cambiarFiltro('POR VENCER',this)">Por Vencer</button><button class="filtro" onclick="cambiarFiltro('VENCIDO',this)">Vencidos</button></div>
 <div id="listaClientes">Carregando...</div>
 <button class="fab" onclick="document.getElementById('modalNovo').classList.add('activo')">+</button>
 
 <div id="modalNovo" class="modal"><div class="modal-box"><h3 style="font-family:Cinzel;color:#C9A96E">Novo Cliente</h3><input id="nome" placeholder="Nome" style="width:100%;padding:14px;margin:8px 0;border-radius:10px;border:2px solid #C9A96E;background:#000;color:#fff"><input id="tel" placeholder="WhatsApp" style="width:100%;padding:14px;margin:8px 0;border-radius:10px;border:2px solid #C9A96E;background:#000;color:#fff"><select id="tipo" style="width:100%;padding:14px;border-radius:10px;border:2px solid #C9A96E;background:#000;color:#fff"><option>Mensal 5 cortes</option><option>Promo 3 cortes</option></select><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px"><button onclick="document.getElementById('modalNovo').classList.remove('activo')" style="padding:12px;border-radius:10px;background:#333;color:#fff;border:none">Cancelar</button><button onclick="novoCliente()" style="padding:12px;border-radius:10px;background:#198754;color:#fff;border:none">Salvar</button></div></div></div>
 
-<div id="modalPDF" class="modal"><div class="modal-box"><h3 id="pdfTitulo" style="font-family:Cinzel;color:#C9A96E">Comprovante Gerado!</h3><p id="pdfMsg" style="color:#ccc;margin:12px 0;font-size:14px"></p><p id="pdfInfo" style="color:#C9A96E;font-size:13px"></p><button class="btn-whats" onclick="enviarWhatsApp()">📱 Enviar no WhatsApp do Cliente</button><button class="btn-sec" onclick="baixarPDF()">⬇️ Baixar PDF</button><button class="btn-sec" onclick="document.getElementById('modalPDF').classList.remove('activo')">Fechar</button></div></div>
+<div id="modalComprovante" class="modal"><div class="modal-box"><h3 id="compTitulo" style="font-family:Cinzel;color:#C9A96E">Comprovante Gerado!</h3><div id="compPreview" class="preview"></div><button class="btn-whats" onclick="enviarWhatsApp()">📱 Enviar no WhatsApp do Cliente</button><button class="btn-sec" onclick="document.getElementById('modalComprovante').classList.remove('activo')">Fechar</button></div></div>
 
 <script>
 const SCRIPT_URL="https://script.google.com/macros/s/AKfycbz8JaNuoYU7FQdswXy9p_sxROUVyoZZfMbJD4qzQBTlmATkPJB3wYltTmIiMrX4-PICOQ/exec";
-let clientes=[], filtroActual='TODOS', ultimoPDF=null, ultimoCliente=null, LOGO_BASE64="";
+let clientes=[], filtroActual='TODOS', ultimoTexto='', ultimoCliente=null;
 
-async function carregarLogo(){
-  try{
-    const url="https://i.ibb.co/5pWGBXK/1781697467655.png";
-    const res=await fetch(url);
-    const blob=await res.blob();
-    const reader=new FileReader();
-    reader.onloadend=()=>{ LOGO_BASE64=reader.result; };
-    reader.readAsDataURL(blob);
-  }catch(e){ LOGO_BASE64=""; }
-}
-carregarLogo();
-
-function apiJSONP(a,d={}){return new Promise((res,rej)=>{const cb='cb_'+Date.now();window[cb]=(x)=>{res(x);delete window[cb];s.remove()};const s=document.createElement('script');s.src=SCRIPT_URL+"?action="+a+"&data="+encodeURIComponent(JSON.stringify(d))+"&callback="+cb+"&v=16&_="+Date.now();document.body.appendChild(s)})}
+function apiJSONP(a,d={}){return new Promise((res,rej)=>{const cb='cb_'+Date.now();window[cb]=(x)=>{res(x);delete window[cb];s.remove()};const s=document.createElement('script');s.src=SCRIPT_URL+"?action="+a+"&data="+encodeURIComponent(JSON.stringify(d))+"&callback="+cb+"&v=19&_="+Date.now();document.body.appendChild(s)})}
 async function carregar(){const d=await apiJSONP('getClientes');clientes=Array.isArray(d)?d:[];mostrar()}
 function mostrar(){
   const div=document.getElementById('listaClientes');
@@ -59,108 +48,96 @@ function mostrar(){
   div.innerHTML=l.map(c=>{
     let nome=c.Nome||c.Nombre; let cortes=c.CortesRestantes||0; let total=c.CortesTotales||5; let dias=c.dias_restantes;
     let txt=cortes<=0||dias<=0?'VENCIDO':dias+'d'; let cls=cortes<=0||dias<=0?'VENCIDO':dias<=7?'PORVENCER':'ACTIVO';
-    return `<div class="card-cliente"><div class="card-top"><div><div class="nombre">${nome}</div><div style="font-size:13px;color:#aaa">${c.PaqueteActivo||''}</div></div><span class="status ${cls}">${txt}</span></div><div class="whatsapp">📱 ${c.WhatsApp||''}</div><div style="display:flex;justify-content:space-between;margin:10px 0"><span style="color:#fff">Cortes:</span><span class="cortes-num">${cortes}/${total}</span></div><div style="font-size:13px;color:#aaa;margin-bottom:12px">Vence: ${c.FechaVencimientoFormateada}</div><div class="acoes"><button class="btn-accion btn-corte" onclick="registrarCorte('${c.ID}')">✂️ Corte</button><button class="btn-accion btn-renovar" onclick="renovar('${c.ID}','${c.PaqueteActivo||''}')">🔄 Renovar</button><button class="btn-accion btn-pdf" onclick="gerarPDFCorteManual('${c.ID}')">🧾 PDF</button></div></div>`;
+    return `<div class="card-cliente"><div class="card-top"><div><div class="nombre">${nome}</div><div style="font-size:13px;color:#aaa">${c.PaqueteActivo||''}</div></div><span class="status ${cls}">${txt}</span></div><div class="whatsapp">📱 ${c.WhatsApp||''}</div><div style="display:flex;justify-content:space-between;margin:10px 0"><span>Cortes:</span><span class="cortes-num">${cortes}/${total}</span></div><div style="font-size:13px;color:#aaa;margin-bottom:12px">Vence: ${c.FechaVencimientoFormateada}</div><div class="acoes"><button class="btn-accion btn-corte" onclick="registrarCorte('${c.ID}')">✂️ Corte</button><button class="btn-accion btn-renovar" onclick="renovar('${c.ID}','${c.PaqueteActivo||''}')">🔄 Renovar</button></div></div>`;
   }).join('');
 }
 function cambiarFiltro(f,b){filtroActual=f;document.querySelectorAll('.filtro').forEach(x=>x.classList.remove('activo'));b.classList.add('activo');mostrar()}
 function getClienteById(id){return clientes.find(c=>c.ID===id)}
+
 async function registrarCorte(id){
   if(!confirm('Registrar corte?'))return;
-  let r=await apiJSONP('registrarCorte',{id}); await carregar();
-  let c=getClienteById(id); if(c) gerarPDFCorte(c,true);
+  await apiJSONP('registrarCorte',{id}); await carregar();
+  let c=getClienteById(id); if(c) gerarComprovanteCorte(c);
 }
 async function renovar(id,paq){
-  if(!confirm('Renovar?'))return;
-  let r=await apiJSONP('renovarMembresia',{id,tipo:paq}); await carregar();
-  let c=getClienteById(id); if(c) gerarPDFRenovacao(c,true);
+  if(!confirm('Renovar membresia?'))return;
+  await apiJSONP('renovarMembresia',{id,tipo:paq}); await carregar();
+  let c=getClienteById(id); if(c) gerarComprovanteRenovacao(c);
 }
 async function novoCliente(){
   const d={Nombre:document.getElementById('nome').value,WhatsApp:document.getElementById('tel').value,PaqueteActivo:document.getElementById('tipo').value};
   if(!d.Nombre)return alert('Falta nome'); await apiJSONP('agregarCliente',d);
   document.getElementById('modalNovo').classList.remove('activo'); carregar();
 }
-function gerarPDFCorteManual(id){let c=getClienteById(id); if(c) gerarPDFCorte(c,true);}
 
-function gerarPDFCorte(cliente, modal){
-  const {jsPDF}=window.jspdf; const doc=new jsPDF();
-  doc.setFillColor(0,0,0); doc.rect(0,0,210,297,'F'); doc.setDrawColor(201,169,110); doc.setLineWidth(1.5); doc.rect(5,5,200,287);
-  if(LOGO_BASE64){try{doc.addImage(LOGO_BASE64,'PNG',65,10,80,80);}catch(e){}}
-  doc.setFont('helvetica','bold'); doc.setTextColor(201,169,110); doc.setFontSize(18); doc.text('DAVID BARBER STUDIO',105,100,{align:'center'});
-  doc.setFontSize(8); doc.setTextColor(150,150,150); doc.text('ESTILO, PRECISAO E CONFIANCA.',105,105,{align:'center'});
-  doc.setFontSize(13); doc.setTextColor(255,255,255); doc.text('COMPROVANTE DE CORTE',105,115,{align:'center'});
+function gerarComprovanteCorte(cliente){
   const nome=cliente.Nome||cliente.Nombre; const cortes=cliente.CortesRestantes||0; const total=cliente.CortesTotales||5;
   const vence=cliente.FechaVencimientoFormateada; const hoje=new Date().toLocaleDateString('pt-BR');
-  doc.setFontSize(10); doc.setTextColor(200,200,200); let y=125;
-  doc.text('Cliente: '+nome,15,y); y+=6; doc.text('WhatsApp: '+(cliente.WhatsApp||''),15,y); y+=6; doc.text('Data: '+hoje+' | Vencimento: '+vence,15,y); y+=12;
-  doc.setFontSize(20); doc.setTextColor(201,169,110); doc.text('Restam: '+cortes+' de '+total+' cortes',105,y,{align:'center'}); y+=10;
-  let bol=''; for(let i=0;i<total;i++) bol+= i<(total-cortes)?'● ':'○ '; doc.setFontSize(16); doc.text(bol.trim(),105,y,{align:'center'}); y+=14;
-  if(cortes<=0){ doc.setFontSize(11); doc.setTextColor(255,80,80); doc.text('Seus cortes acabaram! Obrigado por fazer parte',105,y,{align:'center'}); y+=6; doc.text('da familia DBM. Renove seu pacote VIP?',105,y,{align:'center'}); y+=6; doc.text('Continue com estilo impecavel! 👑',105,y,{align:'center'}); }
-  else if(cortes==1){ doc.setFontSize(11); doc.setTextColor(255,193,7); doc.text('Resta apenas 1 corte! Garanta sua renovacao',105,y,{align:'center'}); }
-  else{ doc.setFontSize(10); doc.setTextColor(180,180,180); doc.text('Obrigado por escolher David Barber Studio.',105,y,{align:'center'}); }
-  const blob=doc.output('blob'); ultimoPDF={blob,nome:'Corte-'+nome+'-'+hoje+'.pdf'}; ultimoCliente=cliente;
-  if(modal){ document.getElementById('pdfTitulo').innerText=cortes<=0?'Ultimo Corte!':'Corte Registrado!'; document.getElementById('pdfMsg').innerText=cortes<=0?'Seus cortes acabaram! Convide a renovar.':'Restam '+cortes+' de '+total+' cortes.'; document.getElementById('pdfInfo').innerText=nome+' - '+cortes+'/'+total; document.getElementById('modalPDF').classList.add('activo'); } else doc.save(ultimoPDF.nome);
-}
-function gerarPDFRenovacao(cliente, modal){
-  const {jsPDF}=window.jspdf; const doc=new jsPDF();
-  doc.setFillColor(0,0,0); doc.rect(0,0,210,297,'F'); doc.setDrawColor(201,169,110); doc.setLineWidth(1.5); doc.rect(5,5,200,287);
-  if(LOGO_BASE64){try{doc.addImage(LOGO_BASE64,'PNG',65,10,80,80);}catch(e){}}
-  doc.setFont('helvetica','bold'); doc.setTextColor(201,169,110); doc.setFontSize(18); doc.text('DAVID BARBER STUDIO',105,100,{align:'center'});
-  doc.setFontSize(14); doc.setTextColor(255,255,255); doc.text('MEMBRESIA VIP - RENOVADA',105,115,{align:'center'});
-  const nome=cliente.Nome||cliente.Nombre; const total=cliente.CortesTotales||5; const vence=cliente.FechaVencimientoFormateada; const hoje=new Date().toLocaleDateString('pt-BR');
-  doc.setFontSize(10); doc.setTextColor(200,200,200); let y=128;
-  doc.text('Cliente: '+nome,15,y); y+=6; doc.text('Pacote: '+(cliente.PaqueteActivo||'')+' - '+total+' cortes',15,y); y+=6; doc.text('Inicio: '+hoje+' | Vencimento: '+vence,15,y); y+=14;
-  doc.setFillColor(201,169,110); doc.rect(15,y,180,10,'F'); doc.setTextColor(0,0,0); doc.setFontSize(11); doc.text(' '+total+' CORTES DISPONIVEIS',15,y+7); y+=18;
-  doc.setTextColor(180,180,180); doc.setFontSize(10); doc.text('Obrigado por continuar escolhendo David Barber Studio.',105,y,{align:'center'}); y+=6; doc.text('Bem-vindo de volta a familia DBM! 👑✂️',105,y,{align:'center'});
-  const blob=doc.output('blob'); ultimoPDF={blob,nome:'Renovacao-'+nome+'-'+hoje+'.pdf'}; ultimoCliente=cliente;
-  if(modal){ document.getElementById('pdfTitulo').innerText='Membresia Renovada!'; document.getElementById('pdfMsg').innerText='Renovacao com sucesso!'; document.getElementById('pdfInfo').innerText=nome+' - '+total+' cortes - Vence '+vence; document.getElementById('modalPDF').classList.add('activo'); } else doc.save(ultimoPDF.nome);
-}
-async function enviarWhatsApp(){
-  if(!ultimoPDF ||!ultimoCliente) return alert('Gera o PDF primeiro');
-  const cliente = ultimoCliente;
-  let tel = (cliente.WhatsApp||'').replace(/\D/g,'');
-  if(tel.length <= 11) tel = '55' + tel; // pone Brasil si falta
+  let bol=''; for(let i=0;i<total;i++) bol+= i<(total-cortes)?'●':'○';
+  let texto='';
+  if(cortes<=0){
+    texto=`*DAVID BARBER STUDIO* 👑💈
+*COMPROVANTE - ULTIMO CORTE*
 
-  const cortes = cliente.CortesRestantes||0;
-  const total = cliente.CortesTotales||5;
-  let texto = '';
-  if(ultimoPDF.nome.includes('Corte')){
-    if(cortes<=0) texto = `Olá ${cliente.Nome||cliente.Nombre}! ✂️ Seus cortes acabaram. Obrigado por fazer parte da família DBM! 👑 Que tal renovar seu pacote VIP e continuar com estilo impecável?`;
-    else texto = `Olá ${cliente.Nome||cliente.Nombre}! ✂️ Corte registrado! Restam ${cortes} de ${total} cortes. Vencimento: ${cliente.FechaVencimientoFormateada}. Obrigado por escolher David Barber Studio!`;
+*Cliente:* ${nome}
+*Data:* ${hoje}
+*Cortes:* *${cortes} de ${total}* ${bol}
+*Vencimento:* ${vence}
+
+*Seus cortes acabaram!* Obrigado por fazer parte da familia DBM! 🙏
+Que tal renovar seu pacote VIP e continuar com estilo impecavel?
+
+Agradecemos a preferencia!
+@davidbarberstudio.br | Joinville - SC`;
   } else {
-    texto = `Olá ${cliente.Nome||cliente.Nombre}! 👑 Sua membresia VIP foi renovada! ${total} cortes disponíveis até ${cliente.FechaVencimientoFormateada}. Bem-vindo de volta à família DBM!`;
+    texto=`*DAVID BARBER STUDIO* 👑💈
+*COMPROVANTE DE CORTE*
+
+*Cliente:* ${nome}
+*Data:* ${hoje}
+*Restam:* *${cortes} de ${total} cortes* ${bol}
+*Vencimento:* ${vence}
+
+Obrigado por escolher David Barber Studio!
+Aproveite seu estilo VIP! ✂️
+
+@davidbarberstudio.br`;
   }
-
-  // Intenta compartir con archivo (esto es lo que manda el PDF directo)
-  try {
-    const file = new File([ultimoPDF.blob], ultimoPDF.nome, {type: 'application/pdf'});
-    if(navigator.canShare && navigator.canShare({files: [file]})){
-      await navigator.share({
-        files: [file],
-        title: ultimoPDF.nome,
-        text: texto
-      });
-      return; // si compartió, termina aquí
-    }
-  } catch(e) {
-    console.log('Share cancelado o no soportado', e);
-  }
-
-  // Si no puede compartir archivo, hace el plan B: baja el PDF y abre WhatsApp con el texto
-  const url = URL.createObjectURL(ultimoPDF.blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = ultimoPDF.nome;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-
-  // Abre WhatsApp con el texto (el PDF ya está descargado, solo adjuntar)
-  const waUrl = 'https://wa.me/' + tel + '?text=' + encodeURIComponent(texto + '\n\n📎 Acabei de baixar seu comprovante em PDF, já te envio em seguida.');
-  setTimeout(() => {
-    window.location.href = waUrl;
-  }, 500);
+  ultimoTexto=texto; ultimoCliente=cliente;
+  document.getElementById('compTitulo').innerText=cortes<=0?'Ultimo Corte!':'Corte Registrado!';
+  document.getElementById('compPreview').innerText=texto;
+  document.getElementById('modalComprovante').classList.add('activo');
 }
-function baixarPDF(){ if(!ultimoPDF)return; const url=URL.createObjectURL(ultimoPDF.blob); const a=document.createElement('a'); a.href=url; a.download=ultimoPDF.nome; a.click(); }
+
+function gerarComprovanteRenovacao(cliente){
+  const nome=cliente.Nome||cliente.Nombre; const total=cliente.CortesTotales||5; const vence=cliente.FechaVencimientoFormateada; const hoje=new Date().toLocaleDateString('pt-BR');
+  const texto=`*DAVID BARBER STUDIO* 👑💈
+*MEMBRESIA VIP - RENOVADA*
+
+*Cliente:* ${nome}
+*Pacote:* ${cliente.PaqueteActivo||''} - ${total} cortes
+*Inicio:* ${hoje}
+*Vencimento:* ${vence}
+
+*${total} CORTES DISPONIVEIS - APROVEITE!*
+
+Obrigado por continuar escolhendo David Barber Studio!
+Bem-vindo de volta a familia DBM! 👑✂️
+
+@davidbarberstudio.br | Joinville - SC`;
+  ultimoTexto=texto; ultimoCliente=cliente;
+  document.getElementById('compTitulo').innerText='Membresia Renovada!';
+  document.getElementById('compPreview').innerText=texto;
+  document.getElementById('modalComprovante').classList.add('activo');
+}
+
+function enviarWhatsApp(){
+  if(!ultimoTexto||!ultimoCliente) return;
+  let tel=(ultimoCliente.WhatsApp||'').replace(/\D/g,'');
+  if(tel.length<=11) tel='55'+tel;
+  const url='https://wa.me/'+tel+'?text='+encodeURIComponent(ultimoTexto);
+  const a=document.createElement('a'); a.href=url; a.target='_blank'; document.body.appendChild(a); a.click(); a.remove();
+}
 carregar();
 </script>
 </body>
