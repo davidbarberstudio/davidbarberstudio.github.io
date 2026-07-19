@@ -115,14 +115,50 @@ function gerarPDFRenovacao(cliente, modal){
   if(modal){ document.getElementById('pdfTitulo').innerText='Membresia Renovada!'; document.getElementById('pdfMsg').innerText='Renovacao com sucesso!'; document.getElementById('pdfInfo').innerText=nome+' - '+total+' cortes - Vence '+vence; document.getElementById('modalPDF').classList.add('activo'); } else doc.save(ultimoPDF.nome);
 }
 async function enviarWhatsApp(){
-  if(!ultimoPDF||!ultimoCliente)return;
-  const tel=(ultimoCliente.WhatsApp||'').replace(/\D/g,'');
-  let texto=ultimoPDF.nome.includes('Corte')?`Olá ${ultimoCliente.Nome||ultimoCliente.Nombre}! ✂️ Restam ${ultimoCliente.CortesRestantes} de ${ultimoCliente.CortesTotales} cortes. Vence: ${ultimoCliente.FechaVencimientoFormateada}. Obrigado por escolher David Barber Studio!`: `Olá ${ultimoCliente.Nome||ultimoCliente.Nombre}! 👑 Sua membresia foi renovada! ${ultimoCliente.CortesTotales} cortes. Vence: ${ultimoCliente.FechaVencimientoFormateada}. Bem-vindo de volta!`;
-  if(navigator.canShare && navigator.canShare({files:[new File([ultimoPDF.blob],ultimoPDF.nome,{type:'application/pdf'})]})){
-    try{ const file=new File([ultimoPDF.blob],ultimoPDF.nome,{type:'application/pdf'}); await navigator.share({files:[file],text:texto}); return;}catch(e){}
+  if(!ultimoPDF ||!ultimoCliente) return alert('Gera o PDF primeiro');
+  const cliente = ultimoCliente;
+  let tel = (cliente.WhatsApp||'').replace(/\D/g,'');
+  if(tel.length <= 11) tel = '55' + tel; // pone Brasil si falta
+
+  const cortes = cliente.CortesRestantes||0;
+  const total = cliente.CortesTotales||5;
+  let texto = '';
+  if(ultimoPDF.nome.includes('Corte')){
+    if(cortes<=0) texto = `Olá ${cliente.Nome||cliente.Nombre}! ✂️ Seus cortes acabaram. Obrigado por fazer parte da família DBM! 👑 Que tal renovar seu pacote VIP e continuar com estilo impecável?`;
+    else texto = `Olá ${cliente.Nome||cliente.Nombre}! ✂️ Corte registrado! Restam ${cortes} de ${total} cortes. Vencimento: ${cliente.FechaVencimientoFormateada}. Obrigado por escolher David Barber Studio!`;
+  } else {
+    texto = `Olá ${cliente.Nome||cliente.Nombre}! 👑 Sua membresia VIP foi renovada! ${total} cortes disponíveis até ${cliente.FechaVencimientoFormateada}. Bem-vindo de volta à família DBM!`;
   }
-  const url=URL.createObjectURL(ultimoPDF.blob); const a=document.createElement('a'); a.href=url; a.download=ultimoPDF.nome; a.click();
-  setTimeout(()=>{window.open('https://wa.me/'+tel+'?text='+encodeURIComponent(texto),'_blank');},800);
+
+  // Intenta compartir con archivo (esto es lo que manda el PDF directo)
+  try {
+    const file = new File([ultimoPDF.blob], ultimoPDF.nome, {type: 'application/pdf'});
+    if(navigator.canShare && navigator.canShare({files: [file]})){
+      await navigator.share({
+        files: [file],
+        title: ultimoPDF.nome,
+        text: texto
+      });
+      return; // si compartió, termina aquí
+    }
+  } catch(e) {
+    console.log('Share cancelado o no soportado', e);
+  }
+
+  // Si no puede compartir archivo, hace el plan B: baja el PDF y abre WhatsApp con el texto
+  const url = URL.createObjectURL(ultimoPDF.blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = ultimoPDF.nome;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+
+  // Abre WhatsApp con el texto (el PDF ya está descargado, solo adjuntar)
+  const waUrl = 'https://wa.me/' + tel + '?text=' + encodeURIComponent(texto + '\n\n📎 Acabei de baixar seu comprovante em PDF, já te envio em seguida.');
+  setTimeout(() => {
+    window.location.href = waUrl;
+  }, 500);
 }
 function baixarPDF(){ if(!ultimoPDF)return; const url=URL.createObjectURL(ultimoPDF.blob); const a=document.createElement('a'); a.href=url; a.download=ultimoPDF.nome; a.click(); }
 carregar();
