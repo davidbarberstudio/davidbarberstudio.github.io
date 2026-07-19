@@ -23,7 +23,7 @@
 </head>
 <body>
 <div class="header"><img src="https://i.ibb.co/5pWGBXK/1781697467655.png" class="logo"><div style="font-family:Cinzel;color:#C9A96E;margin-top:6px">DAVID BARBER STUDIO</div></div>
-<div class="buscador"><input id="busca" placeholder="Buscar cliente" oninput="mostrar()"><button style="padding:14px 18px;border-radius:12px;background:#C9A96E;border:none" onclick="mostrar()">🔍</button></div>
+<div class="buscador"><input id="busca" placeholder="Buscar cliente" oninput="mostrar()"><button style="padding:14px 18px;border-radius:12px;background:#C9A96E;border:none" onclick="carregar()">🔍</button></div>
 <div class="filtros"><button class="filtro activo" onclick="cambiarFiltro('TODOS',this)">Todos</button><button class="filtro" onclick="cambiarFiltro('POR VENCER',this)">Por Vencer</button><button class="filtro" onclick="cambiarFiltro('VENCIDO',this)">Vencidos</button></div>
 <div id="listaClientes">Carregando...</div>
 <button class="fab" onclick="document.getElementById('modalNovo').classList.add('activo')">+</button>
@@ -43,18 +43,32 @@
 const SCRIPT_URL="https://script.google.com/macros/s/AKfycbz8JaNuoYU7FQdswXy9p_sxROUVyoZZfMbJD4qzQBTlmATkPJB3wYltTmIiMrX4-PICOQ/exec";
 let clientes=[], filtroActual='TODOS';
 
-// ESTA ES TU FUNCION ORIGINAL QUE TE FUNCIONABA SIEMPRE
-function apiJSONP(action,data={}){
-  return new Promise((res)=>{
-    const cb='cb_'+Date.now();
-    window[cb]=(x)=>{res(x);delete window[cb];s.remove()};
-    const s=document.createElement('script');
-    s.src=SCRIPT_URL+"?action="+action+"&data="+encodeURIComponent(JSON.stringify(data))+"&callback="+cb+"&_="+Date.now();
-    document.body.appendChild(s);
-  });
+// NUEVA FUNCION QUE USA FETCH DIRECTO COMO TU CAPTURA
+async function api(action, data={}){
+  try{
+    let url = SCRIPT_URL + "?action=" + action + "&data=" + encodeURIComponent(JSON.stringify(data)) + "&_=" + Date.now();
+    // Para getClientes no necesitamos data
+    if(action==='getClientes') url = SCRIPT_URL + "?action=getClientes&_=" + Date.now();
+    const res = await fetch(url);
+    const text = await res.text();
+    // Intenta parsear, si viene con callback lo limpia
+    try{
+      if(text.trim().startsWith('{') || text.trim().startsWith('[')){
+        return JSON.parse(text);
+      } else {
+        const ini=text.indexOf('('); const fin=text.lastIndexOf(')');
+        if(ini>-1 && fin>-1) return JSON.parse(text.substring(ini+1, fin));
+        return JSON.parse(text);
+      }
+    }catch(e){ console.log("Respuesta cruda:", text.substring(0,200)); return []; }
+  }catch(e){ console.error(e); return []; }
 }
 
-async function carregar(){ const d=await apiJSONP('getClientes'); clientes=Array.isArray(d)?d:[]; mostrar(); }
+async function carregar(){
+  const d=await api('getClientes');
+  clientes=Array.isArray(d)?d:(d.clientes||[]);
+  mostrar();
+}
 function mostrar(){
   const div=document.getElementById('listaClientes');
   let l=[...clientes]; const t=document.getElementById('busca').value.toLowerCase();
@@ -65,96 +79,38 @@ function mostrar(){
   div.innerHTML=l.map(c=>{
     let nome=c.Nome||c.Nombre; let cortes=c.CortesRestantes||0; let total=c.CortesTotales||5; let dias=c.dias_restantes;
     let txt=cortes<=0||dias<=0?'VENCIDO':dias+'d'; let cls=cortes<=0||dias<=0?'VENCIDO':dias<=7?'PORVENCER':'ACTIVO';
-    let telOnly=(c.WhatsApp||'').replace(/\D/g,''); let telLink=telOnly.length==10||telOnly.length==11?'55'+telOnly:telOnly;
-    return `<div class="card-cliente"><div class="card-top"><div><div class="nombre">${nome}</div><div style="font-size:12px;color:#aaa">${c.PaqueteActivo||''} ${c.Observacoes?'- '+c.Observacoes:''}</div></div><span class="status ${cls}">${txt}</span></div><a class="whatsapp-link" href="https://wa.me/${telLink}" target="_blank">📱 ${c.WhatsApp||''} - Toque para abrir WhatsApp</a><div style="display:flex;justify-content:space-between;margin:10px 0"><span>Cortes:</span><span class="cortes-num">${cortes}/${total}</span></div><div style="font-size:13px;color:#aaa;margin-bottom:12px">Vence: ${c.FechaVencimientoFormateada}</div><div class="acoes"><button class="btn-accion btn-corte" onclick="registrarCorte('${c.ID}')">✂️ Corte</button><button class="btn-accion btn-renovar" onclick="renovar('${c.ID}','${c.PaqueteActivo||''}')">🔄 Renovar</button></div></div>`;
+    let telOnly=(c.WhatsApp||'').toString().replace(/\D/g,''); let telLink=telOnly.length==10||telOnly.length==11?'55'+telOnly:telOnly;
+    return `<div class="card-cliente"><div class="card-top"><div><div class="nombre">${nome}</div><div style="font-size:12px;color:#aaa">${c.PaqueteActivo||''} ${c.Observacoes?'- '+c.Observacoes:''}</div></div><span class="status ${cls}">${txt}</span></div><a class="whatsapp-link" href="https://wa.me/${telLink}" target="_blank">📱 ${c.WhatsApp} - Toque para abrir WhatsApp</a><div style="display:flex;justify-content:space-between;margin:10px 0"><span>Cortes:</span><span class="cortes-num">${cortes}/${total}</span></div><div style="font-size:13px;color:#aaa;margin-bottom:12px">Vence: ${c.FechaVencimientoFormateada}</div><div class="acoes"><button class="btn-accion btn-corte" onclick="registrarCorte('${c.ID}')">✂️ Corte</button><button class="btn-accion btn-renovar" onclick="renovar('${c.ID}','${c.PaqueteActivo||''}')">🔄 Renovar</button></div></div>`;
   }).join('');
 }
 function cambiarFiltro(f,b){filtroActual=f;document.querySelectorAll('.filtro').forEach(x=>x.classList.remove('activo'));b.classList.add('activo');mostrar()}
 function getClienteById(id){return clientes.find(c=>c.ID===id)}
-
-async function registrarCorte(id){
-  if(!confirm('Registrar corte?'))return;
-  await apiJSONP('registrarCorte',{id});
-  await carregar();
-  let c=getClienteById(id); if(c) comprovanteCorte(c);
-}
-async function renovar(id,paq){
-  if(!confirm('Renovar membresia?'))return;
-  await apiJSONP('renovarMembresia',{id,tipo:paq});
-  await carregar();
-  let c=getClienteById(id); if(c) comprovanteRenovacao(c);
-}
+async function registrarCorte(id){ if(!confirm('Registrar corte?'))return; await api('registrarCorte',{id}); await carregar(); let c=getClienteById(id); if(c) comprovanteCorte(c); }
+async function renovar(id,paq){ if(!confirm('Renovar membresia?'))return; await api('renovarMembresia',{id,tipo:paq}); await carregar(); let c=getClienteById(id); if(c) comprovanteRenovacao(c); }
 async function novoCliente(){
   const d={Nombre:document.getElementById('nome').value,WhatsApp:document.getElementById('tel').value,PaqueteActivo:document.getElementById('tipo').value,Observacoes:document.getElementById('obs').value};
-  if(!d.Nombre)return alert('Falta nome'); await apiJSONP('agregarCliente',d);
+  if(!d.Nombre)return alert('Falta nome'); await api('agregarCliente',d);
   document.getElementById('modalNovo').classList.remove('activo'); carregar();
 }
-
-// AQUI ESTA LO NUEVO QUE PEDISTE - COMPROVANTE EN PORTUGUES
-function comprovanteCorte(cliente){
-  const nome=cliente.Nome||cliente.Nombre; const cortes=cliente.CortesRestantes||0; const total=cliente.CortesTotales||5;
-  const vence=cliente.FechaVencimientoFormateada; const hoje=new Date().toLocaleDateString('pt-BR');
+function comprovanteCorte(c){
+  const nome=c.Nome||c.Nombre; const cortes=c.CortesRestantes||0; const total=c.CortesTotales||5; const vence=c.FechaVencimientoFormateada; const hoje=new Date().toLocaleDateString('pt-BR');
   let bol=''; for(let i=0;i<total;i++) bol+= i<(total-cortes)?'●':'○';
-  let texto='';
-  if(cortes<=0){
-    texto=`*DAVID BARBER STUDIO* 👑💈
-*COMPROVANTE - ULTIMO CORTE*
-
-*Cliente:* ${nome}
-*Data:* ${hoje}
-*Cortes:* *${cortes} de ${total}* ${bol}
-*Vencimento:* ${vence}
-
-*Seus cortes acabaram!* 😔
-Obrigado por fazer parte da familia David Barber Studio! Foi um prazer te atender.
-Que tal renovar seu pacote VIP e continuar com estilo impecavel? 💈✂️
-
-Te esperamos em breve!
-@davidbarberstudio.br - Joinville`;
-  } else {
-    texto=`*DAVID BARBER STUDIO* 👑💈
-*COMPROVANTE DE CORTE*
-
-*Cliente:* ${nome}
-*Data:* ${hoje}
-*Restam:* *${cortes} de ${total} cortes* ${bol}
-*Vencimento:* ${vence}
-
-Obrigado por escolher David Barber Studio!
-Aproveite seu estilo VIP! ✂️
-
-@davidbarberstudio.br`;
-  }
-  abrirModalComprovante(cliente,texto, cortes<=0?'Pacote Finalizado!' : 'Corte Registrado!');
+  let texto=cortes<=0?`*DAVID BARBER STUDIO* 👑💈\n*COMPROVANTE - ULTIMO CORTE*\n\n*Cliente:* ${nome}\n*Data:* ${hoje}\n*Cortes:* *${cortes} de ${total}* ${bol}\n*Vencimento:* ${vence}\n\n*Seus cortes acabaram!* 😔\nObrigado por fazer parte da familia David Barber Studio!\nQue tal renovar seu pacote VIP?\n\n@davidbarberstudio.br`:`*DAVID BARBER STUDIO* 👑💈\n*COMPROVANTE DE CORTE*\n\n*Cliente:* ${nome}\n*Data:* ${hoje}\n*Restam:* *${cortes} de ${total} cortes* ${bol}\n*Vencimento:* ${vence}\n\nObrigado por escolher David Barber Studio!\nAproveite seu estilo VIP! ✂️\n\n@davidbarberstudio.br`;
+  abrirModal(c,texto,cortes<=0?'Pacote Finalizado!':'Corte Registrado!');
 }
-
-function comprovanteRenovacao(cliente){
-  const nome=cliente.Nome||cliente.Nombre; const total=cliente.CortesTotales||5; const vence=cliente.FechaVencimientoFormateada; const hoje=new Date().toLocaleDateString('pt-BR');
-  const texto=`*DAVID BARBER STUDIO* 👑💈
-*MEMBRESIA VIP RENOVADA*
-
-*Cliente:* ${nome}
-*Pacote:* ${cliente.PaqueteActivo||''} - ${total} cortes
-*Inicio:* ${hoje}
-*Vencimento:* ${vence}
-
-*${total} CORTES DISPONIVEIS!*
-
-Obrigado por continuar com a gente! Bem-vindo de volta a familia DBM! 👑✂️
-
-@davidbarberstudio.br`;
-  abrirModalComprovante(cliente,texto,'Membresia Renovada!');
+function comprovanteRenovacao(c){
+  const nome=c.Nome||c.Nombre; const total=c.CortesTotales||5; const vence=c.FechaVencimientoFormateada; const hoje=new Date().toLocaleDateString('pt-BR');
+  const texto=`*DAVID BARBER STUDIO* 👑💈\n*MEMBRESIA VIP RENOVADA*\n\n*Cliente:* ${nome}\n*Pacote:* ${c.PaqueteActivo||''} - ${total} cortes\n*Inicio:* ${hoje}\n*Vencimento:* ${vence}\n\n*${total} CORTES DISPONIVEIS!*\n\nObrigado por continuar com a gente! Bem-vindo de volta a familia DBM! 👑✂️\n\n@davidbarberstudio.br`;
+  abrirModal(c,texto,'Membresia Renovada!');
 }
-
-function abrirModalComprovante(cliente, texto, titulo){
-  let tel=(cliente.WhatsApp||'').replace(/\D/g,''); if(tel.length==10||tel.length==11) tel='55'+tel;
+function abrirModal(cliente,texto,titulo){
+  let tel=(cliente.WhatsApp||'').toString().replace(/\D/g,''); if(tel.length==10||tel.length==11) tel='55'+tel;
   const url='https://wa.me/'+tel+'?text='+encodeURIComponent(texto);
   document.getElementById('compTitulo').innerText=titulo;
   document.getElementById('compPreview').innerText=texto;
   document.getElementById('btnEnviar').href=url;
   document.getElementById('modalComprovante').classList.add('activo');
 }
-
 carregar();
 </script>
 </body>
