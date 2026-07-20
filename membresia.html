@@ -12,8 +12,8 @@
 .header{text-align:center;padding:16px 0;border-bottom:2px solid #C9A96E}.logo{width:110px}
 .buscador{padding:12px;display:flex;gap:8px}.buscador input{flex:1;padding:14px;border-radius:12px;border:2px solid #C9A96E;background:#111;color:#fff}
 .filtros{padding:0 12px 12px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.filtro{padding:12px;border-radius:20px;border:2px solid #333;background:#111;color:#888;font-weight:700;font-size:12px}.filtro.activo{background:#C9A96E;color:#000;border-color:#C9A96E}
-#listaClientes{padding:12px}.card-cliente{background:#0f0f0f;border:2px solid #C9A96E;border-radius:18px;padding:18px 16px;margin-bottom:14px}
-.card-top{display:flex;justify-content:space-between}.nombre{font-family:Cinzel;font-size:19px;color:#C9A96E}.status{padding:8px 14px;border-radius:12px;font-size:12px;font-weight:800;min-width:70px;text-align:center}.ACTIVO{background:#198754;color:#fff}.PORVENCER{background:#FFC107;color:#000}.VENCIDO{background:#dc3545;color:#fff}
+#listaClientes{padding:12px}.card-cliente{background:#0f0f0f;border:2px solid #C9A96E;border-radius:18px;padding:18px 16px;margin-bottom:14px;position:relative}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start}.nombre{font-family:Cinzel;font-size:19px;color:#C9A96E}.status{padding:8px 14px;border-radius:12px;font-size:12px;font-weight:800;min-width:70px;text-align:center}.ACTIVO{background:#198754;color:#fff}.PORVENCER{background:#FFC107;color:#000}.VENCIDO{background:#dc3545;color:#fff}
 .whatsapp-link{color:#25D366;font-weight:700;margin:6px 0;display:block;text-decoration:none}
 .cortes-num{font-size:36px;color:#C9A96E;font-weight:800}.acoes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.btn-accion{padding:14px;border-radius:12px;border:none;font-weight:700;font-size:13px}.btn-corte{background:#198754;color:#fff}.btn-renovar{background:#C9A96E;color:#000}
 .fab{position:fixed;bottom:22px;right:22px;width:62px;height:62px;border-radius:50%;background:#C9A96E;color:#000;font-size:32px;border:none}
@@ -21,6 +21,9 @@
 .preview{background:#000;border:1px solid #333;border-radius:12px;padding:14px;text-align:left;font-size:12px;color:#fff;white-space:pre-wrap;margin:12px 0;font-family:monospace}
 .btn-whats{display:block;background:#25D366;color:#fff;padding:16px;border-radius:12px;font-weight:800;width:100%;margin-top:12px;font-size:16px;text-decoration:none;text-align:center}.btn-sec{background:#333;color:#fff;border:none;padding:12px;border-radius:12px;width:100%;margin-top:8px}
 .input{width:100%;padding:14px;margin:6px 0;border-radius:10px;border:2px solid #C9A96E;background:#000;color:#fff}
+.btn-delete{width:36px;height:36px;border-radius:10px;border:1px solid #ff6b6b;background:#2a0f0f;color:#ff6b6b;font-size:18px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:8px}
+.btn-delete:active{background:#ff6b6b;color:#fff}
+.top-right{display:flex;align-items:center;gap:6px}
 </style>
 </head>
 <body>
@@ -54,19 +57,16 @@ function mostrar(){
     let nome=c.Nome||c.Nombre; let cortes=c.CortesRestantes||0; let total=c.CortesTotales||5; let dias=c.dias_restantes;
     let txt=cortes<=0||dias<=0?'VENCIDO':dias+'d'; let cls=cortes<=0||dias<=0?'VENCIDO':dias<=7?'PORVENCER':'ACTIVO';
     let telOnly=(c.WhatsApp||'').toString().replace(/\D/g,''); let telLink=telOnly.length==10||telOnly.length==11?'55'+telOnly:telOnly;
-    return `<div class="card-cliente"><div class="card-top"><div><div class="nombre">${nome}</div><div style="font-size:12px;color:#aaa">${c.PaqueteActivo||''} ${c.Observacoes?'- '+c.Observacoes:''}</div></div><span class="status ${cls}">${txt}</span></div><a class="whatsapp-link" href="https://wa.me/${telLink}" target="_blank">📱 ${c.WhatsApp}</a><div style="display:flex;justify-content:space-between;margin:10px 0"><span>Cortes:</span><span class="cortes-num">${cortes}/${total}</span></div><div style="font-size:13px;color:#aaa;margin-bottom:12px">Vence: ${c.FechaVencimientoFormateada}</div><div class="acoes"><button class="btn-accion btn-corte" onclick="registrarCorte('${c.ID}')">✂️ Corte</button><button class="btn-accion btn-renovar" onclick="renovar('${c.ID}','${c.PaqueteActivo||''}')">🔄 Renovar</button></div></div>`;
+    return `<div class="card-cliente"><div class="card-top"><div><div class="nombre">${nome}</div><div style="font-size:12px;color:#aaa">${c.PaqueteActivo||''} ${c.Observacoes?'- '+c.Observacoes:''}</div></div><div class="top-right"><span class="status ${cls}">${txt}</span><button class="btn-delete" onclick="eliminarCliente('${c.ID}')" title="Eliminar">✕</button></div></div><a class="whatsapp-link" href="https://wa.me/${telLink}" target="_blank">📱 ${c.WhatsApp}</a><div style="display:flex;justify-content:space-between;margin:10px 0"><span>Cortes:</span><span class="cortes-num">${cortes}/${total}</span></div><div style="font-size:13px;color:#aaa;margin-bottom:12px">Vence: ${c.FechaVencimientoFormateada}</div><div class="acoes"><button class="btn-accion btn-corte" onclick="registrarCorte('${c.ID}')">✂️ Corte</button><button class="btn-accion btn-renovar" onclick="renovar('${c.ID}','${c.PaqueteActivo||''}')">🔄 Renovar</button></div></div>`;
   }).join('');
 }
 function cambiarFiltro(f,b){filtroActual=f;document.querySelectorAll('.filtro').forEach(x=>x.classList.remove('activo'));b.classList.add('activo');mostrar()}
 function getClienteById(id){return clientes.find(c=>c.ID===id)}
-
 async function registrarCorte(id){
   if(!confirm('Registrar corte?'))return;
-  // Guardamos total antes para detectar si es el primer corte
   let cAntes=getClienteById(id);
   let totalAntes=cAntes?cAntes.CortesTotales:5;
   let cortesAntes=cAntes?cAntes.CortesRestantes:0;
-
   await api('registrarCorte',{id});
   await carregar();
   let c=getClienteById(id);
@@ -76,23 +76,25 @@ async function renovar(id,paq){
   if(!confirm('Renovar membresia?'))return;
   await api('renovarMembresia',{id,tipo:paq});
   await carregar();
-  // YA NO MUESTRA MENSAJE AL RENOVAR, SOLO RECARGA
+}
+async function eliminarCliente(id){
+  if(!confirm('¿Eliminar esta tarjeta? Se borra el cliente y no se puede deshacer.')) return;
+  let res = await api('eliminarCliente',{id});
+  if(!res || (Array.isArray(res) && res.length===0)){
+    await api('deleteCliente',{id});
+  }
+  await carregar();
 }
 async function novoCliente(){ const d={Nombre:document.getElementById('nome').value,WhatsApp:document.getElementById('tel').value,PaqueteActivo:document.getElementById('tipo').value,Observacoes:document.getElementById('obs').value}; if(!d.Nombre)return alert('Falta nome'); await api('agregarCliente',d); document.getElementById('modalNovo').classList.remove('activo'); carregar(); }
-
 function comprovanteCorte(c, cortesAntes, totalAntes){
   const nome=c.Nome||c.Nombre; const cortes=c.CortesRestantes||0; const total=c.CortesTotales||5;
   const vence=c.FechaVencimientoFormateada;
   const hoje=new Date().toLocaleDateString('pt-BR');
-  // La fecha de inicio la sacamos del vencimiento menos 30 dias aprox, o usamos hoy si es renovacion
   const inicio = c.FechaInicioFormateada || hoje;
   let bol=''; for(let i=0;i<total;i++) bol+= i<(total-cortes)?'●':'○';
-
-  let esPrimerCorte = (cortesAntes === totalAntes); // si antes tenia todos, este es el primero
+  let esPrimerCorte = (cortesAntes === totalAntes);
   let texto=''; let titulo='CORTE REGISTRADO!';
-
   if(cortes<=0){
-    // ULTIMO CORTE - MENSAJE QUE YA TENIAS
     titulo='PACOTE FINALIZADO!';
     texto=`*DAVID BARBER STUDIO* 👑💈
 *COMPROVANTE - ULTIMO CORTE*
@@ -109,7 +111,6 @@ Que tal renovar seu pacote VIP e continuar com estilo impecavel? 💈✂️
 Te esperamos em breve!
 @davidbarberstudio.br`;
   } else if(esPrimerCorte){
-    // PRIMER CORTE DESPUES DE RENOVAR - NUEVO MENSAJE ESPECIAL QUE PEDISTE
     titulo='BEM-VINDO DE VOLTA!';
     texto=`*DAVID BARBER STUDIO* 👑💈
 *PACOTE RENOVADO - BEM-VINDO DE VOLTA!*
@@ -128,7 +129,6 @@ Aproveite seu estilo VIP! ✂️
 
 @davidbarberstudio.br`;
   } else {
-    // CORTE NORMAL - IGUAL AL DE TU FOTO
     texto=`*DAVID BARBER STUDIO* 👑💈
 *COMPROVANTE DE CORTE*
 
@@ -144,7 +144,6 @@ Aproveite seu estilo VIP! ✂️
   }
   abrirModal(c,texto,titulo);
 }
-
 function abrirModal(cliente,texto,titulo){
   let tel=(cliente.WhatsApp||'').toString().replace(/\D/g,''); if(tel.length==10||tel.length==11) tel='55'+tel;
   const url='https://wa.me/'+tel+'?text='+encodeURIComponent(texto);
