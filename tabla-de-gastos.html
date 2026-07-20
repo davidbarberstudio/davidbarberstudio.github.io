@@ -22,29 +22,46 @@ body{background:#f1f5f9;color:#0f172a;font-family:-apple-system,BlinkMacSystemFo
 .week{display:flex;justify-content:space-between;align-items:center;border:1px solid #e2e8f0;border-radius:12px;padding:12px;margin-bottom:14px;background:#fff}
 .parcelas-row{display:flex;gap:6px}
 .debt-card{background:#fff;border:2px solid #0f172a;border-radius:14px;padding:14px;margin-top:12px;position:relative}
-.debt-header{display:flex;justify-content:space-between;align-items:center}
 .small{font-size:11px;color:#64748b}
+.relatorio{background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);color:#fff;border-radius:16px;padding:16px;margin-bottom:14px;border:2px solid #38bdf8}
+.rel-line{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.1);font-size:13px}
+.rel-total{display:flex;justify-content:space-between;padding:12px 0 0 0;font-weight:800;font-size:16px}
+.rel-month{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 </style>
 </head>
 <body>
-<div class="header"><h1>💳 TABLA DE GASTOS</h1><p>Personal</p></div>
+<div class="header"><h1>💳 TABLA DE GASTOS</h1><p>Personal • con relatório</p></div>
 <div class="wrap">
+<div class="relatorio">
+<div class="rel-month">
+<button class="btn" style="width:36px;background:rgba(255,255,255,.15);color:#fff;margin:0" onclick="cambiarMes(-1)">‹</button>
+<div style="text-align:center"><div style="font-size:11px;letter-spacing:1px;opacity:.7">RELATÓRIO MENSAL</div><div id="mesLabel" style="font-size:18px;font-weight:800">Julio 2026</div></div>
+<button class="btn" style="width:36px;background:rgba(255,255,255,.15);color:#fff;margin:0" onclick="cambiarMes(1)">›</button>
+</div>
+<div class="rel-line"><span>💰 Ingresos del mes</span><span id="relIngresos">R$ 0</span></div>
+<div class="rel-line"><span>🛒 Gastos semanales</span><span id="relGastos">R$ 0</span></div>
+<div class="rel-line"><span>📦 Pagos de deudas</span><span id="relDeudas">R$ 0</span></div>
+<div class="rel-line" style="color:#f87171"><span>💸 Total gastado (gastos+deudas)</span><span id="relTotalGastado">R$ 0</span></div>
+<div class="rel-total"><span>✅ Te quedó</span><span id="relQuedo">R$ 0</span></div>
+<div style="display:flex;gap:8px;margin-top:12px">
+<button class="btn" style="background:#38bdf8;color:#0f172a;margin:0;font-size:11px" onclick="verDetalleMes()">Ver detalle</button>
+<button class="btn" style="background:rgba(255,255,255,.15);color:#fff;margin:0;font-size:11px" onclick="irMesActual()">Mes actual</button>
+</div>
+<div id="detalleMes" style="display:none;background:rgba(255,255,255,.07);border-radius:10px;padding:10px;margin-top:10px;max-height:200px;overflow:auto;font-size:11px"></div>
+</div>
 <div class="week"><button class="btn" style="width:42px;background:#e2e8f0;color:#0f172a;margin:0" onclick="cambiarSemana(-1)">‹</button><span id="semanaLabel">Cargando...</span><button class="btn" style="width:42px;background:#e2e8f0;color:#0f172a;margin:0" onclick="cambiarSemana(1)">›</button></div>
-
 <div class="card">
 <h3 style="font-size:11px;text-transform:uppercase;margin-bottom:10px">Ingreso de la semana</h3>
 <div class="row"><input id="ingreso" class="input" type="number" placeholder="Ej: 1500, 0 también vale"><button class="btn btn-green" style="width:80px;margin:0" onclick="guardarIngreso()">Guardar</button></div>
 <div id="saldo" style="font-size:28px;font-weight:800;text-align:center;margin:8px 0">R$ 0,00</div>
 <div style="display:flex;justify-content:space-between;font-size:11px;color:#64748b"><span id="totalGastosTxt">Gastos: R$ 0</span><span id="sobraTxt">Te queda: R$ 0</span></div>
 </div>
-
 <div class="card">
 <h3 style="font-size:11px;text-transform:uppercase;margin-bottom:10px">Agregar Gasto</h3>
 <div class="row" style="margin-bottom:8px"><input id="descGasto" class="input" placeholder="Descripción"><input id="valorGasto" class="input" type="number" placeholder="R$" style="max-width:95px"></div>
 <button class="btn btn-blue" onclick="agregarGasto()">AGREGAR GASTO</button>
 <div id="listaGastos"></div>
 </div>
-
 <div class="card">
 <h3 style="font-size:11px;text-transform:uppercase;margin-bottom:4px">📋 Mis Deudas</h3>
 <input id="nombreDeuda" class="input" placeholder="Que debes? Ej: Bicicleta" style="width:100%;margin-bottom:8px">
@@ -61,25 +78,49 @@ body{background:#f1f5f9;color:#0f172a;font-family:-apple-system,BlinkMacSystemFo
 <div id="listaDeudas"></div>
 <div id="totalDeudas" style="background:#0f172a;color:#fff;border-radius:12px;padding:12px;text-align:center;font-weight:800;margin-top:12px">Total debiendo: R$ 0</div>
 </div>
-</div>
-
-<script>
+  </div>
+  <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyp_Jn9Fr4pM3D8jCCaGx8QREN2RAQlh_F9T8cr0BMtkkKmxv3qUqwYm5jil--bxgJO/exec";
-let datos={gastos:[],ingresos:[],deudas:[],pagos:[]}; let offsetSemana=0;
+let datos={gastos:[],ingresos:[],deudas:[],pagos:[]};
+let offsetSemana=0;
+let mesActual = new Date(); mesActual.setDate(1);
 function semanaKey(off){const d=new Date(); d.setDate(d.getDate()+off*7); const y=d.getFullYear(); const w=Math.ceil((((d - new Date(y,0,1))/86400000)+new Date(y,0,1).getDay()+1)/7); return y+'-W'+w;}
 function semanaLabel(off){const d=new Date(); d.setDate(d.getDate()+off*7); return 'Semana de '+d.toLocaleDateString('es-ES');}
 function cambiarSemana(dir){offsetSemana+=dir; render();}
+function cambiarMes(dir){ mesActual.setMonth(mesActual.getMonth()+dir); renderRelatorio(); }
+function irMesActual(){ mesActual = new Date(); mesActual.setDate(1); renderRelatorio(); }
 document.getElementById('numParcelas').addEventListener('input', calc); document.getElementById('valorParcela').addEventListener('input', calc);
 function calc(){const n=parseFloat(document.getElementById('numParcelas').value)||0; const v=parseFloat(document.getElementById('valorParcela').value)||0; if(n&&v){ document.getElementById('calcParcelas').innerText=n+' x R$ '+v+' = R$ '+(n*v).toFixed(2); document.getElementById('valorDeuda').value=(n*v).toFixed(2);} else document.getElementById('calcParcelas').innerText='';}
-async function cargarDatos(){try{document.getElementById('semanaLabel').innerText='Cargando...'; const r=await fetch(SCRIPT_URL+'?action=getData'); datos=await r.json(); render();}catch(e){document.getElementById('semanaLabel').innerText='Error';}}
+async function cargarDatos(){try{document.getElementById('semanaLabel').innerText='Cargando...'; const r=await fetch(SCRIPT_URL+'?action=getData'); datos=await r.json(); render(); renderRelatorio();}catch(e){document.getElementById('semanaLabel').innerText='Error';}}
 function render(){const key=semanaKey(offsetSemana); document.getElementById('semanaLabel').innerText=semanaLabel(offsetSemana); const ingresoSemana=datos.ingresos.find(i=>i[1]==key); document.getElementById('ingreso').value=ingresoSemana!=undefined?ingresoSemana[2]:''; const gastosSemana=datos.gastos.filter(g=>g[1]==key); const totalGastos=gastosSemana.reduce((s,g)=>s+parseFloat(g[3]||0),0); const ingresoVal=parseFloat(document.getElementById('ingreso').value); const ingresoFinal=isNaN(ingresoVal)?(ingresoSemana?parseFloat(ingresoSemana[2]):0):ingresoVal; const saldo=ingresoFinal-totalGastos; document.getElementById('totalGastosTxt').innerText='Gastos: R$ '+totalGastos.toFixed(2); document.getElementById('sobraTxt').innerText='Te queda: R$ '+saldo.toFixed(2); document.getElementById('saldo').innerText='R$ '+saldo.toFixed(2); const listaG=document.getElementById('listaGastos'); if(!gastosSemana.length) listaG.innerHTML='<div style="color:#94a3b8;font-size:12px;text-align:center;padding:12px">Sin gastos</div>'; else listaG.innerHTML=gastosSemana.map(g=>`<div style="display:flex;justify-content:space-between;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px;margin-top:8px;font-size:13px"><div><b>${g[2]}</b><div style="color:#94a3b8;font-size:11px">${new Date(g[0]).toLocaleDateString('es-ES')}</div></div><div style="font-weight:800">R$ ${g[3]}</div></div>`).reverse().join(''); renderDeudas();}
-function renderDeudas(){const cont=document.getElementById('listaDeudas'); if(!datos.deudas.length){cont.innerHTML='<div style="color:#94a3b8;font-size:12px;text-align:center;padding:12px">Sin deudas</div>'; document.getElementById('totalDeudas').innerText='Total debiendo: R$ 0'; return;} let totalGeneral=0; cont.innerHTML=datos.deudas.map(d=>{const id=d[0]; const nombre=d[1]; const valorTotal=parseFloat(d[2]); const estado=d[4]||'ABIERTA'; const numParc=parseFloat(d[5])||0; const valParc=parseFloat(d[6])||0; const pagos=datos.pagos.filter(p=>p[0].toString()==id.toString()); const pagado=pagos.reduce((s,p)=>s+parseFloat(p[2]||0),0); const queda=valorTotal-pagado; if(queda>0) totalGeneral+=queda; const pagadas=pagos.length; const faltan=numParc?Math.max(0,numParc-pagadas):0; const hist=pagos.length?pagos.map(p=>`<div style="font-size:11px;color:#64748b;display:flex;justify-content:space-between;border-bottom:1px solid #e2e8f0;padding:5px 0"><span>${new Date(p[3]).toLocaleDateString('es-ES')}</span><span>- R$ ${p[2]}</span></div>`).reverse().join(''):'<div style="color:#94a3b8;font-size:11px">Sin abonos</div>'; let infoParc=''; if(numParc){ infoParc=`<div style="background:#e0f2fe;border:1px solid #bae6fd;border-radius:8px;padding:8px;font-size:12px;color:#0c4a6e;margin:8px 0"><div style="display:flex;justify-content:space-between"><span>📦 ${numParc} parcelas de R$ ${valParc.toFixed(2)}</span><span style="font-weight:800">Faltan: ${faltan}</span></div><div style="margin-top:4px">Pagadas: ${pagadas} / ${numParc}</div></div>`; } return `<div class="debt-card"><div class="debt-header"><div style="font-weight:800;font-size:15px">${nombre}</div><div style="display:flex;gap:6px"><button class="btn-icon" onclick="editarDeuda('${id}')" title="Editar">✏️</button><button class="btn-icon delete" onclick="eliminarDeuda('${id}')" title="Eliminar">✕</button></div></div><div style="font-size:11px;color:#64748b;margin-top:2px">Total: R$ ${valorTotal.toFixed(2)} | Pagado: R$ ${pagado.toFixed(2)} <span style="background:${estado=='PAGADA'?'#dcfce7':'#e0f2fe'};color:${estado=='PAGADA'?'#16a34a':'#0284c7'};font-size:10px;padding:3px 6px;border-radius:5px;margin-left:6px">${estado}</span></div>${infoParc}<div style="font-size:18px;font-weight:800;margin:6px 0;color:${queda<=0?'#16a34a':'#0f172a'}">${queda<=0?'¡PAGADA! 🎉':'Queda: R$ '+queda.toFixed(2)+(numParc?' • Faltan '+faltan+' parcelas':'')}</div><div style="background:#fff;border-radius:8px;padding:8px;margin:8px 0;max-height:110px;overflow:auto;border:1px solid #e2e8f0">${hist}</div><div class="row"><input id="pago-${id}" class="input" type="number" placeholder="${valParc?'R$ '+valParc:'Abono'}" value="${valParc?valParc:''}"><button class="btn btn-green" style="width:80px;margin:0" onclick="abonar('${id}')">Pagar</button></div><div id="edit-${id}" style="display:none;background:#f8fafc;border:2px dashed #38bdf8;border-radius:10px;padding:10px;margin-top:8px"><input id="edit-nombre-${id}" class="input" value="${nombre}" style="margin-bottom:6px"><div class="row" style="margin-bottom:6px"><input id="edit-total-${id}" class="input" type="number" value="${valorTotal}"><input id="edit-num-${id}" class="input" type="number" value="${numParc||''}" placeholder="Parcelas"></div><input id="edit-valparc-${id}" class="input" type="number" value="${valParc||''}" placeholder="Valor parcela" style="margin-bottom:6px"><div class="row"><button class="btn btn-blue" style="margin:0" onclick="guardarEdicion('${id}')">Guardar</button><button class="btn btn-light" style="margin:0;background:#fff" onclick="document.getElementById('edit-${id}').style.display='none'">Cancelar</button></div></div></div>`;}).reverse().join(''); document.getElementById('totalDeudas').innerText='Total debiendo: R$ '+totalGeneral.toFixed(2);}
+function renderDeudas(){const cont=document.getElementById('listaDeudas'); if(!datos.deudas.length){cont.innerHTML='<div style="color:#94a3b8;font-size:12px;text-align:center;padding:12px">Sin deudas</div>'; document.getElementById('totalDeudas').innerText='Total debiendo: R$ 0'; return;} let totalGeneral=0; cont.innerHTML=datos.deudas.map(d=>{const id=d[0]; const nombre=d[1]; const valorTotal=parseFloat(d[2]); const estado=d[4]||'ABIERTA'; const numParc=parseFloat(d[5])||0; const valParc=parseFloat(d[6])||0; const pagos=datos.pagos.filter(p=>p[0].toString()==id.toString()); const pagado=pagos.reduce((s,p)=>s+parseFloat(p[2]||0),0); const queda=valorTotal-pagado; if(queda>0) totalGeneral+=queda; const pagadas=pagos.length; const faltan=numParc?Math.max(0,numParc-pagadas):0; const hist=pagos.length?pagos.map(p=>`<div style="font-size:11px;color:#64748b;display:flex;justify-content:space-between;border-bottom:1px solid #e2e8f0;padding:5px 0"><span>${new Date(p[3]).toLocaleDateString('es-ES')}</span><span>- R$ ${p[2]}</span></div>`).reverse().join(''):'<div style="color:#94a3b8;font-size:11px">Sin abonos</div>'; let infoParc=''; if(numParc){ infoParc=`<div style="background:#e0f2fe;border:2px solid #38bdf8;border-radius:10px;padding:10px;margin:8px 0"><div style="display:flex;justify-content:space-between;font-weight:800;font-size:14px;color:#0c4a6e"><span>📦 ${numParc} parcelas</span><span style="color:#dc2626">Faltan: ${faltan}</span></div><div style="font-size:12px;margin-top:4px;color:#334155">R$ ${valParc.toFixed(2)} c/u • Pagadas: ${pagadas} / ${numParc}</div></div>`; } return `<div class="debt-card"><div style="display:flex;justify-content:space-between;align-items:center"><div style="font-weight:800;font-size:15px">${nombre}</div><div style="display:flex;gap:6px"><button class="btn-icon" onclick="editarDeuda('${id}')">✏️</button><button class="btn-icon delete" onclick="eliminarDeuda('${id}')">✕</button></div></div><div style="font-size:11px;color:#64748b;margin-top:2px">Total: R$ ${valorTotal.toFixed(2)} | Pagado: R$ ${pagado.toFixed(2)} <span style="background:${estado=='PAGADA'?'#dcfce7':'#e0f2fe'};color:${estado=='PAGADA'?'#16a34a':'#0284c7'};font-size:10px;padding:3px 6px;border-radius:5px;margin-left:6px">${estado}</span></div>${infoParc}<div style="font-size:18px;font-weight:800;margin:6px 0;color:${queda<=0?'#16a34a':'#0f172a'}">${queda<=0?'¡PAGADA! 🎉':'Queda: R$ '+queda.toFixed(2)+(numParc?' • Faltan '+faltan+' parc.':'')}</div><div style="background:#fff;border-radius:8px;padding:8px;margin:8px 0;max-height:110px;overflow:auto;border:1px solid #e2e8f0">${hist}</div><div class="row"><input id="pago-${id}" class="input" type="number" placeholder="${valParc?'R$ '+valParc:'Abono'}" value="${valParc?valParc:''}"><button class="btn btn-green" style="width:80px;margin:0" onclick="abonar('${id}')">Pagar</button></div><div id="edit-${id}" style="display:none;background:#f8fafc;border:2px dashed #38bdf8;border-radius:10px;padding:10px;margin-top:8px"><input id="edit-nombre-${id}" class="input" value="${nombre}" style="margin-bottom:6px"><div class="row" style="margin-bottom:6px"><input id="edit-total-${id}" class="input" type="number" value="${valorTotal}"><input id="edit-num-${id}" class="input" type="number" value="${numParc||''}" placeholder="Parcelas"></div><input id="edit-valparc-${id}" class="input" type="number" value="${valParc||''}" placeholder="Valor parcela" style="margin-bottom:6px"><div class="row"><button class="btn btn-blue" style="margin:0" onclick="guardarEdicion('${id}')">Guardar</button><button class="btn btn-light" style="margin:0;background:#fff" onclick="document.getElementById('edit-${id}').style.display='none'">Cancelar</button></div></div></div>`;}).reverse().join(''); document.getElementById('totalDeudas').innerText='Total debiendo: R$ '+totalGeneral.toFixed(2);}
+function renderRelatorio(){
+  const mes = mesActual.getMonth(); const ano = mesActual.getFullYear();
+  const mesNombre = mesActual.toLocaleDateString('es-ES',{month:'long',year:'numeric'});
+  document.getElementById('mesLabel').innerText = mesNombre.charAt(0).toUpperCase()+mesNombre.slice(1);
+  let totalGastosMes = 0, totalPagosMes = 0, totalIngresosMes = 0; let detalle = [];
+  datos.gastos.forEach(g=>{ const f = new Date(g[0]); if(f.getMonth()==mes && f.getFullYear()==ano){ totalGastosMes+=parseFloat(g[3]||0); detalle.push({fecha:f,tipo:'Gasto',desc:g[2],valor:parseFloat(g[3])}); } });
+  datos.pagos.forEach(p=>{ const f = new Date(p[3]); if(f.getMonth()==mes && f.getFullYear()==ano){ totalPagosMes+=parseFloat(p[2]||0); detalle.push({fecha:f,tipo:'Deuda',desc:p[1],valor:parseFloat(p[2])}); } });
+  datos.ingresos.forEach(i=>{ const f = new Date(i[0]); if(f.getMonth()==mes && f.getFullYear()==ano){ totalIngresosMes+=parseFloat(i[2]||0); } });
+  const totalGastado = totalGastosMes + totalPagosMes; const quedo = totalIngresosMes - totalGastado;
+  document.getElementById('relGastos').innerText = 'R$ '+totalGastosMes.toFixed(2);
+  document.getElementById('relDeudas').innerText = 'R$ '+totalPagosMes.toFixed(2);
+  document.getElementById('relTotalGastado').innerText = 'R$ '+totalGastado.toFixed(2);
+  document.getElementById('relIngresos').innerText = 'R$ '+totalIngresosMes.toFixed(2);
+  document.getElementById('relQuedo').innerText = 'R$ '+quedo.toFixed(2);
+  document.getElementById('relQuedo').style.color = quedo>=0?'#22c55e':'#ef4444';
+  detalle.sort((a,b)=>b.fecha-a.fecha);
+  const contDetalle = document.getElementById('detalleMes');
+  if(detalle.length==0) contDetalle.innerHTML = '<div style="color:#94a3b8">Sin movimientos este mes</div>';
+  else contDetalle.innerHTML = detalle.map(d=>`<div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.08)"><span>${d.fecha.toLocaleDateString('es-ES')} - ${d.tipo}: ${d.desc}</span><span>- R$ ${d.valor.toFixed(2)}</span></div>`).join('');
+}
+function verDetalleMes(){ const el=document.getElementById('detalleMes'); el.style.display = el.style.display=='none'?'block':'none'; }
 async function postear(p){const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(p)}); const j=await r.json(); if(j.error) throw new Error(j.error); return j;}
 async function guardarIngreso(){const k=semanaKey(offsetSemana); const valStr=document.getElementById('ingreso').value; if(valStr==='') return alert('Pon un valor, 0 también vale'); const v=parseFloat(valStr); if(isNaN(v)) return alert('Valor inválido'); document.getElementById('semanaLabel').innerText='Guardando...'; await postear({action:'addIngreso',semana:k,valor:v}); await cargarDatos();}
 async function agregarGasto(){const d=document.getElementById('descGasto').value.trim(); const v=parseFloat(document.getElementById('valorGasto').value)||0; if(!d||!v) return alert('Completa'); document.getElementById('semanaLabel').innerText='Guardando...'; await postear({action:'addGasto',semana:semanaKey(offsetSemana),descripcion:d,valor:v,categoria:'Otros'}); document.getElementById('descGasto').value=''; document.getElementById('valorGasto').value=''; await cargarDatos();}
 async function agregarDeuda(){const n=document.getElementById('nombreDeuda').value.trim(); let t=parseFloat(document.getElementById('valorDeuda').value)||0; const np=parseFloat(document.getElementById('numParcelas').value)||0; const vp=parseFloat(document.getElementById('valorParcela').value)||0; if(np&&vp) t=np*vp; if(!n||!t) return alert('Pon nombre y total'); document.getElementById('semanaLabel').innerText='Guardando...'; await postear({action:'addDeuda',nombre:n,valorTotal:t,numParcelas:np,valorParcela:vp}); document.getElementById('nombreDeuda').value=''; document.getElementById('valorDeuda').value=''; document.getElementById('numParcelas').value=''; document.getElementById('valorParcela').value=''; document.getElementById('calcParcelas').innerText=''; await cargarDatos();}
 async function abonar(id){const i=document.getElementById('pago-'+id); const v=parseFloat(i.value)||0; if(!v) return alert('Pon cuanto'); document.getElementById('semanaLabel').innerText='Guardando...'; await postear({action:'addPago',idDeuda:id,valorPagado:v}); i.value=''; await cargarDatos();}
-async function eliminarDeuda(id){if(!confirm('¿Eliminar esta deuda y todos sus pagos?')) return; document.getElementById('semanaLabel').innerText='Eliminando...'; try{ await postear({action:'deleteDeuda',idDeuda:id}); await cargarDatos(); }catch(e){ alert('Error al eliminar: '+e.message+' - Asegúrate de haber actualizado el Script a la V2'); }}
+async function eliminarDeuda(id){if(!confirm('¿Eliminar esta deuda?')) return; document.getElementById('semanaLabel').innerText='Eliminando...'; await postear({action:'deleteDeuda',idDeuda:id}); await cargarDatos();}
 function editarDeuda(id){document.getElementById('edit-'+id).style.display='block';}
 async function guardarEdicion(id){const n=document.getElementById('edit-nombre-'+id).value.trim(); const t=parseFloat(document.getElementById('edit-total-'+id).value)||0; const np=parseFloat(document.getElementById('edit-num-'+id).value)||0; const vp=parseFloat(document.getElementById('edit-valparc-'+id).value)||0; if(!n||!t) return alert('Completa'); document.getElementById('semanaLabel').innerText='Guardando...'; await postear({action:'editDeuda',idDeuda:id,nombre:n,valorTotal:t,numParcelas:np,valorParcela:vp}); await cargarDatos();}
 cargarDatos();
