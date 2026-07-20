@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tabla de Gastos</title>
+<meta name="theme-color" content="#0f172a">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#f1f5f9;color:#0f172a;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto;padding-bottom:90px}
+.header{text-align:center;padding:22px 16px;background:#0f172a;color:#fff;border-bottom:4px solid #38bdf8}
+.header h1{letter-spacing:2px;font-size:20px;color:#fff}
+.header p{color:#94a3b8;font-size:11px;margin-top:4px}
+.wrap{max-width:500px;margin:0 auto;padding:12px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.card h3{color:#0f172a;margin-bottom:10px;font-size:11px;letter-spacing:1px;text-transform:uppercase}
+.row{display:flex;gap:8px}
+.input{flex:1;padding:12px;border-radius:10px;border:2px solid #e2e8f0;background:#f8fafc;color:#0f172a;outline:none;font-size:14px}
+.input:focus{border-color:#38bdf8}
+.btn{padding:12px;border-radius:10px;border:none;font-weight:700;cursor:pointer;width:100%;margin-top:8px;font-size:13px}
+.btn-blue{background:#0f172a;color:#fff}
+.btn-green{background:#16a34a;color:#fff}
+.week{display:flex;justify-content:space-between;align-items:center;border:1px solid #e2e8f0;border-radius:12px;padding:12px;margin-bottom:14px;background:#fff}
+.saldo{font-size:28px;font-weight:800;text-align:center;margin:8px 0;color:#0f172a}
+.pos{color:#16a34a}.neg{color:#ef4444}
+.item{display:flex;justify-content:space-between;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px;margin-top:8px;font-size:13px}
+.debt-card{background:#f8fafc;border:2px solid #0f172a;border-radius:14px;padding:14px;margin-top:12px}
+.debt-name{font-weight:800;color:#0f172a;font-size:15px}
+.debt-saldo{font-size:19px;font-weight:800;margin:6px 0}
+.badge{font-size:10px;background:#e0f2fe;padding:3px 6px;border-radius:5px;color:#0284c7;margin-left:6px}
+.pago-item{font-size:11px;color:#64748b;display:flex;justify-content:space-between;border-bottom:1px solid #e2e8f0;padding:5px 0}
+.total-geral{background:#0f172a;color:#fff;border-radius:12px;padding:12px;text-align:center;font-weight:800;margin-top:12px}
+</style>
+</head>
+<body>
+<div class="header"><h1>TABLA DE GASTOS</h1><p>Personal</p></div>
+<div class="wrap">
+<div class="week"><button class="btn" style="width:42px;background:#e2e8f0;color:#0f172a;margin:0" onclick="cambiarSemana(-1)">‹</button><span id="semanaLabel">Cargando...</span><button class="btn" style="width:42px;background:#e2e8f0;color:#0f172a;margin:0" onclick="cambiarSemana(1)">›</button></div>
+<div class="card">
+<h3>Ingreso de la semana</h3>
+<div class="row"><input id="ingreso" class="input" type="number" placeholder="Ej: 1500"><button class="btn btn-green" style="width:80px;margin:0" onclick="guardarIngreso()">Guardar</button></div>
+<div id="saldo" class="saldo">R$ 0,00</div>
+<div style="display:flex;justify-content:space-between;font-size:11px;color:#64748b"><span id="totalGastosTxt">Gastos: R$ 0</span><span id="sobraTxt">Te queda: R$ 0</span></div>
+</div>
+<div class="card">
+<h3>Agregar Gasto</h3>
+<div class="row" style="margin-bottom:8px"><input id="descGasto" class="input" placeholder="Descripción ej: Supermercado"><input id="valorGasto" class="input" type="number" placeholder="R$" style="max-width:100px"></div>
+<select id="catGasto" class="input" style="width:100%;margin-bottom:8px"><option>Supermercado</option><option>Casa</option><option>Transporte</option><option>Comida</option><option>Otros</option></select>
+<button class="btn btn-blue" onclick="agregarGasto()">AGREGAR GASTO</button>
+<div id="listaGastos"></div>
+</div>
+<div class="card">
+<h3>Mis Deudas - Cada una separada</h3>
+<div class="row" style="margin-bottom:8px"><input id="nombreDeuda" class="input" placeholder="Que debes? Ej: Bicicleta"><input id="valorDeuda" class="input" type="number" placeholder="Total" style="max-width:110px"></div>
+<button class="btn btn-blue" onclick="agregarDeuda()">AGREGAR DEUDA</button>
+<div id="listaDeudas"></div>
+<div id="totalDeudas" class="total-geral">Total debiendo: R$ 0</div>
+</div>
+</div>
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyp_Jn9Fr4pM3D8jCCaGx8QREN2RAQlh_F9T8cr0BMtkkKmxv3qUqwYm5jil--bxgJO/exec";
+let datos={gastos:[],ingresos:[],deudas:[],pagos:[]}; let offsetSemana=0;
+function semanaKey(off){const d=new Date(); d.setDate(d.getDate()+off*7); const y=d.getFullYear(); const w=Math.ceil((((d - new Date(y,0,1))/86400000)+new Date(y,0,1).getDay()+1)/7); return y+'-W'+w;}
+function semanaLabel(off){const d=new Date(); d.setDate(d.getDate()+off*7); return 'Semana de '+d.toLocaleDateString('es-ES');}
+function cambiarSemana(dir){offsetSemana+=dir; render();}
+async function cargarDatos(){try{document.getElementById('semanaLabel').innerText='Cargando...'; const r=await fetch(SCRIPT_URL+'?action=getData'); datos=await r.json(); render();}catch(e){document.getElementById('semanaLabel').innerText='Error';}}
+function render(){const key=semanaKey(offsetSemana); document.getElementById('semanaLabel').innerText=semanaLabel(offsetSemana); const ingresoSemana=datos.ingresos.find(i=>i[1]==key); document.getElementById('ingreso').value=ingresoSemana?ingresoSemana[2]:''; const gastosSemana=datos.gastos.filter(g=>g[1]==key); const totalGastos=gastosSemana.reduce((s,g)=>s+parseFloat(g[3]||0),0); const ingresoVal=parseFloat(document.getElementById('ingreso').value)||(ingresoSemana?parseFloat(ingresoSemana[2]):0); const saldo=ingresoVal-totalGastos; document.getElementById('totalGastosTxt').innerText='Gastos: R$ '+totalGastos.toFixed(2); document.getElementById('sobraTxt').innerText='Te queda: R$ '+saldo.toFixed(2); const elSaldo=document.getElementById('saldo'); elSaldo.innerText='R$ '+saldo.toFixed(2); elSaldo.className='saldo '+(saldo>=0?'pos':'neg'); const listaG=document.getElementById('listaGastos'); if(!gastosSemana.length) listaG.innerHTML='<div style="color:#94a3b8;font-size:12px;text-align:center;padding:12px">Sin gastos esta semana</div>'; else listaG.innerHTML=gastosSemana.map(g=>`<div class="item"><div><b>${g[2]}</b><span class="badge">${g[4]||'Otros'}</span><div style="color:#94a3b8;font-size:11px">${new Date(g[0]).toLocaleDateString('es-ES')}</div></div><div style="font-weight:800">R$ ${g[3]}</div></div>`).reverse().join(''); renderDeudas();}
+function renderDeudas(){const cont=document.getElementById('listaDeudas'); if(!datos.deudas.length){cont.innerHTML='<div style="color:#94a3b8;font-size:12px;text-align:center;padding:12px">Sin deudas. Ej: Bicicleta 1300</div>'; document.getElementById('totalDeudas').innerText='Total debiendo: R$ 0'; return;} let totalGeneral=0; cont.innerHTML=datos.deudas.map(d=>{const id=d[0]; const nombre=d[1]; const valorTotal=parseFloat(d[2]); const estado=d[4]||'ABIERTA'; const pagos=datos.pagos.filter(p=>p[0].toString()==id.toString()); const pagado=pagos.reduce((s,p)=>s+parseFloat(p[2]||0),0); const queda=valorTotal-pagado; if(queda>0) totalGeneral+=queda; const historial=pagos.length?pagos.map(p=>`<div class="pago-item"><span>${new Date(p[3]).toLocaleDateString('es-ES')}</span><span>- R$ ${p[2]}</span></div>`).reverse().join(''):'<div style="color:#94a3b8;font-size:11px">Sin abonos aún</div>'; return `<div class="debt-card"><div style="display:flex;justify-content:space-between"><div class="debt-name">${nombre}</div><span class="badge" style="background:${estado=='PAGADA'?'#dcfce7':'#e0f2fe'};color:${estado=='PAGADA'?'#16a34a':'#0284c7'}">${estado}</span></div><div style="font-size:11px;color:#64748b;margin-top:2px">Total: R$ ${valorTotal.toFixed(2)} | Pagado: R$ ${pagado.toFixed(2)}</div><div class="debt-saldo" style="color:${queda<=0?'#16a34a':'#0f172a'}">${queda<=0?'¡PAGADA!':'Queda debiendo: R$ '+queda.toFixed(2)}</div><div style="background:#fff;border-radius:8px;padding:8px;margin:8px 0;max-height:100px;overflow:auto;border:1px solid #e2e8f0">${historial}</div><div class="row"><input id="pago-${id}" class="input" type="number" placeholder="Abono Ej: 100"><button class="btn btn-green" style="width:80px;margin:0" onclick="abonar('${id}')">Pagar</button></div></div>`;}).reverse().join(''); document.getElementById('totalDeudas').innerText='Total debiendo: R$ '+totalGeneral.toFixed(2);}
+async function postear(payload){const r=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(payload)}); return await r.json();}
+async function guardarIngreso(){const key=semanaKey(offsetSemana); const val=parseFloat(document.getElementById('ingreso').value)||0; if(!val) return alert('Pon un valor'); document.getElementById('semanaLabel').innerText='Guardando...'; await postear({action:'addIngreso',semana:key,valor:val}); await cargarDatos();}
+async function agregarGasto(){const desc=document.getElementById('descGasto').value.trim(); const valor=parseFloat(document.getElementById('valorGasto').value)||0; const cat=document.getElementById('catGasto').value; if(!desc||!valor) return alert('Completa'); document.getElementById('semanaLabel').innerText='Guardando...'; await postear({action:'addGasto',semana:semanaKey(offsetSemana),descripcion:desc,valor:valor,categoria:cat}); document.getElementById('descGasto').value=''; document.getElementById('valorGasto').value=''; await cargarDatos();}
+async function agregarDeuda(){const nombre=document.getElementById('nombreDeuda').value.trim(); const total=parseFloat(document.getElementById('valorDeuda').value)||0; if(!nombre||!total) return alert('Pon nombre y total'); document.getElementById('semanaLabel').innerText='Guardando...'; await postear({action:'addDeuda',nombre:nombre,valorTotal:total}); document.getElementById('nombreDeuda').value=''; document.getElementById('valorDeuda').value=''; await cargarDatos();}
+async function abonar(idDeuda){const input=document.getElementById('pago-'+idDeuda); const valor=parseFloat(input.value)||0; if(!valor) return alert('Pon cuanto pagaste'); document.getElementById('semanaLabel').innerText='Guardando...'; await postear({action:'addPago',idDeuda:idDeuda,valorPagado:valor}); input.value=''; await cargarDatos();}
+cargarDatos();
+</script>
+</body>
+</html>
