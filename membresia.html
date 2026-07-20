@@ -31,7 +31,7 @@
 <button class="fab" onclick="document.getElementById('modalNovo').classList.add('activo')">+</button>
 <div id="modalNovo" class="modal"><div class="modal-box"><h3 style="font-family:Cinzel;color:#C9A96E">Novo Cliente</h3>
 <input id="nome" class="input" placeholder="Nome"><input id="tel" class="input" placeholder="WhatsApp"><select id="tipo" class="input"><option>Mensal 5 cortes</option><option>Promo 3 cortes</option></select><textarea id="obs" class="input" placeholder="Observações" rows="2"></textarea><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px"><button onclick="document.getElementById('modalNovo').classList.remove('activo')" class="btn-sec">Cancelar</button><button onclick="novoCliente()" style="padding:12px;border-radius:10px;background:#198754;color:#fff;border:none">Salvar</button></div></div></div>
-<div id="modalComprovante" class="modal"><div class="modal-box"><h3 id="compTitulo" style="font-family:Cinzel;color:#C9A96E">Comprovante</h3><div id="compPreview" class="preview"></div><a id="btnEnviar" class="btn-whats" target="_blank" href="#">📱 Enviar no WhatsApp do Cliente</a><button class="btn-sec" onclick="document.getElementById('modalComprovante').classList.remove('activo')">Fechar</button></div></div>
+<div id="modalComprovante" class="modal"><div class="modal-box"><h3 id="compTitulo" style="font-family:Cinzel;color:#C9A96E">CORTE REGISTRADO!</h3><div id="compPreview" class="preview"></div><a id="btnEnviar" class="btn-whats" target="_blank" href="#">📱 Enviar no WhatsApp do Cliente</a><button class="btn-sec" onclick="document.getElementById('modalComprovante').classList.remove('activo')">Fechar</button></div></div>
 <script>
 const SCRIPT_URL="https://script.google.com/macros/s/AKfycbz8JaNuoYU7FQdswXy9p_sxROUVyoZZfMbJD4qzQBTlmATkPJB3wYltTmIiMrX4-PICOQ/exec";
 let clientes=[], filtroActual='TODOS';
@@ -59,12 +59,100 @@ function mostrar(){
 }
 function cambiarFiltro(f,b){filtroActual=f;document.querySelectorAll('.filtro').forEach(x=>x.classList.remove('activo'));b.classList.add('activo');mostrar()}
 function getClienteById(id){return clientes.find(c=>c.ID===id)}
-async function registrarCorte(id){ if(!confirm('Registrar corte?'))return; await api('registrarCorte',{id}); await carregar(); let c=getClienteById(id); if(c) comprovanteCorte(c); }
-async function renovar(id,paq){ if(!confirm('Renovar membresia?'))return; await api('renovarMembresia',{id,tipo:paq}); await carregar(); let c=getClienteById(id); if(c) comprovanteRenovacao(c); }
+
+async function registrarCorte(id){
+  if(!confirm('Registrar corte?'))return;
+  // Guardamos total antes para detectar si es el primer corte
+  let cAntes=getClienteById(id);
+  let totalAntes=cAntes?cAntes.CortesTotales:5;
+  let cortesAntes=cAntes?cAntes.CortesRestantes:0;
+
+  await api('registrarCorte',{id});
+  await carregar();
+  let c=getClienteById(id);
+  if(c) comprovanteCorte(c, cortesAntes, totalAntes);
+}
+async function renovar(id,paq){
+  if(!confirm('Renovar membresia?'))return;
+  await api('renovarMembresia',{id,tipo:paq});
+  await carregar();
+  // YA NO MUESTRA MENSAJE AL RENOVAR, SOLO RECARGA
+}
 async function novoCliente(){ const d={Nombre:document.getElementById('nome').value,WhatsApp:document.getElementById('tel').value,PaqueteActivo:document.getElementById('tipo').value,Observacoes:document.getElementById('obs').value}; if(!d.Nombre)return alert('Falta nome'); await api('agregarCliente',d); document.getElementById('modalNovo').classList.remove('activo'); carregar(); }
-function comprovanteCorte(c){ const nome=c.Nome||c.Nombre; const cortes=c.CortesRestantes||0; const total=c.CortesTotales||5; const vence=c.FechaVencimientoFormateada; const hoje=new Date().toLocaleDateString('pt-BR'); let bol=''; for(let i=0;i<total;i++) bol+= i<(total-cortes)?'●':'○'; let texto=cortes<=0?`*DAVID BARBER STUDIO* 👑💈\n*COMPROVANTE - ULTIMO CORTE*\n\n*Cliente:* ${nome}\n*Data:* ${hoje}\n*Cortes:* *${cortes} de ${total}* ${bol}\n*Vencimento:* ${vence}\n\n*Seus cortes acabaram!* 😔\nObrigado por fazer parte da familia David Barber Studio!\nQue tal renovar seu pacote VIP?\n\n@davidbarberstudio.br`:`*DAVID BARBER STUDIO* 👑💈\n*COMPROVANTE DE CORTE*\n\n*Cliente:* ${nome}\n*Data:* ${hoje}\n*Restam:* *${cortes} de ${total} cortes* ${bol}\n*Vencimento:* ${vence}\n\nObrigado por escolher David Barber Studio!\nAproveite seu estilo VIP! ✂️\n\n@davidbarberstudio.br`; abrirModal(c,texto,cortes<=0?'Pacote Finalizado!':'Corte Registrado!'); }
-function comprovanteRenovacao(c){ const nome=c.Nome||c.Nombre; const total=c.CortesTotales||5; const vence=c.FechaVencimientoFormateada; const hoje=new Date().toLocaleDateString('pt-BR'); const texto=`*DAVID BARBER STUDIO* 👑💈\n*MEMBRESIA VIP RENOVADA*\n\n*Cliente:* ${nome}\n*Pacote:* ${c.PaqueteActivo||''} - ${total} cortes\n*Inicio:* ${hoje}\n*Vencimento:* ${vence}\n\n*${total} CORTES DISPONIVEIS!*\n\nObrigado por continuar com a gente! Bem-vindo de volta a familia DBM! 👑✂️\n\n@davidbarberstudio.br`; abrirModal(c,texto,'Membresia Renovada!'); }
-function abrirModal(cliente,texto,titulo){ let tel=(cliente.WhatsApp||'').toString().replace(/\D/g,''); if(tel.length==10||tel.length==11) tel='55'+tel; const url='https://wa.me/'+tel+'?text='+encodeURIComponent(texto); document.getElementById('compTitulo').innerText=titulo; document.getElementById('compPreview').innerText=texto; document.getElementById('btnEnviar').href=url; document.getElementById('modalComprovante').classList.add('activo'); }
+
+function comprovanteCorte(c, cortesAntes, totalAntes){
+  const nome=c.Nome||c.Nombre; const cortes=c.CortesRestantes||0; const total=c.CortesTotales||5;
+  const vence=c.FechaVencimientoFormateada;
+  const hoje=new Date().toLocaleDateString('pt-BR');
+  // La fecha de inicio la sacamos del vencimiento menos 30 dias aprox, o usamos hoy si es renovacion
+  const inicio = c.FechaInicioFormateada || hoje;
+  let bol=''; for(let i=0;i<total;i++) bol+= i<(total-cortes)?'●':'○';
+
+  let esPrimerCorte = (cortesAntes === totalAntes); // si antes tenia todos, este es el primero
+  let texto=''; let titulo='CORTE REGISTRADO!';
+
+  if(cortes<=0){
+    // ULTIMO CORTE - MENSAJE QUE YA TENIAS
+    titulo='PACOTE FINALIZADO!';
+    texto=`*DAVID BARBER STUDIO* 👑💈
+*COMPROVANTE - ULTIMO CORTE*
+
+*Cliente:* ${nome}
+*Data do corte:* ${hoje}
+*Cortes:* *${cortes} de ${total}* ${bol}
+*Vencimento:* ${vence}
+
+*Seus cortes acabaram!* 😔
+Obrigado por fazer parte da familia David Barber Studio! Foi um prazer te atender.
+Que tal renovar seu pacote VIP e continuar com estilo impecavel? 💈✂️
+
+Te esperamos em breve!
+@davidbarberstudio.br`;
+  } else if(esPrimerCorte){
+    // PRIMER CORTE DESPUES DE RENOVAR - NUEVO MENSAJE ESPECIAL QUE PEDISTE
+    titulo='BEM-VINDO DE VOLTA!';
+    texto=`*DAVID BARBER STUDIO* 👑💈
+*PACOTE RENOVADO - BEM-VINDO DE VOLTA!*
+
+*Cliente:* ${nome}
+*Pacote:* ${c.PaqueteActivo||''}
+*Inicio do pacote:* ${inicio}
+*Data do corte:* ${hoje}
+*Vencimento:* ${vence}
+*Restam:* *${cortes} de ${total} cortes* ${bol}
+
+Muito obrigado por renovar e continuar fazendo parte da familia David Barber Studio! 🙏
+É uma honra ter você com a gente. Seu novo ciclo começou hoje!
+
+Aproveite seu estilo VIP! ✂️
+
+@davidbarberstudio.br`;
+  } else {
+    // CORTE NORMAL - IGUAL AL DE TU FOTO
+    texto=`*DAVID BARBER STUDIO* 👑💈
+*COMPROVANTE DE CORTE*
+
+*Cliente:* ${nome}
+*Data:* ${hoje}
+*Restam:* *${cortes} de ${total} cortes* ${bol}
+*Vencimento:* ${vence}
+
+Obrigado por escolher David Barber Studio!
+Aproveite seu estilo VIP! ✂️
+
+@davidbarberstudio.br`;
+  }
+  abrirModal(c,texto,titulo);
+}
+
+function abrirModal(cliente,texto,titulo){
+  let tel=(cliente.WhatsApp||'').toString().replace(/\D/g,''); if(tel.length==10||tel.length==11) tel='55'+tel;
+  const url='https://wa.me/'+tel+'?text='+encodeURIComponent(texto);
+  document.getElementById('compTitulo').innerText=titulo;
+  document.getElementById('compPreview').innerText=texto;
+  document.getElementById('btnEnviar').href=url;
+  document.getElementById('modalComprovante').classList.add('activo');
+}
 carregar();
 </script>
 </body>
