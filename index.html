@@ -1,10 +1,13 @@
- <!DOCTYPE html>
-<html lang="pt-BR"> 
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>David Barber Studio</title>
- <link rel="icon" href="./1781700842770.png">
+<link rel="icon" href="./1781700842770.png">
 <link rel="apple-touch-icon" href="./1781700842770.png">
 <link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#000000">
@@ -13,59 +16,13 @@
 <meta name="apple-mobile-web-app-title" content="DBStudio">
 <style>
 body, html { margin: 0; padding: 0; background: #000; min-height: 100%; }
-
-/* SPLASH CORRIGIDO - 2 SEGUNDOS */
-#loader {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: #000;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 99999;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
-}
-#loader.hidden {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-}
-#loader img {
-    width: 340px;
-    max-width: 80%;
-    filter: drop-shadow(0 0 30px rgba(197,160,89,0.8));
-}
-.loader-bar {
-    width: 220px;
-    height: 6px;
-    background: #222;
-    margin-top: 25px;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 0 20px rgba(197,160,89,0.4);
-}
-.loader-bar span {
-    display: block;
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, #967433, #c5a059, #fdf0cd);
-    animation: loading 2s forwards;
-    box-shadow: 0 0 15px #D4AF37;
-}
+#loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 99999; transition: opacity 0.5s ease, visibility 0.5s ease; }
+#loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+#loader img { width: 340px; max-width: 80%; filter: drop-shadow(0 0 30px rgba(197,160,89,0.8)); }
+.loader-bar { width: 220px; height: 6px; background: #222; margin-top: 25px; border-radius: 10px; overflow: hidden; box-shadow: 0 0 20px rgba(197,160,89,0.4); }
+.loader-bar span { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, #967433, #c5a059, #fdf0cd); animation: loading 2s forwards; box-shadow: 0 0 15px #D4AF37; }
 @keyframes loading { 0% { width: 0; } 100% { width: 100%; } }
-
-/* BODY */
-body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    color: #ddd;
-    text-align: center;
-    padding: 20px;
-}
-
+body { font-family: 'Segoe UI', Arial, sans-serif; color: #ddd; text-align: center; padding: 20px; }
 .db-header { font-family: 'Times New Roman', Georgia, serif; font-size: 54px; font-weight: bold; letter-spacing: 2px; line-height: 1; margin: 5px 0 2px 0; background: linear-gradient(135deg, #967433 0%, #fdf0cd 30%, #c5a059 70%, #ffffff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 8px rgba(197,160,89,0.5)); }
 .titulo { font-family: 'Times New Roman', Georgia, serif; font-size: 22px; font-weight: bold; letter-spacing: 4px; margin: 0 0 6px 0; background: linear-gradient(135deg, #c5a059 0%, #fdf0cd 50%, #c5a059 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .slogan { font-size: 10px; color: #ffffff; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 14px; opacity: 0.85; }
@@ -78,19 +35,7 @@ body {
 .card img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #c5a059; }
 .card span { display: block; margin-top: 6px; font-weight: bold; }
 .card.active { border: 2px solid #fdf0cd; box-shadow: 0 0 12px rgba(197, 160, 89, 0.6); }
-
-label {
-    display: block;
-    margin: 16px 0 8px;
-    font-weight: bold;
-    font-size: 15px;
-    text-align: left;
-    color: #c5a059;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    text-shadow: 0 0 10px rgba(197, 160, 89, 0.3);
-}
-
+label { display: block; margin: 16px 0 8px; font-weight: bold; font-size: 15px; text-align: left; color: #c5a059; text-transform: uppercase; letter-spacing: 1.5px; text-shadow: 0 0 10px rgba(197, 160, 89, 0.3); }
 select, input { width: 90%; padding: 14px; margin-bottom: 12px; border-radius: 10px; border: 1px solid #333; background: #000; color: #ffffff; font-size: 16px; box-sizing: border-box; }
 select:focus, input:focus { outline: none; border: 1px solid #c5a059; box-shadow: 0 0 8px rgba(197, 160, 89, 0.5); }
 select:disabled { opacity: 0.4; }
@@ -99,68 +44,13 @@ button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20p
 button:disabled { background: #222222; color: #555555; cursor: not-allowed; }
 #confirmacao { display: none; margin-top: 15px; color: #fdf0cd; font-weight: bold; font-size: 15px; background: #110f0a; padding: 14px; border-radius: 10px; border: 1px solid #c5a059; }
 .loading { text-align: center; color: #c5a059; margin-top: 10px; font-size: 14px; }
-
-/* Modal de Advertencia */
-.modal-overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.85);
-  z-index: 9999;
-  justify-content: center;
-  align-items: center;
-  backdrop-filter: blur(4px);
-}
-
-.modal-box {
-  background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
-  border: 2px solid #ff4444;
-  border-radius: 16px;
-  padding: 30px 25px;
-  text-align: center;
-  max-width: 85%;
-  width: 320px;
-  box-shadow: 0 8px 32px rgba(255, 68, 68, 0.4);
-  animation: modalPop 0.3s ease-out;
-}
-
-.modal-icon {
-  font-size: 50px;
-  margin-bottom: 15px;
-  line-height: 1;
-}
-
-.modal-texto {
-  color: #ff8a8a;
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  line-height: 1.4;
-}
-
-.modal-btn {
-  background: linear-gradient(90deg, #c9a059, #b38d4a);
-  color: #000;
-  border: none;
-  padding: 12px 40px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  width: 100%;
-}
-
-.modal-btn:active {
-  transform: scale(0.98);
-}
-
-@keyframes modalPop {
-  0% { transform: scale(0.5); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
-}
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
+.modal-box { background: linear-gradient(135deg, #1a1a1a, #0d0d0d); border: 2px solid #ff4444; border-radius: 16px; padding: 30px 25px; text-align: center; max-width: 85%; width: 320px; box-shadow: 0 8px 32px rgba(255, 68, 68, 0.4); animation: modalPop 0.3s ease-out; }
+.modal-icon { font-size: 50px; margin-bottom: 15px; line-height: 1; }
+.modal-texto { color: #ff8a8a; font-size: 18px; font-weight: 600; margin-bottom: 20px; line-height: 1.4; }
+.modal-btn { background: linear-gradient(90deg, #c9a059, #b38d4a); color: #000; border: none; padding: 12px 40px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; }
+.modal-btn:active { transform: scale(0.98); }
+@keyframes modalPop { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 </style>
 </head>
 <body>
@@ -188,50 +78,37 @@ button:disabled { background: #222222; color: #555555; cursor: not-allowed; }
         <img src="https://i.ibb.co/B5GDCLGN/IMG-20241012-152952-2.jpg" alt="David">
         <span>David</span>
       </div>
-        <div class="card" style="display:none" onclick="seleccionarBarber('João', this)">
-    <img src="LINK-DA-FOTO-DO-JOAO" alt="João">
-    <span>João</span>
-    </div>
+      <div class="card" style="display:none" onclick="seleccionarBarber('João', this)">
+        <img src="LINK-DA-FOTO-DO-JOAO" alt="João">
+        <span>João</span>
+      </div>
     </div>
     <input type="hidden" id="barbeiro" value="David">
-
     <label>✂️ Serviço Ofertado</label>
-    <select id="servico" required>
-      <option value="">Carregando...</option>
-    </select>
-
+    <select id="servico" required><option value="">Carregando...</option></select>
     <label>📅 Data do Agendamento</label>
     <input type="date" id="data" required>
-
     <label>👤 Seu Nome</label>
     <input type="text" id="cliente" placeholder="Digite seu nome completo" required>
-
     <label>📱 Seu WhatsApp</label>
     <input type="tel" inputmode="numeric" id="telefone" placeholder="Ex: 47999999999" required>
-
     <label>⏰ Horários Disponíveis</label>
-    <select id="hora" required disabled>
-      <option value="">Selecione data e serviço primeiro</option>
-    </select>
-
+    <select id="hora" required disabled><option value="">Selecione data e serviço primeiro</option></select>
     <div class="loading" id="loading" style="display:none;">Carregando horários...</div>
-    
     <button type="button" id="btnAgendar" onclick="solicitarAgendamento()" disabled>Agendar Horário ✅</button>
-      <!-- BOTÓN CANCELAR CITA -->
-<div style="text-align:center; margin-top:12px;">
-  <button type="button" onclick="mostrarCancelarCita()" style="background:transparent; color:#ff6b6b; padding:12px 25px; border:1px solid #4a2a2a; border-radius:8px; cursor:pointer; font-weight:600; width:90%; font-size:13px;">
-     CANCELAR MEU AGENDAMENTO ❌
-  </button>
+    <div style="text-align:center; margin-top:12px;">
+      <button type="button" onclick="mostrarCancelarCita()" style="background:transparent; color:#ff6b6b; padding:12px 25px; border:1px solid #4a2a2a; border-radius:8px; cursor:pointer; font-weight:600; width:90%; font-size:13px;">CANCELAR MEU AGENDAMENTO ❌</button>
+    </div>
+    <div style="margin-top:20px; display:flex; flex-direction:column; gap:8px; align-items:center;">
+      <button id="db-install-btn-fixed" type="button" style="width:90%; background:transparent; color:#C9A86A; border:1px solid #C9A86A; padding:12px; border-radius:10px; font-weight:700; font-size:13px; letter-spacing:0.5px; cursor:pointer;">📲 BAIXAR APP OFICIAL</button>
+      <div style="text-align:center; font-size:11px; color:#666; letter-spacing:0.3px;">Instale nosso app e agende mais rápido ✨</div>
+    </div>
+  </form>
+  <div id="confirmacao">Enviando agendamento para o sistema... por favor, aguarde. ⌛</div>
 </div>
-<!-- BOTÓN INSTALAR V3 - PREMIUM IGUAL A LOS OTROS - EN PORTUGUÊS -->
-<div style="margin-top:20px; display:flex; flex-direction:column; gap:8px; align-items:center;">
-  <button id="db-install-btn-fixed" type="button" style="width:90%; background:transparent; color:#C9A86A; border:1px solid #C9A86A; padding:12px; border-radius:10px; font-weight:700; font-size:13px; letter-spacing:0.5px; cursor:pointer;">
-    📲 BAIXAR APP OFICIAL
-  </button>
-  <div style="text-align:center; font-size:11px; color:#666; letter-spacing:0.3px;">
-    Instale nosso app e agende mais rápido ✨
-  </div>
-</div>
+
+<div id="modalErro" class="modal-overlay"><div class="modal-box"><div class="modal-icon">⚠️</div><div class="modal-texto">Preencha todos os campos obrigatórios</div><button class="modal-btn" onclick="document.getElementById('modalErro').style.display='none'">OK</button></div></div>
+<div id="modalCancelar" class="modal-overlay"><div class="modal-box" style="border-color:#c5a059"><h3 style="color:#c5a059">Cancelar Agendamento</h3><input type="tel" id="telCancelar" placeholder="Seu WhatsApp" style="margin-top:10px"><input type="date" id="dataCancelar"><div id="msgCancelar" style="display:none;margin-top:10px"></div><button onclick="cancelarCita()" style="width:100%;margin-top:10px">Confirmar Cancelamento</button><button onclick="document.getElementById('modalCancelar').style.display='none'" style="width:100%;background:#222;color:#fff;margin-top:8px">Fechar</button></div></div>
 
 <script>
 let deferredPrompt3;
@@ -246,116 +123,49 @@ if(btnFixed3){
     }
   });
 }
-</script>
-<!-- FIN V3 -->
-  </form>
-  <div id="confirmacao">Enviando agendamento para o sistema... por favor, aguarde. ⌛</div>
-</div>
 
-<script>
-    // Funções do Modal de Erro
-function mostrarErroModal() {
-  document.getElementById('modalErro').style.display = 'flex';
+function mostrarErroModal(){document.getElementById('modalErro').style.display='flex';}
+function fecharModal(){document.getElementById('modalErro').style.display='none';}
+function mostrarCancelarCita(){document.getElementById('modalCancelar').style.display='flex'; document.getElementById('msgCancelar').style.display='none';}
+function fecharCancelar(){document.getElementById('modalCancelar').style.display='none'; document.getElementById('telCancelar').value=''; document.getElementById('dataCancelar').value='';}
+
+async function cancelarCita(){
+  const telefone=document.getElementById('telCancelar').value.replace(/\D/g,'');
+  const data=document.getElementById('dataCancelar').value;
+  const msgDiv=document.getElementById('msgCancelar');
+  if(!telefone||!data){msgDiv.textContent='Preencha telefone e data'; msgDiv.style.display='block'; msgDiv.style.color='#f44336'; return;}
+  msgDiv.textContent='Cancelando...'; msgDiv.style.display='block'; msgDiv.style.color='#fdf0cd';
+  try{
+    const cb=new Date().getTime();
+    const response=await fetch(`${SCRIPT_URL}?action=cancelarCita&telefone=${telefone}&data=${data}&v=${cb}`,{cache:'no-store'});
+    const result=await response.json();
+    if(result.success){msgDiv.textContent='✅ '+result.message; msgDiv.style.color='#4CAF50'; if(result.whatsapp){window.location.href=result.whatsapp;} setTimeout(()=>{fecharCancelar(); triggerCargaHoras();},3000);}
+    else{msgDiv.textContent='❌ '+result.error; msgDiv.style.color='#f44336';}
+  }catch(error){msgDiv.textContent='Erro ao cancelar. Tente novamente.'; msgDiv.style.color='#f44336';}
 }
 
-function fecharModal() {
-  document.getElementById('modalErro').style.display = 'none';
-}
-// FUNÇÕES CANCELAR CITA
-function mostrarCancelarCita() {
-  document.getElementById('modalCancelar').style.display = 'flex';
-  document.getElementById('msgCancelar').style.display = 'none';
-}
-
-function fecharCancelar() {
-  document.getElementById('modalCancelar').style.display = 'none';
-  document.getElementById('telCancelar').value = '';
-  document.getElementById('dataCancelar').value = '';
-}
-
-async function cancelarCita() {
-  const telefone = document.getElementById('telCancelar').value.replace(/\D/g, '');
-  const data = document.getElementById('dataCancelar').value;
-  const msgDiv = document.getElementById('msgCancelar');
-
-  if (!telefone || !data) {
-    msgDiv.textContent = 'Preencha telefone e data';
-    msgDiv.style.display = 'block';
-    msgDiv.style.color = '#f44336';
-    return;
-  }
-
-  msgDiv.textContent = 'Cancelando...';
-  msgDiv.style.display = 'block';
-  msgDiv.style.color = '#fdf0cd';
-
-  try {
-    const response = await fetch(`${SCRIPT_URL}?action=cancelarCita&telefone=${telefone}&data=${data}`);
-    const result = await response.json();
-
-    if (result.success) {
-      msgDiv.textContent = '✅ ' + result.message;
-      msgDiv.style.color = '#4CAF50';
-    if (result.whatsapp) {
-    window.location.href = result.whatsapp; // ← Redirección directa, nunca se bloquea
-    }
-      setTimeout(() => { fecharCancelar(); triggerCargaHoras(); }, 3000);
-    } else {
-      msgDiv.textContent = '❌ ' + result.error;
-      msgDiv.style.color = '#f44336';
-    }
-  } catch (error) {
-    msgDiv.textContent = 'Erro ao cancelar. Tente novamente.';
-    msgDiv.style.color = '#f44336';
-  }
-}
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcQMOm11ba3BRV0pRKlVplcGx0goPhtHIHurr-jm0sa0rzs9ujvdeTH4xFEyPIhMKjlQ/exec';
 
-// SPLASH 2 SEGUNDOS
-window.addEventListener('load', () => {
-    setTimeout(() => {
-        document.getElementById('loader').classList.add('hidden');
-    }, 2000);
-});
+window.addEventListener('load', () => { setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 2000); });
 
-function seleccionarBarber(nombre, element) {
+function seleccionarBarber(nombre, element){
     document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
     element.classList.add('active');
     document.getElementById('barbeiro').value = nombre;
     triggerCargaHoras();
 }
 
-// PARCHE 1: HORARIOS NUEVOS + 12:00 INVISIBLE SÁBADO
-function getHorariosPorDia(dataStr) {
+function getHorariosPorDia(dataStr){
     const data = new Date(dataStr + 'T12:00:00');
-    const dia = data.getDay(); // 0=Dom, 1=Seg, 6=Sab
-
-    if (dia === 0) return []; // Domingo cerrado
-
-    if (dia === 1) { // LUNES: 08:30-11:00, 13:00-17:00 + 17:30 cálculo
-        return ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30'];
-    }
-
-    if (dia === 6) { // SÁBADO: 08:00-11:30, 12:00 INVISIBLE, 13:00-17:00 + 17:30 cálculo
-    return ['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30'];
-    }
-
-    // MARTES A VIERNES: 08:30-11:00, 13:00-19:00 + 19:30 cálculo
+    const dia = data.getDay();
+    if (dia === 0) return [];
+    if (dia === 1){ return ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30']; }
+    if (dia === 6){ return ['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30']; }
     return ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30'];
 }
 
-function esHoy(dataStr) {
-    const hoy = new Date();
-    const dataSel = new Date(dataStr + 'T12:00:00');
-    return hoy.toDateString() === dataSel.toDateString();
-}
-
-function getHoraActual() {
-    const ahora = new Date();
-    const h = String(ahora.getHours()).padStart(2, '0');
-    const m = String(ahora.getMinutes()).padStart(2, '0');
-    return `${h}:${m}`;
-}
+function esHoy(dataStr){ const hoy=new Date(); const dataSel=new Date(dataStr+'T12:00:00'); return hoy.toDateString()===dataSel.toDateString(); }
+function getHoraActual(){ const ahora=new Date(); return String(ahora.getHours()).padStart(2,'0')+':'+String(ahora.getMinutes()).padStart(2,'0'); }
 
 const mapaServicos = {
     'Corte': { preco: 'R$40', bloques: 1 },
@@ -364,262 +174,128 @@ const mapaServicos = {
     'Corte e Barba': { preco: 'R$70', bloques: 2 }
 };
 
-document.addEventListener('DOMContentLoaded', function() {
-    try {
-        const dataInput = document.getElementById('data');
-        const hoje = new Date();
-        dataInput.min = hoje.toISOString().split('T')[0];
-        const maxData = new Date();
-        maxData.setDate(hoje.getDate() + 30);
-        dataInput.max = maxData.toISOString().split('T')[0];
-
-        const servicoSelect = document.getElementById('servico');
-        servicoSelect.innerHTML = '<option value="">Selecione um serviço</option>';
-
-        for (const servico in mapaServicos) {
-            const preco = mapaServicos[servico].preco;
-            servicoSelect.innerHTML += '<option value="' + servico + '">' + servico + ' — ' + preco + '</option>';
+document.addEventListener('DOMContentLoaded', function(){
+    try{
+        const dataInput=document.getElementById('data');
+        const hoje=new Date();
+        dataInput.min=hoje.toISOString().split('T')[0];
+        const maxData=new Date(); maxData.setDate(hoje.getDate()+30);
+        dataInput.max=maxData.toISOString().split('T')[0];
+        const servicoSelect=document.getElementById('servico');
+        servicoSelect.innerHTML='<option value="">Selecione um serviço</option>';
+        for(const servico in mapaServicos){
+            servicoSelect.innerHTML+='<option value="'+servico+'">'+servico+' — '+mapaServicos[servico].preco+'</option>';
         }
-
         document.getElementById('data').addEventListener('change', triggerCargaHoras);
         document.getElementById('servico').addEventListener('change', triggerCargaHoras);
-
-        console.log('Serviços carregados com sucesso');
-    } catch(e) {
-        console.error('Erro ao carregar serviços:', e);
-    }
+    }catch(e){ console.error('Erro ao carregar serviços:', e); }
 });
 
-function triggerCargaHoras() {
-    carregarHorarios();
-}
+function triggerCargaHoras(){ carregarHorarios(); }
 
-async function carregarHorarios() {
-    const data = document.getElementById('data').value;
-    const servico = document.getElementById('servico').value;
-    const barbeiro = document.getElementById('barbeiro').value;
-    const horaSelect = document.getElementById('hora');
-    const loading = document.getElementById('loading');
-    const btn = document.getElementById('btnAgendar');
-
-    if (!data ||!servico) {
-        horaSelect.innerHTML = '<option value="">Selecione data e serviço primeiro</option>';
-        horaSelect.disabled = true;
-        btn.disabled = true;
-        return;
+async function carregarHorarios(){
+    const data=document.getElementById('data').value;
+    const servico=document.getElementById('servico').value;
+    const barbeiro=document.getElementById('barbeiro').value;
+    const horaSelect=document.getElementById('hora');
+    const loading=document.getElementById('loading');
+    const btn=document.getElementById('btnAgendar');
+    if(!data||!servico){
+        horaSelect.innerHTML='<option value="">Selecione data e serviço primeiro</option>';
+        horaSelect.disabled=true; btn.disabled=true; return;
     }
-
-    const dataObj = new Date(data + 'T12:00:00');
-    if (dataObj.getDay() === 0) {
-        horaSelect.innerHTML = '<option value="">Domingo não trabalhamos</option>';
-        horaSelect.disabled = true;
-        btn.disabled = true;
-        loading.style.display = 'none';
-        return;
+    const dataObj=new Date(data+'T12:00:00');
+    if(dataObj.getDay()===0){
+        horaSelect.innerHTML='<option value="">Domingo não trabalhamos</option>';
+        horaSelect.disabled=true; btn.disabled=true; loading.style.display='none'; return;
     }
+    loading.style.display='block';
+    horaSelect.disabled=true;
+    horaSelect.innerHTML='<option value="">Carregando...</option>';
+    try{
+        const cacheBuster=new Date().getTime();
+        const res=await fetch(`${SCRIPT_URL}?data=${data}&barbeiro=${barbeiro}&v=${cacheBuster}`,{cache:'no-store'});
+        const texto=await res.text();
+        let reservas;
+        try{ reservas=JSON.parse(texto); }catch(e){ console.error('Resposta nao JSON:',texto); throw e; }
+        if(!Array.isArray(reservas)) reservas=[];
 
-    loading.style.display = 'block';
-    horaSelect.disabled = true;
+        const todosHorarios=getHorariosPorDia(data);
+        const horariosOcupados=new Set();
+        const horaActual=getHoraActual();
+        const esDiaHoy=esHoy(data);
+        const bloquesNecesarios=mapaServicos[servico]?.bloques||1;
 
-    try {
-        const res = await fetch(`${SCRIPT_URL}?data=${data}&barbeiro=${barbeiro}`);
-        const reservas = await res.json();
-
-        const todosHorarios = getHorariosPorDia(data);
-        const horariosOcupados = new Set();
-        const horaActual = getHoraActual();
-        const esDiaHoy = esHoy(data);
-        const bloquesNecesarios = mapaServicos[servico]?.bloques || 1;
-
-        // MARCA BLOQUES OCUPADOS
-        reservas.forEach(r => {
-            const idx = todosHorarios.indexOf(r.hora);
-            if (idx!== -1) {
-                for (let i = 0; i < r.bloques; i++) {
-                    if (idx + i < todosHorarios.length) {
-                        horariosOcupados.add(todosHorarios[idx + i]);
-                    }
+        reservas.forEach(r=>{
+            const idx=todosHorarios.indexOf(r.hora);
+            if(idx!==-1){
+                for(let i=0;i<(r.bloques||1);i++){
+                    if(idx+i<todosHorarios.length) horariosOcupados.add(todosHorarios[idx+i]);
                 }
             }
         });
 
-        // PARCHE 2: OCULTA 11:30 Y 12:00 + ÚLTIMO HORARIO
-        const esSabado = new Date(data + 'T12:00:00').getDay() === 6;
-const horariosParaMostrar = todosHorarios.filter(h => {
-    if (h === '12:00') return false;
-    if (h === '11:30' &&!esSabado) return false;
-    return true;
-}).slice(0, -1);
-        horaSelect.innerHTML = '<option value="">Selecione um horário</option>';
-        let hayHorariosLibres = false;
+        const esSabado=new Date(data+'T12:00:00').getDay()===6;
+        const horariosParaMostrar=todosHorarios.filter(h=>{
+            if(h==='12:00') return false;
+            if(h==='11:30'&&!esSabado) return false;
+            return true;
+        }).slice(0,-1);
 
-        horariosParaMostrar.forEach((hora) => {
-            const idx = todosHorarios.indexOf(hora);
-            const pasado = esDiaHoy && hora < horaActual;
-
-            let bloqueado = false;
-            let motivoBloqueio = '';
-
-            if (pasado) {
-                bloqueado = true;
-                motivoBloqueio = 'Passado';
-            } else {
-                for (let i = 0; i < bloquesNecesarios; i++) {
-                    const slotVerificar = todosHorarios[idx + i];
-
-                    if (!slotVerificar) {
-                        bloqueado = true;
-                        motivoBloqueio = 'Não cabe';
-                        break;
-                    }
-
-                    if (horariosOcupados.has(slotVerificar)) {
-                        bloqueado = true;
-                        motivoBloqueio = 'Ocupado';
-                        break;
-                    }
+        horaSelect.innerHTML='<option value="">Selecione um horário</option>';
+        let hay=false;
+        horariosParaMostrar.forEach(hora=>{
+            const idx=todosHorarios.indexOf(hora);
+            const pasado=esDiaHoy&&hora<getHoraActual();
+            let bloqueado=false, motivo='';
+            if(pasado){ bloqueado=true; motivo='Passado'; }
+            else{
+                for(let i=0;i<bloquesNecesarios;i++){
+                    const slot=todosHorarios[idx+i];
+                    if(!slot){ bloqueado=true; motivo='Nao cabe'; break; }
+                    if(horariosOcupados.has(slot)){ bloqueado=true; motivo='Ocupado'; break; }
                 }
             }
-
-            if (bloqueado) {
-                horaSelect.innerHTML += `<option value="" disabled>${hora} - ${motivoBloqueio}</option>`;
-            } else {
-                horaSelect.innerHTML += `<option value="${hora}">${hora}</option>`;
-                hayHorariosLibres = true;
-            }
+            if(bloqueado) horaSelect.innerHTML+=`<option value="" disabled>${hora} - ${motivo}</option>`;
+            else{ horaSelect.innerHTML+=`<option value="${hora}">${hora}</option>`; hay=true; }
         });
 
-        if (!hayHorariosLibres) {
-            horaSelect.innerHTML = '<option value="">Agenda cheia, escolha outro dia</option>';
-            btn.disabled = true;
-        } else {
-            horaSelect.disabled = false;
-            btn.disabled = false;
-        }
+        if(!hay){ horaSelect.innerHTML='<option value="">Agenda cheia, escolha outro dia</option>'; btn.disabled=true; }
+        else{ horaSelect.disabled=false; btn.disabled=false; }
 
-    } catch (error) {
-        horaSelect.innerHTML = '<option value="">Erro ao carregar</option>';
+    }catch(error){
         console.error(error);
-    } finally {
-        loading.style.display = 'none';
-    }
+        horaSelect.innerHTML='<option value="">Erro ao carregar - recarregue a pagina</option>';
+    }finally{ loading.style.display='none'; }
 }
 
-// PEGA ESTO REEMPLAZANDO TU solicitarAgendamento ACTUAL
-async function solicitarAgendamento() {
-    const btn = document.getElementById('btnAgendar');
-    const confirmDiv = document.getElementById('confirmacao');
-    const data = document.getElementById('data').value;
-    const hora = document.getElementById('hora').value;
-    const cliente = document.getElementById('cliente').value;
-    const telefone = document.getElementById('telefone').value;
-    const servico = document.getElementById('servico').value;
-    const barbeiro = document.getElementById('barbeiro').value;
+async function solicitarAgendamento(){
+    const btn=document.getElementById('btnAgendar');
+    const confirmDiv=document.getElementById('confirmacao');
+    const data=document.getElementById('data').value;
+    const hora=document.getElementById('hora').value;
+    const cliente=document.getElementById('cliente').value;
+    const telefone=document.getElementById('telefone').value;
+    const servico=document.getElementById('servico').value;
+    const barbeiro=document.getElementById('barbeiro').value;
 
-    if (!data || !hora || !cliente || !telefone || !servico) {
-        mostrarErroModal();
-        return;
-    }
+    if(!data||!hora||!cliente||!telefone||!servico){ mostrarErroModal(); return; }
 
-    // 1. Abre ventana al instante para que Brave no bloquee
-    let janelaWpp = window.open('', '_blank');
+    btn.disabled=true; btn.innerHTML='⏳ VERIFICANDO...';
+    confirmDiv.style.display='block'; confirmDiv.textContent='Verificando disponibilidade...';
 
-    if (janelaWpp) {
-        janelaWpp.document.write(`
-            <html><head><meta name="viewport" content="width=device-width, initial-scale=1">
-            <style>
-            @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-            body{margin:0;background:#000;color:#fff;font-family:'Montserrat',Arial;display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;text-align:center;padding:20px;box-sizing:border-box}
-            .logo-box{width:140px;height:140px;background:#0a0a0a;border:2px solid #c5a059;border-radius:20px;display:flex;justify-content:center;align-items:center;box-shadow:0 0 30px rgba(197,160,89,0.4);margin-bottom:20px}
-            .logo-box img{width:110px;filter:drop-shadow(0 0 10px rgba(197,160,89,0.8))}
-            .warn{font-size:55px;animation:pulse 1.5s infinite}
-            @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
-            .spinner{width:45px;height:45px;border:4px solid #1a1a1a;border-top:4px solid #c5a059;border-radius:50%;animation:spin 1s linear infinite;margin:20px}
-            @keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
-            h2{color:#fdf0cd;font-size:21px;margin:10px 0 5px 0;letter-spacing:1px}
-            p{color:#aaa;font-size:14px;line-height:1.4;margin:5px}
-            .marca{margin-top:30px;color:#c5a059;font-size:10px;letter-spacing:3px;opacity:0.7}
-            </style></head>
-            <body>
-                <div class="logo-box"><img src="https://i.ibb.co/Mk0cWNvk/1781700650976.png"></div>
-                <div class="warn">⚠️</div>
-                <div class="spinner"></div>
-                <h2>Verificando seu horário...</h2>
-                <p>Aguarde um instante<br>Estamos garantindo sua disponibilidade</p>
-                <p style="color:#c5a059; margin-top:12px; font-size:12px;">✓ Tudo certo, só um segundo...</p>
-                <div class="marca">DAVID BARBER STUDIO</div>
-            </body></html>
-        `);
-    }
-
-    btn.disabled = true;
-    btn.innerHTML = '⏳ VERIFICANDO...';
-
-    try {
-        const formData = new URLSearchParams({ data, hora, cliente, telefone, servico, barbeiro });
-        const response = await fetch(SCRIPT_URL, { method: 'POST', body: formData });
-        const result = await response.json();
-
-        if (result.status === 'ocupado' || result.erro) {
-            if (janelaWpp) {
-                janelaWpp.document.write(`
-                    <html><head><meta name="viewport" content="width=device-width, initial-scale=1"><style>
-                    body{margin:0;background:#000;color:#fff;font-family:Arial;display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;text-align:center;padding:25px}
-                    h2{color:#ff6b6b;font-size:23px} p{color:#ccc;font-size:15px;line-height:1.5}
-                    button{background:linear-gradient(90deg,#967433,#c5a059);color:#000;border:none;padding:16px 35px;border-radius:12px;font-weight:bold;margin-top:25px;font-size:16px;cursor:pointer}
-                    .logo-mini{width:60px;opacity:0.6;margin-bottom:20px}
-                    </style></head>
-                    <body>
-                        <img class="logo-mini" src="https://i.ibb.co/Mk0cWNvk/1781700650976.png">
-                        <h2>⚠️ Horário Ocupado</h2>
-                        <p>Que pena! Alguém acabou de agendar<br><b style="color:#fff">${hora} do dia ${data}</b> agora mesmo.</p>
-                        <p style="color:#c5a059">Por favor, escolha outro horário disponível.</p>
-                        <button onclick="window.close()">ESCOLHER OUTRO HORÁRIO</button>
-                    </body></html>
-                `);
-            }
-            confirmDiv.innerHTML = '❌ Horário ocupado, escolha outro.';
-            confirmDiv.style.color = '#ff6b6b';
-            btn.disabled = false;
-            btn.innerHTML = 'Agendar Horário ✅';
-            triggerCargaHoras();
-            return;
-        }
-
-        if (janelaWpp) janelaWpp.location.href = result.whatsapp;
-        else window.open(result.whatsapp, '_blank');
-
-        confirmDiv.textContent = '✅ Agendado! Abrindo WhatsApp...';
-        confirmDiv.style.color = '#4CAF50';
-
-    } catch (e) {
-        if (janelaWpp) janelaWpp.close();
-        confirmDiv.textContent = '❌ Erro de conexão. Tente novamente.';
-        btn.disabled = false;
-        btn.innerHTML = 'Agendar Horário ✅';
-    }
-}
-
-</script>
-    <!-- Modal de Advertencia -->
-<div id="modalErro" class="modal-overlay">
-  <div class="modal-box">
-    <div class="modal-icon">⚠️</div>
-    <div class="modal-texto">Preencha todos os campos obrigatórios</div>
-    <button class="modal-btn" onclick="fecharModal()">OK</button>
-  </div>
-</div>
-<!-- MODAL CANCELAR CITA -->
-<div id="modalCancelar" class="modal-overlay">
-  <div class="modal-box" style="border: 2px solid #f44336; box-shadow: 0 8px 32px rgba(244, 67, 54, 0.4);">
-    <div class="modal-icon">❌</div>
-    <div class="modal-texto" style="color:#ff8a8a;">Cancelar Mi Cita</div>
-    <input type="tel" id="telCancelar" placeholder="Tu teléfono" style="width:100%; padding:12px; margin:8px 0 15px 0; border-radius:8px; border:1px solid #333; background:#000; color:#fff; box-sizing:border-box;">
-    <input type="date" id="dataCancelar" style="width:100%; padding:12px; margin:8px 0 20px 0; border-radius:8px; border:1px solid #333; background:#000; color:#fff; box-sizing:border-box;">
-    <button onclick="cancelarCita()" style="background:#f44336; color:white; padding:12px; border:none; border-radius:8px; width:100%; font-weight:bold; cursor:pointer; margin-bottom:10px;">Confirmar Cancelación</button>
-    <button onclick="fecharCancelar()" style="background:#666; color:white; padding:12px; border:none; border-radius:8px; width:100%; cursor:pointer;">Cerrar</button>
-    <div id="msgCancelar" style="color:#fdf0cd; margin-top:15px; text-align:center; display:none; font-size:14px;"></div>
-  </div>
-</div>
-</body>
-</html>
+    let janela=window.open('', '_blank');
+    if(janela){
+        janela.document.write(`
+        <html><head><meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+        body{margin:0;background:#000;color:#fff;font-family:Arial;display:flex;justify-content:center;align-items:center;height:100vh;text-align:center;padding:20px}
+       .box{background:#111;border:1px solid #c5a059;border-radius:20px;padding:30px 25px;max-width:340px;box-shadow:0 0 40px rgba(197,160,89,0.3)}
+       .logo{width:90px;margin-bottom:10px;filter:drop-shadow(0 0 10px rgba(197,160,89,0.8))}
+       .warn{font-size:48px}.spin{width:42px;height:42px;border:4px solid #222;border-top:4px solid #c5a059;border-radius:50%;animation:r 1s linear infinite;margin:15px auto}
+        @keyframes r{to{transform:rotate(360deg)}} h2{color:#fdf0cd;font-size:19px;margin:10px 0} p{color:#aaa;font-size:13px;line-height:1.4}.ok{color:#c5a059;font-size:11px;margin-top:10px}
+        </style></head>
+        <body><div class="box">
+        <img class="logo" src="https://i.ibb.co/Mk0cWNvk/1781700650976.png">
+        <div class="warn">⚠️</div><div class="spin"></div>
+        <h2>Verific
