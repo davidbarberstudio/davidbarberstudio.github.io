@@ -4,9 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>David Barber Studio</title>
-<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiRGF2aWQgQmFyYmVyIFN0dWRpbyIsInNob3J0X25hbWUiOiJEQiBCYXJiZXIiLCJzdGFydF91cmwiOiIuIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzAwMDAwMCIsInRoZW1lX2NvbG9yIjoiI2M1YTA1OSJ9">
-<meta name="theme-color" content="#c5a059">
+<link rel="icon" href="https://i.ibb.co/Mk0cWNvk/1781700650976.png">
+<link rel="apple-touch-icon" href="https://i.ibb.co/Mk0cWNvk/1781700650976.png">
+<link rel="manifest" href='data:application/json;base64,eyJuYW1lIjoiRGF2aWQgQmFyYmVyIFN0dWRpbyIsInNob3J0X25hbWUiOiJEQiBCYXJiZXIiLCJzdGFydF91cmwiOiIuL2luZGV4Lmh0bWwiLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjMDAwMDAwIiwidGhlbWVfY29sb3IiOiIjYzVhMDU5IiwiaWNvbnMiOlt7InNyYyI6Imh0dHBzOi8vaS5pYmIuY28vTWswY1dOdmsvMTc4MTcwMDY1MDk3Ni5wbmciLCJzaXplcyI6IjUxMng1MTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIn1dfQ=='>
+<meta name="theme-color" content="#000000">
 <style>
+/* TU CSS IGUAL */
 body, html { margin: 0; padding: 0; background: #000; min-height: 100%; }
 #loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 99999; transition: opacity 0.5s ease, visibility 0.5s ease; }
 #loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
@@ -15,19 +18,19 @@ body, html { margin: 0; padding: 0; background: #000; min-height: 100%; }
 .loader-bar span { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, #967433, #c5a059, #fdf0cd); animation: loading 2s forwards; }
 @keyframes loading { 0% { width: 0; } 100% { width: 100%; } }
 body { font-family: 'Segoe UI', Arial, sans-serif; color: #ddd; text-align: center; padding: 20px; }
-.db-header { font-family: 'Times New Roman', serif; font-size: 54px; font-weight: bold; background: linear-gradient(135deg, #967433 0%, #fdf0cd 30%, #c5a059 70%, #fff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.db-header { font-family: 'Times New Roman', serif; font-size: 54px; font-weight: bold; background: linear-gradient(135deg, #967433 0%, #fdf0cd 30%, #c5a059 70%, #ffffff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .titulo { font-size: 22px; font-weight: bold; letter-spacing: 4px; background: linear-gradient(135deg, #c5a059 0%, #fdf0cd 50%, #c5a059 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.slogan { font-size: 10px; color: #fff; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 14px; opacity: 0.85; }
+.slogan { font-size: 10px; color: #ffffff; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 14px; opacity: 0.85; }
 .horarios-info { font-size: 12px; color: #c5a059; line-height: 1.5; margin-bottom: 15px; border-bottom: 1px dashed #2c2514; padding-bottom: 15px; }
-#form-container { position: relative; max-width: 420px; margin: auto; padding: 25px; border-radius: 14px; background: #111; border: 1px solid #c5a059; box-shadow: 0 0 25px rgba(197,160,89,0.25); }
+#form-container { position: relative; max-width: 420px; margin: auto; padding: 25px; border-radius: 14px; background: #111; border: 1px solid #c5a059; box-shadow: 0 0 25px rgba(197,160,89,0.25); overflow: hidden; }
 #form-container::before { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%; background-image: url("https://i.ibb.co/dsPsJhgy/1781700842770.png"); background-size: contain; background-repeat: no-repeat; background-position: center; opacity: 0.06; z-index: 0; pointer-events: none; }
-#form-container form, #confirmacao { position: relative; z-index: 1; }
+#form-container form, #confirmacao,.botoes-internos { position: relative; z-index: 1; }
 .barbeiros { display: flex; justify-content: center; gap: 20px; margin: 10px 0 20px 0; }
 .card { background: #000; border-radius: 14px; padding: 12px; width: 115px; cursor: pointer; border: 2px solid transparent; }
-.card img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #c5a059; }
+.card img { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #c5a059; }
 .card.active { border: 2px solid #fdf0cd; }
 label { display: block; margin: 16px 0 8px; font-weight: bold; font-size: 15px; text-align: left; color: #c5a059; text-transform: uppercase; }
-select, input { width: 90%; padding: 14px; margin-bottom: 12px; border-radius: 10px; border: 1px solid #333; background: #000; color: #fff; font-size: 16px; }
+select, input { width: 90%; padding: 14px; margin-bottom: 12px; border-radius: 10px; border: 1px solid #333; background: #000; color: #ffffff; font-size: 16px; }
 button { background: linear-gradient(90deg, #967433, #c5a059); color: #000; border: none; padding: 14px; font-size: 17px; font-weight: bold; border-radius: 12px; cursor: pointer; margin-top: 15px; width: 90%; }
 button:disabled { background: #222; color: #555; }
 #confirmacao { display: none; margin-top: 15px; color: #fdf0cd; font-weight: bold; font-size: 15px; background: #110f0a; padding: 14px; border-radius: 10px; border: 1px solid #c5a059; }
@@ -36,6 +39,11 @@ button:disabled { background: #222; color: #555; }
 .modal-box { background: #1a1a1a; border: 2px solid #c5a059; border-radius: 16px; padding: 25px; text-align: center; max-width: 85%; width: 320px; }
 .modal-texto { color: #fdf0cd; font-size: 18px; margin-bottom: 20px; }
 .modal-btn { background: #c5a059; color: #000; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
+/* BOTONES DENTRO BONITOS */
+.btn-cancelar-interno { background: transparent!important; border: 1px solid rgba(255,68,68,0.3)!important; color: #ff6b6b!important; margin-top: 25px; font-size: 14px!important; letter-spacing: 1px; }
+.btn-instalar-interno { background: transparent!important; border: 1px solid #c5a059!important; color: #c5a059!important; font-size: 14px!important; margin-top: 12px; }
+.btn-instalar-interno b { color: #fdf0cd; }
+.subtexto-app { font-size: 11px; color: #666; margin-top: 8px; }
 </style>
 </head>
 <body>
@@ -50,13 +58,11 @@ button:disabled { background: #222; color: #555; }
 <div id="form-container">
   <form id="agendaForm">
     <label>💈 Profissional</label>
-    <div class="barbeiros">
-      <div class="card active" onclick="seleccionarBarber('David', this)"><img src="https://i.ibb.co/B5GDCLGN/IMG-20241012-152952-2.jpg"><span>David</span></div>
-    </div>
+    <div class="barbeiros"><div class="card active" onclick="seleccionarBarber('David', this)"><img src="https://i.ibb.co/B5GDCLGN/IMG-20241012-152952-2.jpg"><span>David</span></div></div>
     <input type="hidden" id="barbeiro" value="David">
-    <label>✂️ Serviço</label>
+    <label>✂️ Serviço Ofertado</label>
     <select id="servico" required><option value="">Carregando...</option></select>
-    <label>📅 Data</label>
+    <label>📅 Data do Agendamento</label>
     <input type="date" id="data" required>
     <label>👤 Seu Nome</label>
     <input type="text" id="cliente" placeholder="Digite seu nome completo" required>
@@ -68,16 +74,27 @@ button:disabled { background: #222; color: #555; }
     <button type="button" id="btnAgendar" onclick="solicitarAgendamento()" disabled>Agendar Horário ✅</button>
   </form>
   <div id="confirmacao">Enviando agendamento para o sistema... por favor, aguarde. ⌛</div>
+
+  <!-- AQUI DENTRO COMO EN LA FOTO BONITA -->
+  <div class="botoes-internos">
+    <button type="button" class="btn-cancelar-interno" onclick="abrirCancelar()">CANCELAR MEU AGENDAMENTO ❌</button>
+    <button type="button" id="btnInstalar" class="btn-instalar-interno" onclick="instalarApp()">📲 BAIXAR APP OFICIAL</button>
+    <div class="subtexto-app">Instale nosso app e agende mais rápido ✨</div>
+  </div>
 </div>
 
-<!-- SOLO LOS 2 BOTONES QUE PEDISTE -->
-<div style="max-width:420px; margin:20px auto; display:flex; flex-direction:column; gap:12px;">
-  <button onclick="abrirCancelar()" style="background:#1a1a1a; border:1px solid #c5a059; color:#c5a059; width:100%;">❌ Cancelar Meu Horário</button>
-  <button id="btnInstalar" onclick="instalarApp()" style="display:block; width:100%;">⬇️ Baixar App</button>
-</div>
+<div id="modalErro" class="modal-overlay"><div class="modal-box"><div class="modal-texto">Preencha todos os campos</div><button class="modal-btn" onclick="this.parentElement.parentElement.style.display='none'">OK</button></div></div>
 
-<div id="modalErro" class="modal-overlay"><div class="modal-box"><div style="font-size:40px;">⚠️</div><div class="modal-texto">Preencha todos os campos</div><button class="modal-btn" onclick="document.getElementById('modalErro').style.display='none'">OK</button></div></div>
-<div id="modalCancelar" class="modal-overlay"><div class="modal-box"><div class="modal-texto">Cancelar Agendamento</div><input type="date" id="cancelData" style="width:100%; padding:12px; margin-bottom:10px; background:#000; color:#fff; border:1px solid #333; border-radius:8px;"><select id="cancelHora" style="width:100%; padding:12px; margin-bottom:10px; background:#000; color:#fff;"><option>Selecione o horário</option></select><input type="tel" id="cancelTelefone" placeholder="Seu WhatsApp" style="width:100%; padding:12px; margin-bottom:15px; background:#000; color:#fff; border:1px solid #333; border-radius:8px;"><button class="modal-btn" onclick="confirmarCancelar()">Confirmar Cancelamento</button><button onclick="document.getElementById('modalCancelar').style.display='none'" style="margin-top:10px; background:#222; color:#fff; width:100%; padding:12px; border-radius:8px; border:none;">Voltar</button></div></div>
+<div id="modalCancelar" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-texto">Cancelar Agendamento</div>
+    <p style="font-size:12px; color:#888; margin-bottom:15px;">Informe a data e WhatsApp da reserva</p>
+    <input type="date" id="cancelData" style="width:100%; padding:12px; margin-bottom:10px; background:#000; color:#fff; border:1px solid #333; border-radius:8px;">
+    <input type="tel" id="cancelTelefone" placeholder="Seu WhatsApp" style="width:100%; padding:12px; margin-bottom:15px; background:#000; color:#fff; border:1px solid #333; border-radius:8px;">
+    <button class="modal-btn" onclick="confirmarCancelar()">Confirmar Cancelamento</button>
+    <button onclick="document.getElementById('modalCancelar').style.display='none'" style="margin-top:10px; background:#222; color:#fff; width:100%; padding:12px; border-radius:8px; border:none;">Voltar</button>
+  </div>
+</div>
 
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcQMOm11ba3BRV0pRKlVplcGx0goPhtHIHurr-jm0sa0rzs9ujvdeTH4xFEyPIhMKjlQ/exec';
@@ -98,7 +115,7 @@ async function carregarHorarios() {
     const dataObj = new Date(data + 'T12:00:00'); if (dataObj.getDay() === 0) { horaSelect.innerHTML = '<option value="">Domingo não trabalhamos</option>'; horaSelect.disabled = true; btn.disabled = true; loading.style.display = 'none'; return; }
     loading.style.display = 'block'; horaSelect.disabled = true;
     try {
-        const res = await fetch(`${SCRIPT_URL}?data=${data}&barbeiro=${barbeiro}`); const reservas = await res.json();
+        const res = await fetch(`${SCRIPT_URL}?data=${data}&barbeiro=${barbeiro}&v=${Date.now()}`); const reservas = await res.json();
         const todosHorarios = getHorariosPorDia(data); const horariosOcupados = new Set(); const horaActual = getHoraActual(); const esDiaHoy = esHoy(data); const bloquesNecesarios = mapaServicos[servico]?.bloques || 1;
         reservas.forEach(r => { const idx = todosHorarios.indexOf(r.hora); if (idx!== -1) { for (let i = 0; i < r.bloques; i++) { if (idx + i < todosHorarios.length) { horariosOcupados.add(todosHorarios[idx + i]); } } } });
         const esSabado = new Date(data + 'T12:00:00').getDay() === 6; const horariosParaMostrar = todosHorarios.filter(h => { if (h === '12:00') return false; if (h === '11:30' &&!esSabado) return false; return true; }).slice(0, -1);
@@ -115,14 +132,32 @@ async function solicitarAgendamento() {
     try {
         const formData = new URLSearchParams(dados); const response = await fetch(SCRIPT_URL, { method: 'POST', body: formData }); const result = await response.json();
         if (result.success) { confirmDiv.textContent = 'Agendamento confirmado! Abrindo WhatsApp... ✅'; confirmDiv.style.color = '#4CAF50'; window.open(result.whatsapp, '_blank'); setTimeout(() => { confirmDiv.style.display = 'none'; document.getElementById('agendaForm').reset(); document.getElementById('hora').innerHTML = '<option value="">Selecione data e serviço primeiro</option>'; document.getElementById('hora').disabled = true; btn.disabled = true; btn.textContent = 'Agendar Horário ✅'; carregarHorarios(); }, 3000); } else { throw new Error(result.error); }
-    } catch (error) { confirmDiv.style.display = 'none'; btn.disabled = false; btn.textContent = 'Agendar Horário ✅'; alert(`⚠️ Horário Indisponível\n\n${error.message}\n\nEscolha outro horário.`); carregarHorarios(); }
+    } catch (error) { confirmDiv.style.display = 'none'; btn.disabled = false; btn.textContent = 'Agendar Horário ✅'; alert(`⚠️ Horário Indisponível\n\n${error.message}`); carregarHorarios(); }
 }
-// BOTONES
-let deferredPrompt; window.addEventListener('beforeinstallprompt', (e)=>{ e.preventDefault(); deferredPrompt=e; document.getElementById('btnInstalar').style.display='block'; });
-function instalarApp(){ if(deferredPrompt){ deferredPrompt.prompt(); } else { alert('No Brave: 3 pontinhos > Instalar app'); } }
+
+// --- PARCHES ARREGLADOS ---
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e)=>{ e.preventDefault(); deferredPrompt=e; document.getElementById('btnInstalar').style.display='block'; });
+function instalarApp(){
+  if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt.userChoice.then(r=>{ if(r.outcome==='accepted'){ document.getElementById('btnInstalar').style.display='none'; } deferredPrompt=null; });
+  } else {
+    // Fallback si ya está instalado o en iOS
+    if(window.matchMedia('(display-mode: standalone)').matches){ alert('✅ App já instalado!'); } else { alert('Para instalar: No menu do navegador clique em "Instalar app" ou "Adicionar à tela inicial"'); }
+  }
+}
 function abrirCancelar(){ document.getElementById('modalCancelar').style.display='flex'; }
-async function confirmarCancelar(){ var data=document.getElementById('cancelData').value; var hora=document.getElementById('cancelHora').value; var tel=document.getElementById('cancelTelefone').value; if(!data||!hora||!tel){ alert('Preencha tudo'); return; } var formData=new URLSearchParams({acao:'cancelar', data:data, hora:hora, telefone:tel}); var res=await fetch(SCRIPT_URL,{method:'POST', body:formData}); var r=await res.json(); if(r.success){ alert('✅ Cancelado!'); document.getElementById('modalCancelar').style.display='none'; carregarHorarios(); } else { alert('❌ '+r.error); } }
-document.getElementById('cancelData').addEventListener('change', function(){ var todos=getHorariosPorDia(this.value); var sel=document.getElementById('cancelHora'); sel.innerHTML='<option value="">Selecione</option>'; todos.filter(h=>h!=='12:00').forEach(h=> sel.innerHTML+='<option value="'+h+'">'+h+'</option>'); });
+async function confirmarCancelar(){
+  var data=document.getElementById('cancelData').value;
+  var tel=document.getElementById('cancelTelefone').value.replace(/\D/g,'');
+  if(!data||!tel){ alert('Preencha data e WhatsApp'); return; }
+  if(!confirm('Cancelar todos os agendamentos de '+data+' com esse WhatsApp?')) return;
+  try{
+    var formData=new URLSearchParams({acao:'cancelar', data:data, telefone:tel});
+    var res=await fetch(SCRIPT_URL,{method:'POST', body:formData});
+    var r=await res.json();
+    if(r.success){ alert('✅ Cancelado: '+r.count+' agendamento(s)'); document.getElementById('modalCancelar').style.display='none'; carregarHorarios(); } else { alert('❌ '+r.error); }
+  }catch(e){ alert('Erro de conexão'); }
+}
 </script>
 </body>
-</html>
+  </html>
