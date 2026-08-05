@@ -122,9 +122,53 @@ async function carregarHorarios(){
   loading.style.display='none';
 }
 
-async function solicitarAgendamento(){
+async function carregarHorarios(){
+  var data=document.getElementById('data').value;
+  var servico=document.getElementById('servico').value;
+  var barbeiro=document.getElementById('barbeiro').value;
+  var horaSelect=document.getElementById('hora');
+  var loading=document.getElementById('loading');
   var btn=document.getElementById('btnAgendar');
-  var confirmDiv=document.getElementById('confirmacao');
+  if(!data||!servico){ horaSelect.innerHTML='<option value="">Selecione data e serviço primeiro</option>'; horaSelect.disabled=true; btn.disabled=true; return; }
+  var dObj=new Date(data+'T12:00:00');
+  if(dObj.getDay()===0){ horaSelect.innerHTML='<option value="">Domingo não trabalhamos</option>'; horaSelect.disabled=true; btn.disabled=true; loading.style.display='none'; return; }
+  loading.style.display='block';
+  horaSelect.disabled=true;
+  horaSelect.innerHTML='<option value="">Carregando...</option>';
+  try{
+    var res=await fetch(SCRIPT_URL+'?data='+data+'&barbeiro='+barbeiro+'&v='+Date.now());
+    var reservas=await res.json();
+    var todos=getHorariosPorDia(data);
+    var ocup=new Set();
+    var hActual=getHoraActual();
+    var hoy=esHoy(data);
+    var bloq=mapaServicos[servico].bloques||1;
+    reservas.forEach(function(r){
+      var idx=todos.indexOf(r.hora);
+      if(idx!==-1){ for(var i=0;i<(r.bloques||1);i++){ if(idx+i<todos.length) ocup.add(todos[idx+i]); } }
+    });
+    var esSab=dObj.getDay()===6;
+    var mostrar=todos.filter(function(h){ if(h==='12:00') return false; if(h==='11:30'&&!esSab) return false; return true; }).slice(0,-1);
+    horaSelect.innerHTML='<option value="">Selecione um horário</option>';
+    var hay=false;
+    mostrar.forEach(function(h){
+      var idx=todos.indexOf(h);
+      var pasado=hoy&&h<hActual;
+      var bloqueado=false; var mot='';
+      if(pasado){bloqueado=true; mot='Passado';}
+      else { for(var i=0;i<bloq;i++){ var s=todos[idx+i]; if(!s){bloqueado=true;mot='Nao cabe';break;} if(ocup.has(s)){bloqueado=true;mot='Ocupado';break;} } }
+      if(bloqueado){horaSelect.innerHTML+='<option disabled>'+h+' - '+mot+'</option>';}
+      else {horaSelect.innerHTML+='<option value="'+h+'">'+h+'</option>'; hay=true;}
+    });
+    if(!hay){ horaSelect.innerHTML='<option value="">Agenda cheia</option>'; btn.disabled=true; } else { horaSelect.disabled=false; btn.disabled=false; }
+  }catch(e){
+    horaSelect.innerHTML='<option value="">Erro ao carregar</option>';
+    console.error(e);
+  }
+  loading.style.display='none';
+}
+
+async function solicitarAgendamento(){
   var data=document.getElementById('data').value;
   var hora=document.getElementById('hora').value;
   var cliente=document.getElementById('cliente').value;
@@ -132,48 +176,33 @@ async function solicitarAgendamento(){
   var servico=document.getElementById('servico').value;
   var barbeiro=document.getElementById('barbeiro').value;
   if(!data||!hora||!cliente||!telefone||!servico){ mostrarErroModal(); return; }
-
-  btn.disabled=true; 
-  btn.innerHTML='⏳ ENVIANDO...';
-  confirmDiv.style.display='block';
-  confirmDiv.textContent='Enviando agendamento...';
-
+  var btn=document.getElementById('btnAgendar');
+  btn.disabled=true; btn.innerHTML='⏳ AGENDANDO...';
   try{
     var formData=new URLSearchParams({data:data,hora:hora,cliente:cliente,telefone:telefone,servico:servico,barbeiro:barbeiro});
-    var response=await fetch(SCRIPT_URL,{method:'POST',body:formData,cache:'no-store'});
+    var response=await fetch(SCRIPT_URL,{method:'POST',body:formData});
     var result=await response.json();
-
-    if(result.status==='ocupado'){
-      confirmDiv.textContent='❌ Horario ocupado, elige otro';
-      confirmDiv.style.color='#ff6b6b';
-      btn.disabled=false;
-      btn.innerHTML='Agendar Horário ✅';
+    if(result.success===false){
+      alert(result.error);
+      btn.disabled=false; btn.innerHTML='Agendar Horário ✅';
       carregarHorarios();
       return;
     }
-
-    // ABRE WHATSAPP DESPUES DEL FETCH - ASI NO BLOQUEA EL SHEET
     window.open(result.whatsapp,'_blank');
-    confirmDiv.textContent='✅ Agendado! Abrindo WhatsApp...';
-    confirmDiv.style.color='#4CAF50';
-
-    // LIMPIA CAMPOS PARA OTRA CITA
-    document.getElementById('agendaForm').reset();
+    document.getElementById('confirmacao').style.display='block';
+    document.getElementById('confirmacao').textContent='✅ Agendado! Abrindo WhatsApp...';
+    // limpia para otra cita
+    document.getElementById('cliente').value='';
+    document.getElementById('telefone').value='';
     document.getElementById('hora').innerHTML='<option value="">Selecione data e serviço primeiro</option>';
     document.getElementById('hora').disabled=true;
-    document.getElementById('barbeiro').value='David';
-    document.querySelectorAll('.card').forEach(c=>c.classList.remove('active'));
-    document.querySelector('.card').classList.add('active');
     btn.innerHTML='Agendar Horário ✅';
-    btn.disabled=true;
-
-  }catch(e){
-    console.error(e);
-    confirmDiv.textContent='❌ Erro de conexao, tente novamente';
-    btn.disabled=false;
-    btn.innerHTML='Agendar Horário ✅';
+  }catch(err){
+    alert('Erro de conexão');
+    btn.disabled=false; btn.innerHTML='Agendar Horário ✅';
   }
 }
+
 
 async function cancelarCita(){
   var tel=document.getElementById('telCancelar').value.replace(/\D/g,''); var data=document.getElementById('dataCancelar').value; var msg=document.getElementById('msgCancelar');
