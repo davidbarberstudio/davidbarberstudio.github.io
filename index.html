@@ -133,29 +133,46 @@ async function solicitarAgendamento(){
   var barbeiro=document.getElementById('barbeiro').value;
   if(!data||!hora||!cliente||!telefone||!servico){ mostrarErroModal(); return; }
 
-  var janela=window.open('','_blank');
-  if(janela){
-    janela.document.write('<html><head><meta name="viewport" content="width=device-width,initial-scale=1"><style>html,body{width:100%;height:100%;margin:0;background:#000}body{display:flex;justify-content:center;align-items:center;min-height:100vh;background:#000;font-family:Arial;padding:24px}.box{width:100%;max-width:440px;background:#111;border:2px solid #c5a059;border-radius:24px;padding:44px 28px;text-align:center;box-shadow:0 0 60px rgba(197,160,89,0.6)}.logo{width:140px;margin-bottom:18px}.warn{font-size:68px;margin:12px 0}.spin{width:64px;height:64px;border:6px solid #222;border-top:6px solid #c5a059;border-radius:50%;animation:r 1s linear infinite;margin:22px auto}@keyframes r{to{transform:rotate(360deg)}}h2{color:#fdf0cd;font-size:28px;margin:18px 0} p{color:#aaa;font-size:18px;line-height:1.5}.ok{color:#c5a059;font-size:14px;margin-top:18px}</style></head><body><div class="box"><img class="logo" src="https://i.ibb.co/Mk0cWNvk/1781700650976.png"><div class="warn">⚠️</div><div class="spin"></div><h2>Verificando seu horario...</h2><p>Aguarde um instante<br>Estamos garantindo sua disponibilidade</p><div class="ok">✓ Tudo certo, so um segundo...</div></div></body></html>');
-    janela.document.close();
-  }
-  btn.disabled=true; btn.innerHTML='⏳ VERIFICANDO...'; confirmDiv.style.display='block'; confirmDiv.textContent='Verificando disponibilidade...';
+  btn.disabled=true; 
+  btn.innerHTML='⏳ ENVIANDO...';
+  confirmDiv.style.display='block';
+  confirmDiv.textContent='Enviando agendamento...';
+
   try{
     var formData=new URLSearchParams({data:data,hora:hora,cliente:cliente,telefone:telefone,servico:servico,barbeiro:barbeiro});
     var response=await fetch(SCRIPT_URL,{method:'POST',body:formData,cache:'no-store'});
     var result=await response.json();
-    if(result.status==='ocupado'){ if(janela){ janela.close(); } confirmDiv.textContent='❌ Horario ocupado!'; btn.disabled=false; btn.innerHTML='Agendar Horário ✅'; carregarHorarios(); return; }
-    if(janela){ janela.location.href=result.whatsapp; }
-    confirmDiv.textContent='✅ Agendado! Abrindo WhatsApp...'; confirmDiv.style.color='#4CAF50';
-    // LIMPIA TODO PARA OTRA CITA
+
+    if(result.status==='ocupado'){
+      confirmDiv.textContent='❌ Horario ocupado, elige otro';
+      confirmDiv.style.color='#ff6b6b';
+      btn.disabled=false;
+      btn.innerHTML='Agendar Horário ✅';
+      carregarHorarios();
+      return;
+    }
+
+    // ABRE WHATSAPP DESPUES DEL FETCH - ASI NO BLOQUEA EL SHEET
+    window.open(result.whatsapp,'_blank');
+    confirmDiv.textContent='✅ Agendado! Abrindo WhatsApp...';
+    confirmDiv.style.color='#4CAF50';
+
+    // LIMPIA CAMPOS PARA OTRA CITA
     document.getElementById('agendaForm').reset();
     document.getElementById('hora').innerHTML='<option value="">Selecione data e serviço primeiro</option>';
     document.getElementById('hora').disabled=true;
     document.getElementById('barbeiro').value='David';
     document.querySelectorAll('.card').forEach(c=>c.classList.remove('active'));
     document.querySelector('.card').classList.add('active');
-    btn.disabled=true; btn.innerHTML='Agendar Horário ✅';
-    carregarHorarios();
-  }catch(e){ if(janela) janela.close(); confirmDiv.textContent='❌ Erro'; btn.disabled=false; btn.innerHTML='Agendar Horário ✅'; }
+    btn.innerHTML='Agendar Horário ✅';
+    btn.disabled=true;
+
+  }catch(e){
+    console.error(e);
+    confirmDiv.textContent='❌ Erro de conexao, tente novamente';
+    btn.disabled=false;
+    btn.innerHTML='Agendar Horário ✅';
+  }
 }
 
 async function cancelarCita(){
