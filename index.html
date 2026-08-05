@@ -3,9 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
 <title>David Barber Studio</title>
 <link rel="icon" href="./1781700842770.png">
 <link rel="apple-touch-icon" href="./1781700842770.png">
@@ -123,12 +120,10 @@ if(btnFixed3){
     }
   });
 }
-
 function mostrarErroModal(){document.getElementById('modalErro').style.display='flex';}
 function fecharModal(){document.getElementById('modalErro').style.display='none';}
 function mostrarCancelarCita(){document.getElementById('modalCancelar').style.display='flex'; document.getElementById('msgCancelar').style.display='none';}
 function fecharCancelar(){document.getElementById('modalCancelar').style.display='none'; document.getElementById('telCancelar').value=''; document.getElementById('dataCancelar').value='';}
-
 async function cancelarCita(){
   const telefone=document.getElementById('telCancelar').value.replace(/\D/g,'');
   const data=document.getElementById('dataCancelar').value;
@@ -143,18 +138,9 @@ async function cancelarCita(){
     else{msgDiv.textContent='❌ '+result.error; msgDiv.style.color='#f44336';}
   }catch(error){msgDiv.textContent='Erro ao cancelar. Tente novamente.'; msgDiv.style.color='#f44336';}
 }
-
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcQMOm11ba3BRV0pRKlVplcGx0goPhtHIHurr-jm0sa0rzs9ujvdeTH4xFEyPIhMKjlQ/exec';
-
 window.addEventListener('load', () => { setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 2000); });
-
-function seleccionarBarber(nombre, element){
-    document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
-    element.classList.add('active');
-    document.getElementById('barbeiro').value = nombre;
-    triggerCargaHoras();
-}
-
+function seleccionarBarber(nombre, element){ document.querySelectorAll('.card').forEach(c => c.classList.remove('active')); element.classList.add('active'); document.getElementById('barbeiro').value = nombre; triggerCargaHoras(); }
 function getHorariosPorDia(dataStr){
     const data = new Date(dataStr + 'T12:00:00');
     const dia = data.getDay();
@@ -163,36 +149,22 @@ function getHorariosPorDia(dataStr){
     if (dia === 6){ return ['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30']; }
     return ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30'];
 }
-
 function esHoy(dataStr){ const hoy=new Date(); const dataSel=new Date(dataStr+'T12:00:00'); return hoy.toDateString()===dataSel.toDateString(); }
 function getHoraActual(){ const ahora=new Date(); return String(ahora.getHours()).padStart(2,'0')+':'+String(ahora.getMinutes()).padStart(2,'0'); }
-
-const mapaServicos = {
-    'Corte': { preco: 'R$40', bloques: 1 },
-    'Barba': { preco: 'R$30', bloques: 1 },
-    'Sobrancelha': { preco: 'R$10', bloques: 1 },
-    'Corte e Barba': { preco: 'R$70', bloques: 2 }
-};
-
+const mapaServicos = { 'Corte': { preco: 'R$40', bloques: 1 }, 'Barba': { preco: 'R$30', bloques: 1 }, 'Sobrancelha': { preco: 'R$10', bloques: 1 }, 'Corte e Barba': { preco: 'R$70', bloques: 2 } };
 document.addEventListener('DOMContentLoaded', function(){
-    try{
-        const dataInput=document.getElementById('data');
-        const hoje=new Date();
-        dataInput.min=hoje.toISOString().split('T')[0];
-        const maxData=new Date(); maxData.setDate(hoje.getDate()+30);
-        dataInput.max=maxData.toISOString().split('T')[0];
-        const servicoSelect=document.getElementById('servico');
-        servicoSelect.innerHTML='<option value="">Selecione um serviço</option>';
-        for(const servico in mapaServicos){
-            servicoSelect.innerHTML+='<option value="'+servico+'">'+servico+' — '+mapaServicos[servico].preco+'</option>';
-        }
-        document.getElementById('data').addEventListener('change', triggerCargaHoras);
-        document.getElementById('servico').addEventListener('change', triggerCargaHoras);
-    }catch(e){ console.error('Erro ao carregar serviços:', e); }
+    const dataInput=document.getElementById('data');
+    const hoje=new Date();
+    dataInput.min=hoje.toISOString().split('T')[0];
+    const maxData=new Date(); maxData.setDate(hoje.getDate()+30);
+    dataInput.max=maxData.toISOString().split('T')[0];
+    const servicoSelect=document.getElementById('servico');
+    servicoSelect.innerHTML='<option value="">Selecione um serviço</option>';
+    for(const servico in mapaServicos){ servicoSelect.innerHTML+='<option value="'+servico+'">'+servico+' — '+mapaServicos[servico].preco+'</option>'; }
+    document.getElementById('data').addEventListener('change', triggerCargaHoras);
+    document.getElementById('servico').addEventListener('change', triggerCargaHoras);
 });
-
 function triggerCargaHoras(){ carregarHorarios(); }
-
 async function carregarHorarios(){
     const data=document.getElementById('data').value;
     const servico=document.getElementById('servico').value;
@@ -200,48 +172,25 @@ async function carregarHorarios(){
     const horaSelect=document.getElementById('hora');
     const loading=document.getElementById('loading');
     const btn=document.getElementById('btnAgendar');
-    if(!data||!servico){
-        horaSelect.innerHTML='<option value="">Selecione data e serviço primeiro</option>';
-        horaSelect.disabled=true; btn.disabled=true; return;
-    }
+    if(!data||!servico){ horaSelect.innerHTML='<option value="">Selecione data e serviço primeiro</option>'; horaSelect.disabled=true; btn.disabled=true; return; }
     const dataObj=new Date(data+'T12:00:00');
-    if(dataObj.getDay()===0){
-        horaSelect.innerHTML='<option value="">Domingo não trabalhamos</option>';
-        horaSelect.disabled=true; btn.disabled=true; loading.style.display='none'; return;
-    }
-    loading.style.display='block';
-    horaSelect.disabled=true;
-    horaSelect.innerHTML='<option value="">Carregando...</option>';
+    if(dataObj.getDay()===0){ horaSelect.innerHTML='<option value="">Domingo não trabalhamos</option>'; horaSelect.disabled=true; btn.disabled=true; loading.style.display='none'; return; }
+    loading.style.display='block'; horaSelect.disabled=true; horaSelect.innerHTML='<option value="">Carregando...</option>';
     try{
-        const cacheBuster=new Date().getTime();
-        const res=await fetch(`${SCRIPT_URL}?data=${data}&barbeiro=${barbeiro}&v=${cacheBuster}`,{cache:'no-store'});
-        const texto=await res.text();
-        let reservas;
-        try{ reservas=JSON.parse(texto); }catch(e){ console.error('Resposta nao JSON:',texto); throw e; }
-        if(!Array.isArray(reservas)) reservas=[];
-
+        const v=new Date().getTime();
+        const res=await fetch(`${SCRIPT_URL}?data=${data}&barbeiro=${barbeiro}&v=${v}`,{cache:'no-store'});
+        const reservas=await res.json();
         const todosHorarios=getHorariosPorDia(data);
         const horariosOcupados=new Set();
         const horaActual=getHoraActual();
         const esDiaHoy=esHoy(data);
         const bloquesNecesarios=mapaServicos[servico]?.bloques||1;
-
         reservas.forEach(r=>{
             const idx=todosHorarios.indexOf(r.hora);
-            if(idx!==-1){
-                for(let i=0;i<(r.bloques||1);i++){
-                    if(idx+i<todosHorarios.length) horariosOcupados.add(todosHorarios[idx+i]);
-                }
-            }
+            if(idx!==-1){ for(let i=0;i<(r.bloques||1);i++){ if(idx+i<todosHorarios.length) horariosOcupados.add(todosHorarios[idx+i]); } }
         });
-
         const esSabado=new Date(data+'T12:00:00').getDay()===6;
-        const horariosParaMostrar=todosHorarios.filter(h=>{
-            if(h==='12:00') return false;
-            if(h==='11:30'&&!esSabado) return false;
-            return true;
-        }).slice(0,-1);
-
+        const horariosParaMostrar=todosHorarios.filter(h=>{ if(h==='12:00') return false; if(h==='11:30'&&!esSabado) return false; return true; }).slice(0,-1);
         horaSelect.innerHTML='<option value="">Selecione um horário</option>';
         let hay=false;
         horariosParaMostrar.forEach(hora=>{
@@ -249,26 +198,17 @@ async function carregarHorarios(){
             const pasado=esDiaHoy&&hora<getHoraActual();
             let bloqueado=false, motivo='';
             if(pasado){ bloqueado=true; motivo='Passado'; }
-            else{
-                for(let i=0;i<bloquesNecesarios;i++){
-                    const slot=todosHorarios[idx+i];
-                    if(!slot){ bloqueado=true; motivo='Nao cabe'; break; }
-                    if(horariosOcupados.has(slot)){ bloqueado=true; motivo='Ocupado'; break; }
-                }
-            }
+            else{ for(let i=0;i<bloquesNecesarios;i++){ const slot=todosHorarios[idx+i]; if(!slot){ bloqueado=true; motivo='Nao cabe'; break; } if(horariosOcupados.has(slot)){ bloqueado=true; motivo='Ocupado'; break; } } }
             if(bloqueado) horaSelect.innerHTML+=`<option value="" disabled>${hora} - ${motivo}</option>`;
             else{ horaSelect.innerHTML+=`<option value="${hora}">${hora}</option>`; hay=true; }
         });
-
         if(!hay){ horaSelect.innerHTML='<option value="">Agenda cheia, escolha outro dia</option>'; btn.disabled=true; }
         else{ horaSelect.disabled=false; btn.disabled=false; }
-
-    }catch(error){
-        console.error(error);
-        horaSelect.innerHTML='<option value="">Erro ao carregar - recarregue a pagina</option>';
-    }finally{ loading.style.display='none'; }
+    }catch(error){ console.error(error); horaSelect.innerHTML='<option value="">Erro ao carregar</option>'; }
+    finally{ loading.style.display='none'; }
 }
 
+// *** PARCHE UNICO PARA BRAVE - VENTANA CON LOGO Y AVISO ***
 async function solicitarAgendamento(){
     const btn=document.getElementById('btnAgendar');
     const confirmDiv=document.getElementById('confirmacao');
@@ -278,24 +218,21 @@ async function solicitarAgendamento(){
     const telefone=document.getElementById('telefone').value;
     const servico=document.getElementById('servico').value;
     const barbeiro=document.getElementById('barbeiro').value;
-
     if(!data||!hora||!cliente||!telefone||!servico){ mostrarErroModal(); return; }
+
+    // ABRE AL INSTANTE PARA QUE BRAVE NO BLOQUEE - CON TU LOGO
+    let janela=window.open('', '_blank');
+    if(janela){
+        janela.document.write(`<html><head><meta name="viewport" content="width=device-width, initial-scale=1"><style>body{margin:0;background:#000;color:#fff;font-family:Arial;display:flex;justify-content:center;align-items:center;height:100vh;text-align:center;padding:20px}.box{background:#111;border:1px solid #c5a059;border-radius:20px;padding:28px 22px;max-width:340px;box-shadow:0 0 30px rgba(197,160,89,0.3)}.logo{width:85px;margin-bottom:8px}.warn{font-size:42px}.spin{width:38px;height:38px;border:4px solid #222;border-top:4px solid #c5a059;border-radius:50%;animation:r 1s linear infinite;margin:14px auto}@keyframes r{to{transform:rotate(360deg)}}h2{color:#fdf0cd;font-size:18px;margin:8px 0}p{color:#aaa;font-size:13px;line-height:1.4}.ok{color:#c5a059;font-size:11px;margin-top:10px}</style></head><body><div class="box"><img class="logo" src="https://i.ibb.co/Mk0cWNvk/1781700650976.png"><div class="warn">⚠️</div><div class="spin"></div><h2>Verificando seu horario...</h2><p>Aguarde um instante<br>Estamos garantindo sua disponibilidade</p><div class="ok">✓ Tudo certo, so um segundo...</div></div></body></html>`);
+        janela.document.close();
+    }
 
     btn.disabled=true; btn.innerHTML='⏳ VERIFICANDO...';
     confirmDiv.style.display='block'; confirmDiv.textContent='Verificando disponibilidade...';
 
-    let janela=window.open('', '_blank');
-    if(janela){
-        janela.document.write(`
-        <html><head><meta name="viewport" content="width=device-width, initial-scale=1">
-        <style>
-        body{margin:0;background:#000;color:#fff;font-family:Arial;display:flex;justify-content:center;align-items:center;height:100vh;text-align:center;padding:20px}
-       .box{background:#111;border:1px solid #c5a059;border-radius:20px;padding:30px 25px;max-width:340px;box-shadow:0 0 40px rgba(197,160,89,0.3)}
-       .logo{width:90px;margin-bottom:10px;filter:drop-shadow(0 0 10px rgba(197,160,89,0.8))}
-       .warn{font-size:48px}.spin{width:42px;height:42px;border:4px solid #222;border-top:4px solid #c5a059;border-radius:50%;animation:r 1s linear infinite;margin:15px auto}
-        @keyframes r{to{transform:rotate(360deg)}} h2{color:#fdf0cd;font-size:19px;margin:10px 0} p{color:#aaa;font-size:13px;line-height:1.4}.ok{color:#c5a059;font-size:11px;margin-top:10px}
-        </style></head>
-        <body><div class="box">
-        <img class="logo" src="https://i.ibb.co/Mk0cWNvk/1781700650976.png">
-        <div class="warn">⚠️</div><div class="spin"></div>
-        <h2>Verific
+    try{
+        const formData=new URLSearchParams({data,hora,cliente,telefone,servico,barbeiro});
+        const response=await fetch(SCRIPT_URL,{method:'POST',body:formData,cache:'no-store'});
+        const result=await response.json();
+        if(result.status==='ocupado'||result.erro){
+            if(janela){ janela.document.write(`<html><head><meta name="viewport" content="width=device-width, initial-scale=1"><style>body{margin:0;background:#000;color:#fff;font-family:Arial;display:flex;justify-content:center;align-items:center;height:100vh;text-align:center;padding:20px}.box{background:#111;border:1px solid #ff4444;border-radius:20px;padding:28px;max-wi
