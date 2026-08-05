@@ -4,232 +4,281 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>David Barber Studio</title>
-<link rel="icon" href="./1781700842770.png">
-<link rel="apple-touch-icon" href="./1781700842770.png">
-<link rel="manifest" href="./manifest.json?v=5">
-<meta name="theme-color" content="#000000">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiRGF2aWQgQmFyYmVyIFN0dWRpbyIsInNob3J0X25hbWUiOiJEQiBCYXJiZXIiLCJzdGFydF91cmwiOiIuIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzAwMDAwMCIsInRoZW1lX2NvbG9yIjoiI2M1YTA1OSIsImljb25zIjpbXX0=">
+<meta name="theme-color" content="#c5a059">
 <style>
 body, html { margin: 0; padding: 0; background: #000; min-height: 100%; }
-#loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 99999; transition: opacity 0.5s ease; }
+#loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 99999; transition: opacity 0.5s ease, visibility 0.5s ease; }
 #loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 #loader img { width: 340px; max-width: 80%; filter: drop-shadow(0 0 30px rgba(197,160,89,0.8)); }
-.loader-bar { width: 220px; height: 6px; background: #222; margin-top: 25px; border-radius: 10px; overflow: hidden; }
-.loader-bar span { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, #967433, #c5a059, #fdf0cd); animation: loading 2s forwards; }
+.loader-bar { width: 220px; height: 6px; background: #222; margin-top: 25px; border-radius: 10px; overflow: hidden; box-shadow: 0 0 20px rgba(197,160,89,0.4); }
+.loader-bar span { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, #967433, #c5a059, #fdf0cd); animation: loading 2s forwards; box-shadow: 0 0 15px #D4AF37; }
 @keyframes loading { 0% { width: 0; } 100% { width: 100%; } }
 body { font-family: 'Segoe UI', Arial, sans-serif; color: #ddd; text-align: center; padding: 20px; }
-.db-header { font-family: 'Times New Roman', serif; font-size: 54px; font-weight: bold; background: linear-gradient(135deg, #967433 0%, #fdf0cd 30%, #c5a059 70%, #ffffff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.titulo { font-family: 'Times New Roman', serif; font-size: 22px; font-weight: bold; letter-spacing: 4px; background: linear-gradient(135deg, #c5a059 0%, #fdf0cd 50%, #c5a059 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.slogan { font-size: 10px; color: #fff; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 14px; }
-.horarios-info { font-size: 12px; color: #c5a059; margin-bottom: 15px; border-bottom: 1px dashed #2c2514; padding-bottom: 15px; }
-#form-container { position: relative; max-width: 420px; margin: auto; padding: 25px; border-radius: 14px; background: #111; border: 1px solid #c5a059; }
+.db-header { font-family: 'Times New Roman', Georgia, serif; font-size: 54px; font-weight: bold; letter-spacing: 2px; line-height: 1; margin: 5px 0 2px 0; background: linear-gradient(135deg, #967433 0%, #fdf0cd 30%, #c5a059 70%, #ffffff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 8px rgba(197,160,89,0.5)); }
+.titulo { font-family: 'Times New Roman', Georgia, serif; font-size: 22px; font-weight: bold; letter-spacing: 4px; margin: 0 0 6px 0; background: linear-gradient(135deg, #c5a059 0%, #fdf0cd 50%, #c5a059 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.slogan { font-size: 10px; color: #ffffff; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 14px; opacity: 0.85; }
+.horarios-info { font-size: 12px; color: #c5a059; line-height: 1.5; opacity: 0.85; margin-bottom: 15px; border-bottom: 1px dashed #2c2514; padding-bottom: 15px; }
+#form-container { position: relative; max-width: 420px; margin: auto; padding: 25px; border-radius: 14px; background: #111; border: 1px solid #c5a059; box-shadow: 0 0 25px rgba(197, 160, 89, 0.25); overflow: hidden; }
 #form-container::before { content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 100%; height: 100%; background-image: url("https://i.ibb.co/dsPsJhgy/1781700842770.png"); background-size: contain; background-repeat: no-repeat; background-position: center; opacity: 0.06; z-index: 0; pointer-events: none; }
 #form-container form, #confirmacao { position: relative; z-index: 1; }
 .barbeiros { display: flex; justify-content: center; gap: 20px; margin: 10px 0 20px 0; }
-.card { background: #000; border-radius: 14px; padding: 12px; width: 115px; cursor: pointer; border: 2px solid transparent; }
-.card img { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #c5a059; }
-.card.active { border: 2px solid #fdf0cd; }
-label { display: block; margin: 16px 0 8px; font-weight: bold; font-size: 15px; text-align: left; color: #c5a059; text-transform: uppercase; }
-select, input { width: 90%; padding: 14px; margin-bottom: 12px; border-radius: 10px; border: 1px solid #333; background: #000; color: #fff; font-size: 16px; box-sizing: border-box; }
-button { background: linear-gradient(90deg, #967433, #c5a059); color: #000; border: none; padding: 14px; font-size: 17px; font-weight: bold; border-radius: 12px; cursor: pointer; margin-top: 15px; width: 90%; }
-button:disabled { background: #222; color: #555; }
-#confirmacao { display: none; margin-top: 15px; color: #fdf0cd; background: #110f0a; padding: 14px; border-radius: 10px; border: 1px solid #c5a059; }
-.loading { color: #c5a059; margin-top: 10px; font-size: 14px; }
-.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center; }
-.modal-box { background: linear-gradient(135deg, #1a1a1a, #0d0d0d); border: 2px solid #ff4444; border-radius: 16px; padding: 30px 25px; text-align: center; max-width: 85%; width: 320px; }
-.modal-icon { font-size: 50px; margin-bottom: 15px; }
-.modal-texto { color: #ff8a8a; font-size: 18px; font-weight: 600; margin-bottom: 20px; }
+.card { background: #000; border-radius: 14px; padding: 12px; width: 115px; cursor: pointer; transition: 0.3s; border: 2px solid transparent; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+.card img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #c5a059; }
+.card span { display: block; margin-top: 6px; font-weight: bold; }
+.card.active { border: 2px solid #fdf0cd; box-shadow: 0 0 12px rgba(197, 160, 89, 0.6); }
+label { display: block; margin: 16px 0 8px; font-weight: bold; font-size: 15px; text-align: left; color: #c5a059; text-transform: uppercase; letter-spacing: 1.5px; text-shadow: 0 0 10px rgba(197, 160, 89, 0.3); }
+select, input { width: 90%; padding: 14px; margin-bottom: 12px; border-radius: 10px; border: 1px solid #333; background: #000; color: #ffffff; font-size: 16px; box-sizing: border-box; }
+select:focus, input:focus { outline: none; border: 1px solid #c5a059; box-shadow: 0 0 8px rgba(197, 160, 89, 0.5); }
+select:disabled { opacity: 0.4; }
+button { background: linear-gradient(90deg, #967433, #c5a059); color: #000; border: none; padding: 14px; font-size: 17px; font-weight: bold; border-radius: 12px; cursor: pointer; margin-top: 15px; width: 90%; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s ease; }
+button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(197, 160, 89, 0.5); }
+button:disabled { background: #222222; color: #555555; cursor: not-allowed; }
+#confirmacao { display: none; margin-top: 15px; color: #fdf0cd; font-weight: bold; font-size: 15px; background: #110f0a; padding: 14px; border-radius: 10px; border: 1px solid #c5a059; }
+.loading { text-align: center; color: #c5a059; margin-top: 10px; font-size: 14px; }
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
+.modal-box { background: linear-gradient(135deg, #1a1a1a, #0d0d0d); border: 2px solid #ff4444; border-radius: 16px; padding: 30px 25px; text-align: center; max-width: 85%; width: 320px; box-shadow: 0 8px 32px rgba(255, 68, 68, 0.4); animation: modalPop 0.3s ease-out; }
+.modal-icon { font-size: 50px; margin-bottom: 15px; line-height: 1; }
+.modal-texto { color: #ff8a8a; font-size: 18px; font-weight: 600; margin-bottom: 20px; line-height: 1.4; }
 .modal-btn { background: linear-gradient(90deg, #c9a059, #b38d4a); color: #000; border: none; padding: 12px 40px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; }
+@keyframes modalPop { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 </style>
 </head>
 <body>
-<div id="loader"><img src="https://i.ibb.co/Mk0cWNvk/1781700650976.png" alt="Logo"><div class="loader-bar"><span></span></div></div>
+
+<div id="loader">
+  <img src="https://i.ibb.co/Mk0cWNvk/1781700650976.png" alt="Logo">
+  <div class="loader-bar"><span></span></div>
+</div>
+
 <div class="db-header">DB</div>
 <div class="titulo">DAVID BARBER STUDIO</div>
 <div class="slogan">Estilo, Precisão e Confiança</div>
-<div class="horarios-info">🕒 Seg: 08:30–11:00, 13:00–17:00<br>🕒 Ter a Sex: 08:30–11:00, 13:00–19:00<br>🕒 Sáb: 08:00–11:30, 13:00–17:00</div>
+
+<div class="horarios-info">
+  🕒 Seg: 08:30–11:00, 13:00–17:00<br>
+  🕒 Ter a Sex: 08:30–11:00, 13:00–19:00<br>
+  🕒 Sáb: 08:00–11:30, 13:00–17:00
+</div>
+
 <div id="form-container">
-<form id="agendaForm">
-<label>💈 Profissional</label>
-<div class="barbeiros"><div class="card active" onclick="seleccionarBarber('David', this)"><img src="https://i.ibb.co/B5GDCLGN/IMG-20241012-152952-2.jpg" alt="David"><span>David</span></div></div>
-<input type="hidden" id="barbeiro" value="David">
-<label>✂️ Serviço Ofertado</label>
-<select id="servico" required><option value="">Selecione um serviço</option></select>
-<label>📅 Data do Agendamento</label>
-<input type="date" id="data" required>
-<label>👤 Seu Nome</label>
-<input type="text" id="cliente" placeholder="Digite seu nome completo" required>
-<label>📱 Seu WhatsApp</label>
-<input type="tel" inputmode="numeric" id="telefone" placeholder="Ex: 47999999999" required>
-<label>⏰ Horários Disponíveis</label>
-<select id="hora" required disabled><option value="">Selecione data e serviço primeiro</option></select>
-<div class="loading" id="loading" style="display:none;">Carregando horários...</div>
-<button type="button" id="btnAgendar" onclick="solicitarAgendamento()" disabled>Agendar Horário ✅</button>
-<div style="text-align:center; margin-top:12px;"><button type="button" onclick="mostrarCancelarCita()" style="background:transparent; color:#ff6b6b; border:1px solid #4a2a2a; font-size:13px;">CANCELAR MEU AGENDAMENTO ❌</button></div>
-<div style="margin-top:20px; display:flex; flex-direction:column; gap:8px; align-items:center;">
-<button id="db-install-btn-fixed" type="button" style="background:transparent; color:#C9A86A; border:1px solid #C9A86A; padding:12px; border-radius:10px; font-weight:700; font-size:13px; width:90%;">📲 BAIXAR APP OFICIAL</button>
-<div style="font-size:11px; color:#666;">Instale nosso app e agende mais rápido ✨</div>
+  <form id="agendaForm">
+    <label>💈 Profissional</label>
+    <div class="barbeiros">
+      <div class="card active" onclick="seleccionarBarber('David', this)">
+        <img src="https://i.ibb.co/B5GDCLGN/IMG-20241012-152952-2.jpg" alt="David">
+        <span>David</span>
+      </div>
+      <div class="card" style="display:none" onclick="seleccionarBarber('João', this)">
+        <img src="LINK-DA-FOTO-DO-JOAO" alt="João">
+        <span>João</span>
+      </div>
+    </div>
+    <input type="hidden" id="barbeiro" value="David">
+    <label>✂️ Serviço Ofertado</label>
+    <select id="servico" required><option value="">Carregando...</option></select>
+    <label>📅 Data do Agendamento</label>
+    <input type="date" id="data" required>
+    <label>👤 Seu Nome</label>
+    <input type="text" id="cliente" placeholder="Digite seu nome completo" required>
+    <label>📱 Seu WhatsApp</label>
+    <input type="tel" inputmode="numeric" id="telefone" placeholder="Ex: 47999999999" required>
+    <label>⏰ Horários Disponíveis</label>
+    <select id="hora" required disabled><option value="">Selecione data e serviço primeiro</option></select>
+    <div class="loading" id="loading" style="display:none;">Carregando horários...</div>
+    <button type="button" id="btnAgendar" onclick="solicitarAgendamento()" disabled>Agendar Horário ✅</button>
+  </form>
+  <div id="confirmacao">Enviando agendamento para o sistema... por favor, aguarde. ⌛</div>
 </div>
-</form>
-<div id="confirmacao"></div>
+
+<!-- PARCHE 1 y 2: BOTONES EXTRA -->
+<div style="max-width:420px; margin:25px auto 0 auto; display:flex; flex-direction:column; gap:12px;">
+  <button onclick="abrirCancelar()" style="background:#1a1a1a; border:1px solid #c5a059; color:#c5a059; width:100%;">❌ Cancelar Meu Horário</button>
+  <button id="btnInstalar" onclick="instalarApp()" style="display:none; width:100%;">⬇️ Baixar App</button>
 </div>
-<div id="modalErro" class="modal-overlay"><div class="modal-box"><div class="modal-icon">⚠️</div><div class="modal-texto">Preencha todos os campos obrigatórios</div><button class="modal-btn" onclick="document.getElementById('modalErro').style.display='none'">OK</button></div></div>
-<div id="modalCancelar" class="modal-overlay"><div class="modal-box" style="border-color:#c5a059"><h3 style="color:#c5a059">Cancelar Agendamento</h3><input type="tel" id="telCancelar" placeholder="Seu WhatsApp"><input type="date" id="dataCancelar"><div id="msgCancelar" style="display:none;margin-top:10px"></div><button onclick="cancelarCita()" style="width:100%;margin-top:10px">Confirmar</button><button onclick="document.getElementById('modalCancelar').style.display='none'" style="width:100%;background:#222;color:#fff;margin-top:8px">Fechar</button></div></div>
+
+<!-- Modal Erro -->
+<div id="modalErro" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-icon">⚠️</div>
+    <div class="modal-texto">Preencha todos os campos obrigatórios</div>
+    <button class="modal-btn" onclick="fecharModal()">OK</button>
+  </div>
+</div>
+
+<!-- Modal Cancelar -->
+<div id="modalCancelar" class="modal-overlay">
+  <div class="modal-box" style="border-color:#c5a059;">
+    <div class="modal-icon">📅</div>
+    <div class="modal-texto" style="color:#fdf0cd;">Cancelar Agendamento</div>
+    <input type="date" id="cancelData" style="width:100%; margin-bottom:10px; padding:14px; border-radius:10px; background:#000; color:#fff; border:1px solid #333;">
+    <select id="cancelHora" style="width:100%; margin-bottom:10px;"><option value="">Selecione o horário</option></select>
+    <input type="tel" id="cancelTelefone" placeholder="Seu WhatsApp cadastrado" style="width:100%; margin-bottom:15px; padding:14px; border-radius:10px; background:#000; color:#fff; border:1px solid #333;">
+    <button class="modal-btn" onclick="confirmarCancelar()">Confirmar Cancelamento</button>
+    <button onclick="fecharCancelar()" style="background:#222; color:#fff; margin-top:10px; width:100%;">Voltar</button>
+  </div>
+</div>
 
 <script>
+function mostrarErroModal() { document.getElementById('modalErro').style.display = 'flex'; }
+function fecharModal() { document.getElementById('modalErro').style.display = 'none'; }
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcQMOm11ba3BRV0pRKlVplcGx0goPhtHIHurr-jm0sa0rzs9ujvdeTH4xFEyPIhMKjlQ/exec';
 
-// LOGO SE QUITA SOLO
-(function(){ function h(){ var l=document.getElementById('loader'); if(l) l.classList.add('hidden'); } setTimeout(h,2500); window.addEventListener('load',function(){setTimeout(h,400);}); })();
+window.addEventListener('load', () => { setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 2000); });
 
-function mostrarErroModal(){ document.getElementById('modalErro').style.display='flex'; }
-function mostrarCancelarCita(){ document.getElementById('modalCancelar').style.display='flex'; document.getElementById('msgCancelar').style.display='none'; }
-function seleccionarBarber(n, el){ document.querySelectorAll('.card').forEach(c=>c.classList.remove('active')); el.classList.add('active'); document.getElementById('barbeiro').value=n; carregarHorarios(); }
-function getHorariosPorDia(s){ var d=new Date(s+'T12:00:00'); var dia=d.getDay(); if(dia===0) return []; if(dia===1) return ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30']; if(dia===6) return ['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30']; return ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30']; }
-function esHoy(s){ var h=new Date(); var d=new Date(s+'T12:00:00'); return h.toDateString()===d.toDateString(); }
-function getHoraActual(){ var a=new Date(); return ('0'+a.getHours()).slice(-2)+':'+('0'+a.getMinutes()).slice(-2); }
-var mapaServicos={'Corte':{preco:'R$40',bloques:1},'Barba':{preco:'R$30',bloques:1},'Sobrancelha':{preco:'R$10',bloques:1},'Corte e Barba':{preco:'R$70',bloques:2}};
-
-var sel=document.getElementById('servico');
-sel.innerHTML='<option value="">Selecione um serviço</option>';
-for(var k in mapaServicos){ sel.innerHTML+='<option value="'+k+'">'+k+' — '+mapaServicos[k].preco+'</option>'; }
-var di=document.getElementById('data'); var hoje=new Date(); di.min=hoje.toISOString().split('T')[0]; var max=new Date(); max.setDate(hoje.getDate()+30); di.max=max.toISOString().split('T')[0];
-di.addEventListener('change',carregarHorarios); sel.addEventListener('change',carregarHorarios);
-
-function triggerCargaHoras(){ carregarHorarios(); }
-
-async function carregarHorarios(){
-  var data=document.getElementById('data').value; var servico=document.getElementById('servico').value; var barbeiro=document.getElementById('barbeiro').value;
-  var horaSelect=document.getElementById('hora'); var loading=document.getElementById('loading'); var btn=document.getElementById('btnAgendar');
-  if(!data||!servico){ horaSelect.innerHTML='<option value="">Selecione data e serviço primeiro</option>'; horaSelect.disabled=true; btn.disabled=true; return; }
-  var dObj=new Date(data+'T12:00:00'); if(dObj.getDay()===0){ horaSelect.innerHTML='<option value="">Domingo não trabalhamos</option>'; horaSelect.disabled=true; btn.disabled=true; loading.style.display='none'; return; }
-  loading.style.display='block'; horaSelect.disabled=true; horaSelect.innerHTML='<option value="">Carregando...</option>';
-  var reservas=[];
-  try{
-    var res=await fetch(SCRIPT_URL+'?data='+data+'&barbeiro='+barbeiro+'&v='+Date.now(), {cache:'no-store'});
-    var txt=await res.text();
-    try{ reservas=JSON.parse(txt); if(!Array.isArray(reservas)) reservas=[]; }catch(e){ console.log('Erro JSON, liberando horarios', txt); reservas=[]; }
-  }catch(e){ console.log('Erro fetch, liberando horarios', e); reservas=[]; }
-
-  var todos=getHorariosPorDia(data); var ocup=new Set(); var hActual=getHoraActual(); var hoy=esHoy(data); var bloq=mapaServicos[servico].bloques||1;
-  reservas.forEach(function(r){ var idx=todos.indexOf(r.hora); if(idx!==-1){ for(var i=0;i<(r.bloques||1);i++){ if(idx+i<todos.length) ocup.add(todos[idx+i]); } } });
-  var esSab=dObj.getDay()===6;
-  var mostrar=todos.filter(function(h){ if(h==='12:00') return false; if(h==='11:30'&&!esSab) return false; return true; }).slice(0,-1);
-  horaSelect.innerHTML='<option value="">Selecione um horário</option>'; var hay=false;
-  mostrar.forEach(function(h){ var idx=todos.indexOf(h); var pasado=hoy&&h<hActual; var bloqueado=false; var mot=''; if(pasado){bloqueado=true; mot='Passado';} else { for(var i=0;i<bloq;i++){ var s=todos[idx+i]; if(!s){bloqueado=true;mot='Nao cabe';break;} if(ocup.has(s)){bloqueado=true;mot='Ocupado';break;} } } if(bloqueado){horaSelect.innerHTML+='<option disabled>'+h+' - '+mot+'</option>';} else {horaSelect.innerHTML+='<option value="'+h+'">'+h+'</option>'; hay=true;} });
-  if(!hay){ horaSelect.innerHTML='<option value="">Agenda cheia, escolha outro dia</option>'; btn.disabled=true; } else { horaSelect.disabled=false; btn.disabled=false; }
-  loading.style.display='none';
+function seleccionarBarber(nombre, element) {
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+    element.classList.add('active');
+    document.getElementById('barbeiro').value = nombre;
+    triggerCargaHoras();
 }
 
-async function carregarHorarios(){
-  var data=document.getElementById('data').value;
-  var servico=document.getElementById('servico').value;
-  var barbeiro=document.getElementById('barbeiro').value;
-  var horaSelect=document.getElementById('hora');
-  var loading=document.getElementById('loading');
-  var btn=document.getElementById('btnAgendar');
-  if(!data||!servico){ horaSelect.innerHTML='<option value="">Selecione data e serviço primeiro</option>'; horaSelect.disabled=true; btn.disabled=true; return; }
-  var dObj=new Date(data+'T12:00:00');
-  if(dObj.getDay()===0){ horaSelect.innerHTML='<option value="">Domingo não trabalhamos</option>'; horaSelect.disabled=true; btn.disabled=true; loading.style.display='none'; return; }
-  loading.style.display='block';
-  horaSelect.disabled=true;
-  horaSelect.innerHTML='<option value="">Carregando...</option>';
-  try{
-    var res=await fetch(SCRIPT_URL+'?data='+data+'&barbeiro='+barbeiro+'&v='+Date.now());
-    var reservas=await res.json();
-    var todos=getHorariosPorDia(data);
-    var ocup=new Set();
-    var hActual=getHoraActual();
-    var hoy=esHoy(data);
-    var bloq=mapaServicos[servico].bloques||1;
-    reservas.forEach(function(r){
-      var idx=todos.indexOf(r.hora);
-      if(idx!==-1){ for(var i=0;i<(r.bloques||1);i++){ if(idx+i<todos.length) ocup.add(todos[idx+i]); } }
-    });
-    var esSab=dObj.getDay()===6;
-    var mostrar=todos.filter(function(h){ if(h==='12:00') return false; if(h==='11:30'&&!esSab) return false; return true; }).slice(0,-1);
-    horaSelect.innerHTML='<option value="">Selecione um horário</option>';
-    var hay=false;
-    mostrar.forEach(function(h){
-      var idx=todos.indexOf(h);
-      var pasado=hoy&&h<hActual;
-      var bloqueado=false; var mot='';
-      if(pasado){bloqueado=true; mot='Passado';}
-      else { for(var i=0;i<bloq;i++){ var s=todos[idx+i]; if(!s){bloqueado=true;mot='Nao cabe';break;} if(ocup.has(s)){bloqueado=true;mot='Ocupado';break;} } }
-      if(bloqueado){horaSelect.innerHTML+='<option disabled>'+h+' - '+mot+'</option>';}
-      else {horaSelect.innerHTML+='<option value="'+h+'">'+h+'</option>'; hay=true;}
-    });
-    if(!hay){ horaSelect.innerHTML='<option value="">Agenda cheia</option>'; btn.disabled=true; } else { horaSelect.disabled=false; btn.disabled=false; }
-  }catch(e){
-    horaSelect.innerHTML='<option value="">Erro ao carregar</option>';
-    console.error(e);
-  }
-  loading.style.display='none';
+function getHorariosPorDia(dataStr) {
+    const data = new Date(dataStr + 'T12:00:00');
+    const dia = data.getDay();
+    if (dia === 0) return [];
+    if (dia === 1) { return ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30']; }
+    if (dia === 6) { return ['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30']; }
+    return ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30'];
+}
+function esHoy(dataStr) { const hoy = new Date(); const dataSel = new Date(dataStr + 'T12:00:00'); return hoy.toDateString() === dataSel.toDateString(); }
+function getHoraActual() { const ahora = new Date(); const h = String(ahora.getHours()).padStart(2, '0'); const m = String(ahora.getMinutes()).padStart(2, '0'); return `${h}:${m}`; }
+
+const mapaServicos = {
+    'Corte': { preco: 'R$40', bloques: 1 },
+    'Barba': { preco: 'R$30', bloques: 1 },
+    'Sobrancelha': { preco: 'R$10', bloques: 1 },
+    'Corte e Barba': { preco: 'R$70', bloques: 2 }
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+    try {
+        const dataInput = document.getElementById('data');
+        const hoje = new Date();
+        dataInput.min = hoje.toISOString().split('T')[0];
+        const maxData = new Date(); maxData.setDate(hoje.getDate() + 30);
+        dataInput.max = maxData.toISOString().split('T')[0];
+        const servicoSelect = document.getElementById('servico');
+        servicoSelect.innerHTML = '<option value="">Selecione um serviço</option>';
+        for (const servico in mapaServicos) {
+            const preco = mapaServicos[servico].preco;
+            servicoSelect.innerHTML += '<option value="' + servico + '">' + servico + ' — ' + preco + '</option>';
+        }
+        document.getElementById('data').addEventListener('change', triggerCargaHoras);
+        document.getElementById('servico').addEventListener('change', triggerCargaHoras);
+    } catch(e) { console.error(e); }
+});
+
+function triggerCargaHoras() { carregarHorarios(); }
+
+async function carregarHorarios() {
+    const data = document.getElementById('data').value;
+    const servico = document.getElementById('servico').value;
+    const barbeiro = document.getElementById('barbeiro').value;
+    const horaSelect = document.getElementById('hora');
+    const loading = document.getElementById('loading');
+    const btn = document.getElementById('btnAgendar');
+    if (!data ||!servico) { horaSelect.innerHTML = '<option value="">Selecione data e serviço primeiro</option>'; horaSelect.disabled = true; btn.disabled = true; return; }
+    const dataObj = new Date(data + 'T12:00:00');
+    if (dataObj.getDay() === 0) { horaSelect.innerHTML = '<option value="">Domingo não trabalhamos</option>'; horaSelect.disabled = true; btn.disabled = true; loading.style.display = 'none'; return; }
+    loading.style.display = 'block'; horaSelect.disabled = true;
+    try {
+        const res = await fetch(`${SCRIPT_URL}?data=${data}&barbeiro=${barbeiro}`);
+        const reservas = await res.json();
+        const todosHorarios = getHorariosPorDia(data);
+        const horariosOcupados = new Set();
+        const horaActual = getHoraActual();
+        const esDiaHoy = esHoy(data);
+        const bloquesNecesarios = mapaServicos[servico]?.bloques || 1;
+        reservas.forEach(r => {
+            const idx = todosHorarios.indexOf(r.hora);
+            if (idx!== -1) { for (let i = 0; i < r.bloques; i++) { if (idx + i < todosHorarios.length) { horariosOcupados.add(todosHorarios[idx + i]); } } }
+        });
+        const esSabado = new Date(data + 'T12:00:00').getDay() === 6;
+        const horariosParaMostrar = todosHorarios.filter(h => { if (h === '12:00') return false; if (h === '11:30' &&!esSabado) return false; return true; }).slice(0, -1);
+        horaSelect.innerHTML = '<option value="">Selecione um horário</option>';
+        let hayHorariosLibres = false;
+        horariosParaMostrar.forEach((hora) => {
+            const idx = todosHorarios.indexOf(hora);
+            const pasado = esDiaHoy && hora < horaActual;
+            let bloqueado = false; let motivoBloqueio = '';
+            if (pasado) { bloqueado = true; motivoBloqueio = 'Passado'; } else {
+                for (let i = 0; i < bloquesNecesarios; i++) {
+                    const slotVerificar = todosHorarios[idx + i];
+                    if (!slotVerificar) { bloqueado = true; motivoBloqueio = 'Não cabe'; break; }
+                    if (horariosOcupados.has(slotVerificar)) { bloqueado = true; motivoBloqueio = 'Ocupado'; break; }
+                }
+            }
+            if (bloqueado) { horaSelect.innerHTML += `<option value="" disabled>${hora} - ${motivoBloqueio}</option>`; } else { horaSelect.innerHTML += `<option value="${hora}">${hora}</option>`; hayHorariosLibres = true; }
+        });
+        if (!hayHorariosLibres) { horaSelect.innerHTML = '<option value="">Agenda cheia, escolha outro dia</option>'; btn.disabled = true; } else { horaSelect.disabled = false; btn.disabled = false; }
+    } catch (error) { horaSelect.innerHTML = '<option value="">Erro ao carregar</option>'; console.error(error); } finally { loading.style.display = 'none'; }
 }
 
-async function solicitarAgendamento(){
-  var data=document.getElementById('data').value;
-  var hora=document.getElementById('hora').value;
-  var cliente=document.getElementById('cliente').value;
-  var telefone=document.getElementById('telefone').value;
-  var servico=document.getElementById('servico').value;
-  var barbeiro=document.getElementById('barbeiro').value;
-  if(!data||!hora||!cliente||!telefone||!servico){ mostrarErroModal(); return; }
-  var btn=document.getElementById('btnAgendar');
-  btn.disabled=true; btn.innerHTML='⏳ AGENDANDO...';
-  try{
-    var formData=new URLSearchParams({data:data,hora:hora,cliente:cliente,telefone:telefone,servico:servico,barbeiro:barbeiro});
-    var response=await fetch(SCRIPT_URL,{method:'POST',body:formData});
-    var result=await response.json();
-    if(result.success===false){
-      alert(result.error);
-      btn.disabled=false; btn.innerHTML='Agendar Horário ✅';
-      carregarHorarios();
-      return;
+async function solicitarAgendamento() {
+    const btn = document.getElementById('btnAgendar');
+    const confirmDiv = document.getElementById('confirmacao');
+    const data = document.getElementById('data').value;
+    const hora = document.getElementById('hora').value;
+    const cliente = document.getElementById('cliente').value;
+    const telefone = document.getElementById('telefone').value;
+    const servico = document.getElementById('servico').value;
+    if (!data ||!hora ||!cliente ||!telefone ||!servico) { mostrarErroModal(); return; }
+    btn.disabled = true; btn.textContent = 'VERIFICANDO DISPONIBILIDADE...';
+    confirmDiv.style.display = 'block'; confirmDiv.textContent = 'Verificando horário no sistema... por favor, aguarde. ⌛';
+    const dados = { data: data, hora: hora, cliente: cliente, telefone: telefone, servico: servico, barbeiro: document.getElementById('barbeiro').value };
+    try {
+        const formData = new URLSearchParams(dados);
+        const response = await fetch(SCRIPT_URL, { method: 'POST', body: formData });
+        const result = await response.json();
+        if (result.success) {
+            confirmDiv.textContent = 'Agendamento confirmado! Redirecionando para o WhatsApp... ✅';
+            confirmDiv.style.color = '#4CAF50';
+            window.open(result.whatsapp, '_blank');
+            setTimeout(() => {
+                confirmDiv.style.display = 'none'; confirmDiv.style.color = '#fdf0cd';
+                document.getElementById('agendaForm').reset();
+                document.getElementById('hora').innerHTML = '<option value="">Selecione data e serviço primeiro</option>';
+                document.getElementById('hora').disabled = true;
+                btn.disabled = true; btn.textContent = 'Agendar Horário ✅'; triggerCargaHoras();
+            }, 3000);
+        } else { throw new Error(result.error || 'Horário indisponível'); }
+    } catch (error) {
+        confirmDiv.style.display = 'none'; btn.disabled = false; btn.textContent = 'Agendar Horário ✅';
+        alert(`⚠️ Atenção! Horário Indisponível\n\n${error.message}\n\nEste horário acabou de ser reservado por outra pessoa ou está bloqueado pelo barbeiro.\n\nPor favor, escolha outro horário disponível.`);
+        triggerCargaHoras();
     }
-    window.open(result.whatsapp,'_blank');
-    document.getElementById('confirmacao').style.display='block';
-    document.getElementById('confirmacao').textContent='✅ Agendado! Abrindo WhatsApp...';
-    // limpia para otra cita
-    document.getElementById('cliente').value='';
-    document.getElementById('telefone').value='';
-    document.getElementById('hora').innerHTML='<option value="">Selecione data e serviço primeiro</option>';
-    document.getElementById('hora').disabled=true;
-    btn.innerHTML='Agendar Horário ✅';
-  }catch(err){
-    alert('Erro de conexão');
-    btn.disabled=false; btn.innerHTML='Agendar Horário ✅';
-  }
 }
 
+// --- PARCHE 1: BAJAR APP ---
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e)=>{ e.preventDefault(); deferredPrompt=e; document.getElementById('btnInstalar').style.display='block'; });
+function instalarApp(){ if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt.userChoice.then(()=>{ deferredPrompt=null; document.getElementById('btnInstalar').style.display='none'; }); } else { alert('Para instalar: No Brave clique nos 3 pontos > Instalar app'); } }
 
-async function cancelarCita(){
-  var tel=document.getElementById('telCancelar').value.replace(/\D/g,''); var data=document.getElementById('dataCancelar').value; var msg=document.getElementById('msgCancelar');
-  if(!tel||!data){ msg.textContent='Preencha telefone e data'; msg.style.display='block'; msg.style.color='#f44336'; return; }
-  msg.textContent='Cancelando...'; msg.style.display='block'; msg.style.color='#fdf0cd';
+// --- PARCHE 2: CANCELAR HORARIO ---
+function abrirCancelar(){ document.getElementById('modalCancelar').style.display='flex';
+  var data=document.getElementById('data').value; if(data){ document.getElementById('cancelData').value=data; var ev=new Event('change'); document.getElementById('cancelData').dispatchEvent(ev); }
+}
+function fecharCancelar(){ document.getElementById('modalCancelar').style.display='none'; }
+async function confirmarCancelar(){
+  var data=document.getElementById('cancelData').value;
+  var hora=document.getElementById('cancelHora').value;
+  var tel=document.getElementById('cancelTelefone').value;
+  if(!data||!hora||!tel){ alert('Preencha todos os campos'); return; }
+  if(!confirm('Cancelar '+data+' às '+hora+'?')) return;
   try{
-    var res=await fetch(SCRIPT_URL+'?action=cancelarCita&telefone='+tel+'&data='+data+'&v='+Date.now(),{cache:'no-store'});
+    var formData=new URLSearchParams({acao:'cancelar', data:data, hora:hora, telefone:tel});
+    var res=await fetch(SCRIPT_URL,{method:'POST', body:formData});
     var r=await res.json();
-    if(r.success){ msg.textContent='✅ '+r.message; msg.style.color='#4CAF50'; if(r.whatsapp) window.location.href=r.whatsapp; setTimeout(function(){ document.getElementById('modalCancelar').style.display='none'; carregarHorarios(); },3000); } else { msg.textContent='❌ '+r.error; msg.style.color='#f44336'; }
-  }catch(e){ msg.textContent='Erro ao cancelar'; msg.style.color='#f44336'; }
+    if(r.success){ alert('✅ Horário cancelado com sucesso!'); fecharCancelar(); carregarHorarios(); } else { alert('❌ '+r.error); }
+  }catch(e){ alert('Erro de conexão'); }
 }
-
-// BOTON APP - ARREGLADO AHORA FUNCIONA SIEMPRE
-(function(){
-  var deferredPrompt=null;
-  window.addEventListener('beforeinstallprompt',function(e){ e.preventDefault(); deferredPrompt=e; });
-  var btn=document.getElementById('db-install-btn-fixed');
-  if(btn){
-    btn.addEventListener('click', async function(){
-      if(deferredPrompt){ deferredPrompt.prompt(); var choice=await deferredPrompt.userChoice; deferredPrompt=null; }
-      else {
-        if(/iPhone|iPad|iPod/.test(navigator.userAgent)){ alert('No iPhone: toque em Compartilhar ⬆️ > Adicionar à Tela de Início'); }
-        else { alert('Para instalar: Abra o menu do Brave (3 pontinhos ⋮) > Instalar app / Adicionar à tela inicial'); }
-      }
-    });
-  }
-})();
+document.getElementById('cancelData').addEventListener('change', function(){
+  var todos=getHorariosPorDia(this.value);
+  var sel=document.getElementById('cancelHora');
+  sel.innerHTML='<option value="">Selecione</option>';
+  todos.filter(h=>h!=='12:00').forEach(h=> sel.innerHTML+='<option value="'+h+'">'+h+'</option>');
+});
 </script>
 </body>
 </html>
