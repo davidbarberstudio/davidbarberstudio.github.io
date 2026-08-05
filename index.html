@@ -6,7 +6,7 @@
 <title>David Barber Studio</title>
 <link rel="icon" href="./1781700842770.png">
 <link rel="apple-touch-icon" href="./1781700842770.png">
-<link rel="manifest" href="./manifest.json">
+<link rel="manifest" href="./manifest.json?v=2">
 <meta name="theme-color" content="#000000">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -46,7 +46,6 @@ button:disabled { background: #222222; color: #555555; cursor: not-allowed; }
 .modal-icon { font-size: 50px; margin-bottom: 15px; line-height: 1; }
 .modal-texto { color: #ff8a8a; font-size: 18px; font-weight: 600; margin-bottom: 20px; line-height: 1.4; }
 .modal-btn { background: linear-gradient(90deg, #c9a059, #b38d4a); color: #000; border: none; padding: 12px 40px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; }
-.modal-btn:active { transform: scale(0.98); }
 @keyframes modalPop { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
 </style>
 </head>
@@ -56,6 +55,18 @@ button:disabled { background: #222222; color: #555555; cursor: not-allowed; }
   <img src="https://i.ibb.co/Mk0cWNvk/1781700650976.png" alt="Logo">
   <div class="loader-bar"><span></span></div>
 </div>
+<script>
+// PARCHE ANTI-LOGO PEGADO - SE QUITA SOLO SIEMPRE
+(function(){
+  function esconderLoader(){
+    var l=document.getElementById('loader');
+    if(l) l.classList.add('hidden');
+  }
+  setTimeout(esconderLoader, 2500);
+  window.addEventListener('load', function(){ setTimeout(esconderLoader, 500); });
+  window.addEventListener('error', esconderLoader);
+})();
+</script>
 
 <div class="db-header">DB</div>
 <div class="titulo">DAVID BARBER STUDIO</div>
@@ -121,7 +132,6 @@ if(btnFixed3){
   });
 }
 function mostrarErroModal(){document.getElementById('modalErro').style.display='flex';}
-function fecharModal(){document.getElementById('modalErro').style.display='none';}
 function mostrarCancelarCita(){document.getElementById('modalCancelar').style.display='flex'; document.getElementById('msgCancelar').style.display='none';}
 function fecharCancelar(){document.getElementById('modalCancelar').style.display='none'; document.getElementById('telCancelar').value=''; document.getElementById('dataCancelar').value='';}
 async function cancelarCita(){
@@ -139,7 +149,6 @@ async function cancelarCita(){
   }catch(error){msgDiv.textContent='Erro ao cancelar. Tente novamente.'; msgDiv.style.color='#f44336';}
 }
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcQMOm11ba3BRV0pRKlVplcGx0goPhtHIHurr-jm0sa0rzs9ujvdeTH4xFEyPIhMKjlQ/exec';
-window.addEventListener('load', () => { setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 2000); });
 function seleccionarBarber(nombre, element){ document.querySelectorAll('.card').forEach(c => c.classList.remove('active')); element.classList.add('active'); document.getElementById('barbeiro').value = nombre; triggerCargaHoras(); }
 function getHorariosPorDia(dataStr){
     const data = new Date(dataStr + 'T12:00:00');
@@ -207,8 +216,6 @@ async function carregarHorarios(){
     }catch(error){ console.error(error); horaSelect.innerHTML='<option value="">Erro ao carregar</option>'; }
     finally{ loading.style.display='none'; }
 }
-
-// *** PARCHE UNICO PARA BRAVE - VENTANA CON LOGO Y AVISO ***
 async function solicitarAgendamento(){
     const btn=document.getElementById('btnAgendar');
     const confirmDiv=document.getElementById('confirmacao');
@@ -219,20 +226,16 @@ async function solicitarAgendamento(){
     const servico=document.getElementById('servico').value;
     const barbeiro=document.getElementById('barbeiro').value;
     if(!data||!hora||!cliente||!telefone||!servico){ mostrarErroModal(); return; }
-
-    // ABRE AL INSTANTE PARA QUE BRAVE NO BLOQUEE - CON TU LOGO
     let janela=window.open('', '_blank');
     if(janela){
         janela.document.write(`<html><head><meta name="viewport" content="width=device-width, initial-scale=1"><style>body{margin:0;background:#000;color:#fff;font-family:Arial;display:flex;justify-content:center;align-items:center;height:100vh;text-align:center;padding:20px}.box{background:#111;border:1px solid #c5a059;border-radius:20px;padding:28px 22px;max-width:340px;box-shadow:0 0 30px rgba(197,160,89,0.3)}.logo{width:85px;margin-bottom:8px}.warn{font-size:42px}.spin{width:38px;height:38px;border:4px solid #222;border-top:4px solid #c5a059;border-radius:50%;animation:r 1s linear infinite;margin:14px auto}@keyframes r{to{transform:rotate(360deg)}}h2{color:#fdf0cd;font-size:18px;margin:8px 0}p{color:#aaa;font-size:13px;line-height:1.4}.ok{color:#c5a059;font-size:11px;margin-top:10px}</style></head><body><div class="box"><img class="logo" src="https://i.ibb.co/Mk0cWNvk/1781700650976.png"><div class="warn">⚠️</div><div class="spin"></div><h2>Verificando seu horario...</h2><p>Aguarde um instante<br>Estamos garantindo sua disponibilidade</p><div class="ok">✓ Tudo certo, so um segundo...</div></div></body></html>`);
         janela.document.close();
     }
-
     btn.disabled=true; btn.innerHTML='⏳ VERIFICANDO...';
     confirmDiv.style.display='block'; confirmDiv.textContent='Verificando disponibilidade...';
-
     try{
         const formData=new URLSearchParams({data,hora,cliente,telefone,servico,barbeiro});
         const response=await fetch(SCRIPT_URL,{method:'POST',body:formData,cache:'no-store'});
         const result=await response.json();
         if(result.status==='ocupado'||result.erro){
-            if(janela){ janela.document.write(`<html><head><meta name="viewport" content="width=device-width, initial-scale=1"><style>body{margin:0;background:#000;color:#fff;font-family:Arial;display:flex;justify-content:center;align-items:center;height:100vh;text-align:center;padding:20px}.box{background:#111;border:1px solid #ff4444;border-radius:20px;padding:28px;max-wi
+            if(janela){ janela.document.write(`<html><head><meta name="viewport" content="width=device-width, initial-scale=1"><style>body{margin:0;background:#000;color:#fff;font-family:Arial;display:flex;justify-content:center;align-items:center;height:100vh;text-align:center;padding:20px}.box{background:#111;border:1px solid #ff4444;border-radius:20px;padding:28px;max-width:320px}h2
