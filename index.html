@@ -509,66 +509,59 @@ const horariosParaMostrar = todosHorarios.filter(h => {
 async function solicitarAgendamento() {
     const btn = document.getElementById('btnAgendar');
     const confirmDiv = document.getElementById('confirmacao');
-
     const data = document.getElementById('data').value;
     const hora = document.getElementById('hora').value;
     const cliente = document.getElementById('cliente').value;
     const telefone = document.getElementById('telefone').value;
     const servico = document.getElementById('servico').value;
+    const barbeiro = document.getElementById('barbeiro').value;
 
     if (!data || !hora || !cliente || !telefone || !servico) {
         mostrarErroModal();
         return;
     }
-    
+
+    // FIX: Abre ventana vacía AL INSTANTE para que Brave no bloquee
+    let janelaWpp = window.open('about:blank', '_blank');
+
     btn.disabled = true;
     btn.textContent = 'VERIFICANDO DISPONIBILIDADE...';
     confirmDiv.style.display = 'block';
-    confirmDiv.textContent = 'Verificando horário no sistema... por favor, aguarde. ⌛';
+    confirmDiv.textContent = 'Verificando horário no sistema...';
 
-    const dados = {
-        data: data,
-        hora: hora,
-        cliente: cliente,
-        telefone: telefone,
-        servico: servico,
-        barbeiro: document.getElementById('barbeiro').value
-    };
+    const dados = { data, hora, cliente, telefone, servico, barbeiro };
 
     try {
         const formData = new URLSearchParams(dados);
-        const response = await fetch(SCRIPT_URL, {
-            method: 'POST',
-            body: formData
-        });
-        
+        const response = await fetch(SCRIPT_URL, { method: 'POST', body: formData });
         const result = await response.json();
 
-        if (result.success) {
-            confirmDiv.textContent = 'Agendamento confirmado! Redirecionando para o WhatsApp... ✅';
-            confirmDiv.style.color = '#4CAF50';
-            // Limpia todo al instante
-document.getElementById('agendaForm').reset();
-document.getElementById('hora').innerHTML = '<option value="">Selecione um horário</option>';
-document.getElementById('hora').disabled = true;
-btn.disabled = true;
-btn.textContent = 'Agendado ✅';
-confirmDiv.textContent = '✅ Redirecionando para WhatsApp...';
-confirmDiv.style.color = '#4CAF50';
-
-// Redirección directa - Sin bloqueo
-window.location.href = result.whatsapp;
-return;
-
-        } else {
-            throw new Error(result.error || 'Horário indisponível');
+        if (result.status === 'ocupado' || result.erro) {
+            if(janelaWpp) janelaWpp.close();
+            confirmDiv.textContent = '❌ Horário ocupado! Escolha outro.';
+            btn.disabled = false;
+            btn.textContent = 'Agendar Horário ✅';
+            triggerCargaHoras();
+            return;
         }
 
+        // Usa la ventana que ya abrimos - no abre una nueva
+        if(janelaWpp) {
+            janelaWpp.location.href = result.whatsapp;
+        } else {
+            window.open(result.whatsapp, '_blank');
+        }
+
+        confirmDiv.textContent = '✅ Agendado! Abrindo WhatsApp...';
+        confirmDiv.style.color = '#4CAF50';
+        btn.textContent = 'Agendado ✅';
+
     } catch (error) {
+        if(janelaWpp) janelaWpp.close();
         confirmDiv.style.display = 'none';
         btn.disabled = false;
         btn.textContent = 'Agendar Horário ✅';
-        alert(`⚠️ Atenção! Horário Indisponível\n\n${error.message}\n\nEste horário acabou de ser reservado por outra pessoa ou está bloqueado pelo barbeiro.\n\nPor favor, escolha outro horário disponível.`);
+        alert('⚠️ Erro de conexão. Tente novamente.');
         triggerCargaHoras();
     }
 }
