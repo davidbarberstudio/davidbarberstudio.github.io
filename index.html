@@ -169,18 +169,29 @@ async function solicitarAgendamento() {
         carregarHorarios();
     }
 }
+  
 function abrirCancelar(){ document.getElementById('modalCancelar').style.display='flex'; }
+
 async function confirmarCancelar(){
   var data=document.getElementById('cancelData').value;
   var tel=document.getElementById('cancelTelefone').value.replace(/\D/g,'');
   if(!data||!tel){ alert('Preencha data e WhatsApp'); return; }
-  if(!confirm('Cancelar todos os agendamentos de '+data+' com esse WhatsApp?')) return;
+  if(!confirm('Cancelar o primeiro horário de '+data+' com esse WhatsApp?')) return;
   try{
     var formData=new URLSearchParams({acao:'cancelar', data:data, telefone:tel});
     var res=await fetch(SCRIPT_URL,{method:'POST', body:formData});
     var r=await res.json();
-    if(r.success){ alert('✅ Cancelado: '+r.count+' agendamento(s)'); document.getElementById('modalCancelar').style.display='none'; carregarHorarios(); } else { alert('❌ '+r.error); }
-  }catch(e){ alert('Erro de conexão'); }
+    if(r.success){
+      document.getElementById('modalCancelar').style.display='none';
+      // ABRE WHATSAPP CON MENSAJE DE CANCELAMENTO CON ICONOS
+      if(r.whatsapp){
+        window.location.href = r.whatsapp;
+      } else {
+        alert('✅ Cancelado: '+r.hora+' de '+r.cliente);
+        carregarHorarios();
+      }
+    } else { alert('❌ '+r.error); }
+  }catch(e){ alert('Erro de conexão: '+e); }
 }
 </script>
 </body>
