@@ -157,10 +157,21 @@ async function solicitarAgendamento(){
   btn.disabled=true; btn.textContent='VERIFICANDO...'; conf.style.display='block'; conf.innerHTML='Verificando...';
   try{
     const fd=new URLSearchParams({data,hora,cliente,telefone,servico,barbeiro:document.getElementById('barbeiro').value});
-    const r=await fetch(SCRIPT_URL,{method:'POST', body:fd, cache:'no-store'}); const result=await r.json();
+    const r=await fetch(SCRIPT_URL,{method:'POST', body:fd});
+    const txt=await r.text();
+    console.log('Respuesta POST:', txt);
+    let result;
+    try{ result=JSON.parse(txt); } catch(e){ 
+      if(txt.includes('<!DOCTYPE')) throw new Error('SCRIPT no está público. Ve a Implementar > Qualquer pessoa');
+      throw new Error('Resposta inválida');
+    }
     if(result.success){ conf.innerHTML='✅ Confirmado!'; setTimeout(()=>window.location.href=result.whatsapp,500); }
     else throw new Error(result.error);
-  }catch(err){ conf.style.display='none'; btn.disabled=false; btn.textContent='Agendar Horário ✅'; alert('⚠️ '+err.message); carregarHorarios(); }
+  }catch(err){ 
+    conf.style.display='none'; btn.disabled=false; btn.textContent='Agendar Horário ✅'; 
+    alert('⚠️ '+err.message); 
+    carregarHorarios(); 
+  }
 }
 function abrirCancelar(){ document.getElementById('modalCancelar').style.display='flex'; }
 function confirmarCancelar(){
