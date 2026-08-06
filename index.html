@@ -204,8 +204,6 @@ async function solicitarAgendamento(){
     carregarHorarios();
   }
 }
-function abrirCancelar(){ document.getElementById('modalCancelar').style.display='flex'; }
-function fecharCancelar(){ document.getElementById('modalCancelar').style.display='none'; }
 async function confirmarCancelar(){
   const dataInput = document.getElementById('cancelData').value;
   const tel = document.getElementById('cancelTelefone').value.replace(/\D/g,'');
@@ -218,19 +216,23 @@ async function confirmarCancelar(){
   try{
     const formData = new URLSearchParams({acao:'cancelar', data:dataEnvio, telefone:tel});
     const res = await fetch(SCRIPT_URL,{method:'POST', body:formData});
-    const r = await res.json();
+    const txt = await res.text();
+    console.log("RESPUESTA CANCELAR:", txt);
+    const r = JSON.parse(txt);
     if(r.success && r.whatsapp){
       fecharCancelar();
-      window.location.href = r.whatsapp;
+      // Abre WhatsApp con 2 métodos para que no falle nunca
+      const win = window.open(r.whatsapp, '_blank');
+      if(!win) window.location.href = r.whatsapp;
     } else if(r.success){
       alert('✅ Cancelado: '+r.hora);
       fecharCancelar();
       carregarHorarios();
     } else {
-      alert(r.error || 'Erro');
+      alert('❌ '+ (r.error || 'Erro'));
     }
   }catch(e){
-    alert('Erro conexão');
+    alert('Erro conexão: '+e.message);
   }
 }
 </script>
