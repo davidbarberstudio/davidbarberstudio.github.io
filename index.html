@@ -12,12 +12,12 @@
 body, html { margin: 0; padding: 0; background: #000; min-height: 100%; }
 #loader { position: fixed; inset:0; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 99999; transition: opacity 0.5s ease; }
 #loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-#loader img { width: 340px; max-width: 80%; }
+#loader img { width: 180px; max-width: 80%; }
 .loader-bar { width: 220px; height: 6px; background: #222; margin-top: 25px; border-radius: 10px; overflow: hidden; }
 .loader-bar span { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, #967433, #c5a059, #fdf0cd); animation: loading 2s forwards; }
 @keyframes loading { 0% { width: 0; } 100% { width: 100%; } }
 body { font-family: 'Segoe UI', Arial, sans-serif; color: #ddd; text-align: center; padding: 20px; }
-.db-header { font-family: 'Times New Roman', serif; font-size: 54px; font-weight: bold; background: linear-gradient(135deg, #967433 0%, #fdf0cd 30%, #c5a059 70%, #ffffff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.db-header { font-size: 54px; font-weight: bold; background: linear-gradient(135deg, #967433 0%, #fdf0cd 30%, #c5a059 70%, #ffffff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .titulo { font-size: 22px; font-weight: bold; letter-spacing: 4px; background: linear-gradient(135deg, #c5a059 0%, #fdf0cd 50%, #c5a059 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .slogan { font-size: 10px; color: #fff; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 14px; }
 .horarios-info { font-size: 12px; color: #c5a059; margin-bottom: 15px; border-bottom: 1px dashed #2c2514; padding-bottom: 15px; }
@@ -31,18 +31,18 @@ select, input { width: 90%; padding: 14px; margin-bottom: 12px; border-radius: 1
 button { background: linear-gradient(90deg, #967433, #c5a059); color: #000; border: none; padding: 14px; font-size: 17px; font-weight: bold; border-radius: 12px; cursor: pointer; margin-top: 15px; width: 90%; }
 button:disabled { background: #222; color: #555; }
 #confirmacao { display: none; margin-top: 15px; color: #fdf0cd; font-weight: bold; background: #110f0a; padding: 14px; border-radius: 10px; border: 1px solid #c5a059; }
-.loading { color: #c5a059; margin-top: 10px; }
 .btn-cancelar-interno { background: transparent!important; border: 1px solid rgba(255,68,68,0.3)!important; color: #ff6b6b!important; margin-top: 25px; font-size: 13px!important; }
 .btn-instalar-interno { background: transparent!important; border: 1px solid #c5a059!important; color: #c5a059!important; font-size: 13px!important; margin-top: 12px; }
-.subtexto-app { font-size: 11px; color: #666; margin-top: 8px; }
-#modalCancelar{ display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:999999; align-items:center; justify-content:center; padding:20px; }
+#modalCancelar, #modalInstalar, #modalProcess{ display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:999999; align-items:center; justify-content:center; padding:20px; }
 .box-cancel{ background:#121212; border:1.5px solid #c5a059; border-radius:14px; width:100%; max-width:300px; padding:18px; box-sizing:border-box; }
 .modal-overlay { display: none; position: fixed; inset:0; background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center; }
 .modal-box { background: #1a1a1a; border: 2px solid #c5a059; border-radius: 16px; padding: 25px; text-align: center; width: 320px; }
+.spinner { width:40px; height:40px; border:4px solid #222; border-top:4px solid #c5a059; border-radius:50%; animation: spin 1s linear infinite; margin:0 auto 15px; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
-<div id="loader"><img src="./1781700842770.png" style="width:180px;"><div class="loader-bar"><span></span></div></div>
+<div id="loader"><img src="./1781700842770.png"><div class="loader-bar"><span></span></div></div>
 <div class="db-header">DB</div>
 <div class="titulo">DAVID BARBER STUDIO</div>
 <div class="slogan">Estilo, Precisão e Confiança</div>
@@ -57,9 +57,9 @@ button:disabled { background: #222; color: #555; }
 <label>📅 Data do Agendamento</label>
 <input type="date" id="data" required>
 <label>👤 Seu Nome</label>
-<input type="text" id="cliente" placeholder="Digite seu nome completo" required>
+<input type="text" id="cliente" required>
 <label>📱 Seu WhatsApp</label>
-<input type="tel" id="telefone" placeholder="Ex: 47999999999" required>
+<input type="tel" id="telefone" required>
 <label>⏰ Horários Disponíveis</label>
 <select id="hora" required disabled><option value="">Selecione data e serviço primeiro</option></select>
 <div class="loading" id="loading" style="display:none;">Carregando horários...</div>
@@ -68,23 +68,21 @@ button:disabled { background: #222; color: #555; }
 <div id="confirmacao"></div>
 <button type="button" class="btn-cancelar-interno" onclick="abrirCancelar()">CANCELAR MEU AGENDAMENTO ❌</button>
 <button type="button" id="btnInstalar" class="btn-instalar-interno">📲 BAIXAR APP OFICIAL</button>
-<div class="subtexto-app">Instale nosso app e agende mais rápido ✨</div>
 </div>
+
+<!-- MODAL AGUARDE -->
+<div id="modalProcess"><div style="background:#111; border:1.5px solid #c5a059; border-radius:16px; padding:30px 24px; max-width:300px; width:100%; text-align:center;"><div class="spinner"></div><div style="color:#c5a059; font-weight:bold; font-size:16px; margin-bottom:8px;">Aguarde...</div><div style="color:#fff; font-size:13px;">Estamos verificando seu horário<br>e garantindo sua reserva ✨</div></div></div>
+
 <div id="modalErro" class="modal-overlay"><div class="modal-box"><div style="color:#fdf0cd; margin-bottom:20px;">Preencha todos os campos</div><button style="background:#c5a059; color:#000; border:none; padding:12px; border-radius:8px; font-weight:bold; width:100%;" onclick="this.parentElement.parentElement.style.display='none'">OK</button></div></div>
 <div id="modalCancelar"><div class="box-cancel"><div style="text-align:center; color:#c5a059; font-weight:bold; font-size:14px; margin-bottom:12px;">Cancelar Agendamento</div><input id="cancelData" type="date" style="width:100%; height:38px; background:#000; color:#fff; border:1px solid #333; border-radius:8px; text-align:center; margin-bottom:8px; box-sizing:border-box;"><input id="cancelTelefone" type="tel" placeholder="Seu WhatsApp" style="width:100%; height:38px; background:#000; color:#fff; border:1px solid #333; border-radius:8px; text-align:center; margin-bottom:14px; box-sizing:border-box;"><button onclick="confirmarCancelar()" style="width:100%; height:40px; background:#c5a059; color:#000; font-weight:bold; border:none; border-radius:8px; margin-bottom:8px;">Confirmar Cancelamento</button><button onclick="fecharCancelar()" style="width:100%; height:36px; background:#1e1e1e; color:#fff; border:none; border-radius:8px;">Voltar</button></div></div>
-<div id="modalInstalar" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:1000000; align-items:center; justify-content:center; padding:20px;">
-  <div style="background:#111; border:1px solid #c5a059; border-radius:16px; padding:24px; max-width:320px; width:100%; text-align:center;">
-    <h3 style="color:#c5a059; margin-bottom:12px;">Instalar App Oficial</h3>
-    <p style="color:#fff; font-size:14px; line-height:1.4; margin-bottom:16px;">Para iPhone: Toque em <b>Compartilhar</b> > <b>Adicionar à tela inicial</b><br><br>Para Android: Toque nos 3 pontos ⋮ > <b>Instalar app</b></p>
-    <button onclick="fecharModalInstalar()" style="background:#c5a059; color:#000; border:none; padding:10px 20px; border-radius:8px; font-weight:bold; width:90%;">Aceptar</button>
-  </div>
-</div>
+<div id="modalInstalar" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:1000000; align-items:center; justify-content:center; padding:20px;"><div style="background:#111; border:1px solid #c5a059; border-radius:16px; padding:24px; max-width:320px; width:100%; text-align:center;"><h3 style="color:#c5a059; margin-bottom:12px;">Instalar App Oficial</h3><p style="color:#fff; font-size:14px; line-height:1.4; margin-bottom:16px;">Para iPhone: Toque em <b>Compartilhar</b> > <b>Adicionar à tela inicial</b><br><br>Para Android: Toque nos 3 pontos ⋮ > <b>Instalar app</b></p><button onclick="fecharModalInstalar()" style="background:#c5a059; color:#000; border:none; padding:10px 20px; border-radius:8px; font-weight:bold; width:90%;">Aceptar</button></div></div>
+
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcQMOm11ba3BRV0pRKlVplcGx0goPhtHIHurr-jm0sa0rzs9ujvdeTH4xFEyPIhMKjlQ/exec';
 const BARBEIROS = [ { id: 'David', nome: 'David', foto: 'https://i.ibb.co/B5GDCLGN/IMG-20241012-152952-2.jpg' } ];
 let deferredPrompt = null;
 window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
-async function instalarAppOficial(){ if (deferredPrompt) { deferredPrompt.prompt(); const r = await deferredPrompt.userChoice; deferredPrompt = null; return; } document.getElementById('modalInstalar').style.display = 'flex'; }
+async function instalarAppOficial(){ if (deferredPrompt) { deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; return; } document.getElementById('modalInstalar').style.display = 'flex'; }
 function fecharModalInstalar(){ document.getElementById('modalInstalar').style.display = 'none'; }
 document.getElementById('btnInstalar').addEventListener('click', instalarAppOficial);
 setTimeout(() => { const l=document.getElementById('loader'); if(l) l.classList.add('hidden'); }, 2500);
@@ -115,28 +113,41 @@ async function carregarHorarios(){
     todos.forEach((hora, idxHora)=>{
       if(hora==='12:00') return; if(hora==='11:30' &&!esSab) return; if(esHoyDia && hora < hActual){ horaSelect.innerHTML+=`<option disabled>${hora} - Passado</option>`; return; }
       let bloq=false; let mot='Ocupado'; for(let b of bloqueios){ if(hora>=b.inicio && hora<b.fim){ bloq=true; mot='Bloqueado'; break; } }
-      if(!bloq){
-        // FIX: Permite último de la mañana y último de la tarde para Corte e Barba (2 bloques)
-        for(let i=0;i<bloquesNec;i++){
-          const s=todos[idxHora+i];
-          if(!s){
-            if(i===0){ bloq=true; mot='Não cabe'; break; }
-            continue; // si es el segundo bloque y no existe (último horario), lo permite
-          }
-          if(ocupados.has(s)){ bloq=true; break; }
-        }
-      }
+      if(!bloq){ for(let i=0;i<bloquesNec;i++){ const s=todos[idxHora+i]; if(!s){ if(i===0){ bloq=true; mot='Não cabe'; break; } continue; } if(ocupados.has(s)){ bloq=true; break; } } }
       if(bloq) horaSelect.innerHTML+=`<option disabled>${hora} - ${mot}</option>`; else { horaSelect.innerHTML+=`<option value="${hora}">${hora}</option>`; hay=true; }
     });
     if(!hay){ horaSelect.innerHTML='<option>Agenda cheia</option>'; btn.disabled=true; } else { horaSelect.disabled=false; btn.disabled=false; }
   }catch(e){ horaSelect.innerHTML='<option>Erro ao carregar</option>'; } finally{ loading.style.display='none'; }
 }
+function limparCampos(){
+  document.getElementById('cliente').value = '';
+  document.getElementById('telefone').value = '';
+  document.getElementById('data').value = '';
+  document.getElementById('servico').selectedIndex = 0;
+  document.getElementById('hora').innerHTML = '<option value="">Selecione data e serviço primeiro</option>';
+  document.getElementById('hora').disabled = true;
+  document.getElementById('btnAgendar').disabled = true;
+  document.getElementById('confirmacao').style.display = 'none';
+}
 async function solicitarAgendamento(){
   const btn=document.getElementById('btnAgendar'); const conf=document.getElementById('confirmacao');
   const data=document.getElementById('data').value; const hora=document.getElementById('hora').value; const cliente=document.getElementById('cliente').value; const telefone=document.getElementById('telefone').value; const servico=document.getElementById('servico').value;
   if(!data||!hora||!cliente||!telefone||!servico){ document.getElementById('modalErro').style.display='flex'; return; }
-  btn.disabled=true; btn.textContent='VERIFICANDO...'; conf.style.display='block'; conf.innerHTML='Verificando...';
-  try{ const fd=new URLSearchParams({data,hora,cliente,telefone,servico,barbeiro:document.getElementById('barbeiro').value}); const r=await fetch(SCRIPT_URL,{method:'POST', body:fd}); const result=await r.json(); if(result.success){ conf.innerHTML='✅ Confirmado!'; setTimeout(()=>window.location.href=result.whatsapp,500); } else throw new Error(result.error); }catch(err){ conf.style.display='none'; btn.disabled=false; btn.textContent='Agendar Horário ✅'; alert('⚠️ '+err.message); carregarHorarios(); }
+  document.getElementById('modalProcess').style.display='flex';
+  btn.disabled=true; btn.textContent='VERIFICANDO...';
+  try{
+    const fd=new URLSearchParams({data,hora,cliente,telefone,servico,barbeiro:document.getElementById('barbeiro').value});
+    const r=await fetch(SCRIPT_URL,{method:'POST', body:fd});
+    const result=await r.json();
+    if(result.success){
+      conf.style.display='block'; conf.innerHTML='✅ Confirmado! Redirecionando...';
+      limparCampos();
+      setTimeout(()=>{ document.getElementById('modalProcess').style.display='none'; window.location.href=result.whatsapp; }, 800);
+    } else throw new Error(result.error);
+  }catch(err){
+    document.getElementById('modalProcess').style.display='none';
+    conf.style.display='none'; btn.disabled=false; btn.textContent='Agendar Horário ✅'; alert('⚠️ '+err.message); carregarHorarios();
+  }
 }
 function abrirCancelar(){ document.getElementById('modalCancelar').style.display='flex'; }
 function fecharCancelar(){ document.getElementById('modalCancelar').style.display='none'; }
