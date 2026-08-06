@@ -94,65 +94,94 @@ button:disabled { background: #222; color: #555; }
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcQMOm11ba3BRV0pRKlVplcGx0goPhtHIHurr-jm0sa0rzs9ujvdeTH4xFEyPIhMKjlQ/exec';
 window.addEventListener('load', () => { setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 1800); });
 let deferredPrompt=null;
-window.addEventListener('beforeinstallprompt', (e)=>{ e.preventDefault(); deferredPrompt=e; document.getElementById('btnInstalar').style.display='block'; });
+window.addEventListener('beforeinstallprompt', (e)=>{ e.preventDefault(); deferredPrompt=e; });
 document.getElementById('btnInstalar').addEventListener('click', async ()=>{
-  if(deferredPrompt){ deferredPrompt.prompt(); const c=await deferredPrompt.userChoice; deferredPrompt=null; } else { alert('Para instalar:\nNo Chrome clique em ⋮ > Instalar app\nNo iPhone clique em Compartilhar > Adicionar à tela inicial'); }
+  if(deferredPrompt){ deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; }
+  else { alert('Para instalar: No Chrome ⋮ > Instalar app. No iPhone Compartilhar > Adicionar à tela inicial'); }
 });
-function seleccionarBarber(nombre, element) { document.querySelectorAll('.card').forEach(c => c.classList.remove('active')); element.classList.add('active'); document.getElementById('barbeiro').value = nombre; carregarHorarios(); }
-function getHorariosPorDia(dataStr) { const data = new Date(dataStr + 'T12:00:00'); const dia = data.getDay(); if (dia === 0) return []; if (dia === 1) { return ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30']; } if (dia === 6) { return ['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30']; } return ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30']; }
-function esHoy(dataStr) { const hoy = new Date(); const sel = new Date(dataStr + 'T12:00:00'); return hoy.toDateString() === sel.toDateString(); }
-function getHoraActual() { const a = new Date(); return String(a.getHours()).padStart(2,'0')+':'+String(a.getMinutes()).padStart(2,'0'); }
-const mapaServicos = { 'Corte': { preco: 'R$40', bloques: 1 }, 'Barba': { preco: 'R$30', bloques: 1 }, 'Sobrancelha': { preco: 'R$10', bloques: 1 }, 'Corte e Barba': { preco: 'R$70', bloques: 2 } };
-document.addEventListener('DOMContentLoaded', function() {
-    const dataInput = document.getElementById('data'); const hoje = new Date(); dataInput.min = hoje.toISOString().split('T')[0]; const maxData = new Date(); maxData.setDate(hoje.getDate() + 30); dataInput.max = maxData.toISOString().split('T')[0];
-    const servicoSelect = document.getElementById('servico'); servicoSelect.innerHTML = '<option value="">Selecione um serviço</option>'; for (const s in mapaServicos) { servicoSelect.innerHTML += '<option value="' + s + '">' + s + ' — ' + mapaServicos[s].preco + '</option>'; }
-    document.getElementById('data').addEventListener('change', carregarHorarios); document.getElementById('servico').addEventListener('change', carregarHorarios);
-});
-async function carregarHorarios() {
-    const data = document.getElementById('data').value; const servico = document.getElementById('servico').value; const barbeiro = document.getElementById('barbeiro').value; const horaSelect = document.getElementById('hora'); const loading = document.getElementById('loading'); const btn = document.getElementById('btnAgendar');
-    if (!data ||!servico) { horaSelect.innerHTML = '<option value="">Selecione data e serviço primeiro</option>'; horaSelect.disabled = true; btn.disabled = true; return; }
-    const dataObj = new Date(data + 'T12:00:00'); if (dataObj.getDay() === 0) { horaSelect.innerHTML = '<option value="">Domingo não trabalhamos</option>'; horaSelect.disabled = true; btn.disabled = true; loading.style.display = 'none'; return; }
-    loading.style.display = 'block'; horaSelect.disabled = true; horaSelect.innerHTML='<option>Carregando...</option>';
-    try {
-        const url = `${SCRIPT_URL}?data=${data}&barbeiro=${barbeiro}&_=${Date.now()}`;
-        const res = await fetch(url, {cache:'no-store'});
-        const json = await res.json();
-        const reservas = json.reservas || json;
-        const bloqueios = json.bloqueios || [];
-        const todosHorarios = getHorariosPorDia(data); const ocupados = new Set(); const esHoyDia = esHoy(data); const hActual = getHoraActual(); const bloquesNecesarios = mapaServicos[servico]?.bloques || 1;
-        reservas.forEach(r=>{ const idx=todosHorarios.indexOf(r.hora); if(idx!==-1){ for(let i=0;i<(r.bloques||1);i++){ if(todosHorarios[idx+i]) ocupados.add(todosHorarios[idx+i]); } } });
-        const esSabado = new Date(data+'T12:00:00').getDay()===6;
-        horaSelect.innerHTML = '<option value="">Selecione um horário</option>'; let hay=false;
-        todosHorarios.forEach(hora=>{
-          if(hora==='12:00') return; if(hora==='11:30' &&!esSabado) return;
-          if(esHoyDia && hora < hActual){ horaSelect.innerHTML+=`<option disabled>${hora} - Passado</option>`; return; }
-          let bloqueado=false; let motivo='Ocupado';
-          for(let b of bloqueios){ if(hora >= b.inicio && hora < b.fim){ bloqueado=true; motivo='Bloqueado'; break; } }
-          if(!bloqueado){
-            const idx=todosHorarios.indexOf(hora);
-            for(let i=0;i<bloquesNecesarios;i++){ const s=todosHorarios[idx+i]; if(!s){ bloqueado=true; motivo='Não cabe'; break; } if(ocupados.has(s)){ bloqueado=true; break; } }
-          }
-          if(bloqueado) horaSelect.innerHTML+=`<option disabled>${hora} - ${motivo}</option>`;
-          else { horaSelect.innerHTML+=`<option value="${hora}">${hora}</option>`; hay=true; }
-        });
-        if(!hay){ horaSelect.innerHTML='<option>Agenda cheia</option>'; btn.disabled=true; } else { horaSelect.disabled=false; btn.disabled=false; }
-    } catch(e){ console.error(e); horaSelect.innerHTML='<option>Erro ao carregar</option>'; } finally { loading.style.display='none'; }
+function seleccionarBarber(n, el){ document.querySelectorAll('.card').forEach(c=>c.classList.remove('active')); el.classList.add('active'); document.getElementById('barbeiro').value=n; carregarHorarios(); }
+function getHorariosPorDia(dStr){
+  const d=new Date(dStr+'T12:00:00'); const dia=d.getDay();
+  if(dia===0) return [];
+  if(dia===1) return ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30'];
+  if(dia===6) return ['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30'];
+  return ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30'];
 }
-async function solicitarAgendamento() {
-    const btn=document.getElementById('btnAgendar'); const confirmDiv=document.getElementById('confirmacao');
-    const data=document.getElementById('data').value; const hora=document.getElementById('hora').value; const cliente=document.getElementById('cliente').value; const telefone=document.getElementById('telefone').value; const servico=document.getElementById('servico').value;
-    if(!data||!hora||!cliente||!telefone||!servico){ document.getElementById('modalErro').style.display='flex'; return; }
-    btn.disabled=true; btn.textContent='VERIFICANDO...'; confirmDiv.style.display='block'; confirmDiv.innerHTML='Verificando...';
-    try{
-        const formData=new URLSearchParams({data,hora,cliente,telefone,servico,barbeiro:document.getElementById('barbeiro').value, _:Date.now()});
-        const res=await fetch(SCRIPT_URL,{method:'POST', body:formData, cache:'no-store'});
-        const result=await res.json();
-        if(result.success){ confirmDiv.innerHTML='✅ Confirmado! Redirecionando...'; setTimeout(()=>window.location.href=result.whatsapp,500); }
-        else throw new Error(result.error);
-    }catch(error){
-        confirmDiv.style.display='none'; btn.disabled=false; btn.textContent='Agendar Horário ✅';
-        alert(`⚠️ Horário Indisponível\n\n${error.message}\n\nEscolha outro horário.`); carregarHorarios();
-    }
+function esHoy(dStr){ const hoy=new Date(); const sel=new Date(dStr+'T12:00:00'); return hoy.toDateString()===sel.toDateString(); }
+function getHoraActual(){ const a=new Date(); return String(a.getHours()).padStart(2,'0')+':'+String(a.getMinutes()).padStart(2,'0'); }
+const mapaServicos={ 'Corte':{preco:'R$40',bloques:1}, 'Barba':{preco:'R$30',bloques:1}, 'Sobrancelha':{preco:'R$10',bloques:1}, 'Corte e Barba':{preco:'R$70',bloques:2} };
+document.addEventListener('DOMContentLoaded', ()=>{
+  const dataInput=document.getElementById('data'); const hoje=new Date(); dataInput.min=hoje.toISOString().split('T')[0]; const max=new Date(); max.setDate(hoje.getDate()+30); dataInput.max=max.toISOString().split('T')[0];
+  const sel=document.getElementById('servico'); sel.innerHTML='<option value="">Selecione um serviço</option>'; for(const s in mapaServicos){ sel.innerHTML+=`<option value="${s}">${s} — ${mapaServicos[s].preco}</option>`; }
+  document.getElementById('data').addEventListener('change', carregarHorarios);
+  document.getElementById('servico').addEventListener('change', carregarHorarios);
+});
+
+async function carregarHorarios(){
+  const data=document.getElementById('data').value;
+  const servico=document.getElementById('servico').value;
+  const barbeiro=document.getElementById('barbeiro').value;
+  const horaSelect=document.getElementById('hora');
+  const loading=document.getElementById('loading');
+  const btn=document.getElementById('btnAgendar');
+  if(!data||!servico){ horaSelect.innerHTML='<option value="">Selecione data e serviço primeiro</option>'; horaSelect.disabled=true; btn.disabled=true; return; }
+  if(new Date(data+'T12:00:00').getDay()===0){ horaSelect.innerHTML='<option value="">Domingo não trabalhamos</option>'; horaSelect.disabled=true; btn.disabled=true; return; }
+  loading.style.display='block'; horaSelect.disabled=true; horaSelect.innerHTML='<option>Carregando...</option>';
+  try{
+    const url=`${SCRIPT_URL}?data=${data}&barbeiro=${barbeiro}&_=${Date.now()}`;
+    const res=await fetch(url, {cache:'no-store'});
+    const json=await res.json();
+    // ESTO ARREGLA TU ERROR - tu JSON ahora es {reservas:[], bloqueios:[]}
+    const reservas = Array.isArray(json)? json : (json.reservas || []);
+    const bloqueios = json.bloqueios || [];
+
+    const todos=getHorariosPorDia(data);
+    const ocupados=new Set();
+    const hActual=getHoraActual();
+    const esHoyDia=esHoy(data);
+    const bloquesNec=mapaServicos[servico]?.bloques||1;
+
+    reservas.forEach(r=>{
+      const idx=todos.indexOf(r.hora);
+      if(idx!==-1){ for(let i=0;i<(r.bloques||1);i++){ if(todos[idx+i]) ocupados.add(todos[idx+i]); } }
+    });
+
+    const esSab=new Date(data+'T12:00:00').getDay()===6;
+    horaSelect.innerHTML='<option value="">Selecione um horário</option>';
+    let hay=false;
+    todos.forEach(hora=>{
+      if(hora==='12:00') return;
+      if(hora==='11:30' &&!esSab) return;
+      if(esHoyDia && hora < hActual){ horaSelect.innerHTML+=`<option disabled>${hora} - Passado</option>`; return; }
+      let bloq=false; let mot='Ocupado';
+      for(let b of bloqueios){ if(hora>=b.inicio && hora<b.fim){ bloq=true; mot='Bloqueado'; break; } }
+      if(!bloq){
+        const idx=todos.indexOf(hora);
+        for(let i=0;i<bloquesNec;i++){ const s=todos[idx+i]; if(!s){ bloq=true; mot='Não cabe'; break; } if(ocupados.has(s)){ bloq=true; break; } }
+      }
+      if(bloq) horaSelect.innerHTML+=`<option disabled>${hora} - ${mot} </option>`;
+      else { horaSelect.innerHTML+=`<option value="${hora}">${hora}</option>`; hay=true; }
+    });
+    if(!hay){ horaSelect.innerHTML='<option>Agenda cheia</option>'; btn.disabled=true; }
+    else { horaSelect.disabled=false; btn.disabled=false; }
+  }catch(e){
+    console.error(e);
+    horaSelect.innerHTML='<option>Erro ao carregar</option>';
+  }finally{ loading.style.display='none'; }
+}
+
+async function solicitarAgendamento(){
+  const btn=document.getElementById('btnAgendar'); const conf=document.getElementById('confirmacao');
+  const data=document.getElementById('data').value; const hora=document.getElementById('hora').value;
+  const cliente=document.getElementById('cliente').value; const telefone=document.getElementById('telefone').value; const servico=document.getElementById('servico').value;
+  if(!data||!hora||!cliente||!telefone||!servico){ document.getElementById('modalErro').style.display='flex'; return; }
+  btn.disabled=true; btn.textContent='VERIFICANDO...'; conf.style.display='block'; conf.innerHTML='Verificando...';
+  try{
+    const fd=new URLSearchParams({data,hora,cliente,telefone,servico,barbeiro:document.getElementById('barbeiro').value, _:`${Date.now()}`});
+    const r=await fetch(SCRIPT_URL,{method:'POST', body:fd, cache:'no-store'}); const result=await r.json();
+    if(result.success){ conf.innerHTML='✅ Confirmado!'; setTimeout(()=>window.location.href=result.whatsapp,500); }
+    else throw new Error(result.error);
+  }catch(err){ conf.style.display='none'; btn.disabled=false; btn.textContent='Agendar Horário ✅'; alert(`⚠️ ${err.message}`); carregarHorarios(); }
 }
 function abrirCancelar(){ document.getElementById('modalCancelar').style.display='flex'; }
 function confirmarCancelar(){
@@ -160,11 +189,9 @@ function confirmarCancelar(){
   if(!d||!t){ alert('Preencha data e WhatsApp'); return; }
   var w=window.open('','_blank');
   fetch(SCRIPT_URL,{method:'POST', body:new URLSearchParams({acao:'cancelar', data:d, telefone:t, _:Date.now()}), cache:'no-store'})
-.then(r=>r.json()).then(r=>{
+ .then(r=>r.json()).then(r=>{
     if(r.success && r.whatsapp){ document.getElementById('modalCancelar').style.display='none'; w.location.href=r.whatsapp; setTimeout(()=>carregarHorarios(),1000); }
     else{ w.close(); alert(r.error||'Erro'); }
   }).catch(()=>{ w.close(); alert('Erro conexão'); });
 }
 </script>
-</body>
-</html>
