@@ -8,6 +8,9 @@
 <link rel="apple-touch-icon" href="https://i.ibb.co/Mk0cWNvk/1781700650976.png">
 <link rel="manifest" href='data:application/json;base64,eyJuYW1lIjoiRGF2aWQgQmFyYmVyIFN0dWRpbyIsInNob3J0X25hbWUiOiJEQiBCYXJiZXIiLCJzdGFydF91cmwiOiIuL2luZGV4Lmh0bWwiLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjMDAwMDAwIiwidGhlbWVfY29sb3IiOiIjYzVhMDU5IiwiaWNvbnMiOlt7InNyYyI6Imh0dHBzOi8vaS5pYmIuY28vTWswY1dOdmsvMTc4MTcwMDY1MDk3Ni5wbmciLCJzaXplcyI6IjUxMng1MTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIn1dfQ=='>
 <meta name="theme-color" content="#000000">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <style>
 body, html { margin: 0; padding: 0; background: #000; min-height: 100%; }
 #loader { position: fixed; inset:0; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 99999; transition: opacity 0.5s ease, visibility 0.5s ease; }
@@ -38,23 +41,19 @@ button:disabled { background: #222; color: #555; }
 .modal-box { background: #1a1a1a; border: 2px solid #c5a059; border-radius: 16px; padding: 25px; text-align: center; max-width: 85%; width: 320px; }
 .modal-texto { color: #fdf0cd; font-size: 18px; margin-bottom: 20px; }
 .modal-btn { background: #c5a059; color: #000; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
-.btn-cancelar-interno { background: transparent!important; border: 1px solid rgba(255,68,68,0.3)!important; color: #ff6b6b!important; margin-top: 25px; font-size: 13px!important; letter-spacing: 1px; }
+.btn-cancelar-interno { background: transparent!important; border: 1px solid rgba(255,68,68,0.3)!important; color: #ff6b6b!important; margin-top: 25px; font-size: 13px!important; }
 .btn-instalar-interno { background: transparent!important; border: 1px solid #c5a059!important; color: #c5a059!important; font-size: 13px!important; margin-top: 12px; }
 .subtexto-app { font-size: 11px; color: #666; margin-top: 8px; }
-/* VENTANA CANCELAR BONITA Y PEQUEÑA */
 #modalCancelar{ display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:999999; align-items:center; justify-content:center; padding:20px; }
-#modalCancelar.box-cancel{ background:#121212; border:1.5px solid #c5a059; border-radius:14px; width:100%; max-width:300px; padding:18px; box-sizing:border-box; }
+.box-cancel{ background:#121212; border:1.5px solid #c5a059; border-radius:14px; width:100%; max-width:300px; padding:18px; box-sizing:border-box; }
 </style>
 </head>
 <body>
-
 <div id="loader"><img src="https://i.ibb.co/Mk0cWNvk/1781700650976.png"><div class="loader-bar"><span></span></div></div>
-
 <div class="db-header">DB</div>
 <div class="titulo">DAVID BARBER STUDIO</div>
 <div class="slogan">Estilo, Precisão e Confiança</div>
 <div class="horarios-info">🕒 Seg: 08:30–11:00, 13:00–17:00<br>🕒 Ter a Sex: 08:30–11:00, 13:00–19:00<br>🕒 Sáb: 08:00–11:30, 13:00–17:00</div>
-
 <div id="form-container">
   <form id="agendaForm">
     <label>💈 Profissional</label>
@@ -80,10 +79,7 @@ button:disabled { background: #222; color: #555; }
     <div class="subtexto-app">Instale nosso app e agende mais rápido ✨</div>
   </div>
 </div>
-
 <div id="modalErro" class="modal-overlay"><div class="modal-box"><div class="modal-texto">Preencha todos os campos</div><button class="modal-btn" onclick="this.parentElement.parentElement.style.display='none'">OK</button></div></div>
-
-<!-- VENTANA CANCELAR BONITA -->
 <div id="modalCancelar">
   <div class="box-cancel">
     <div style="text-align:center; color:#c5a059; font-weight:bold; font-size:14px; margin-bottom:12px;">Cancelar Agendamento</div>
@@ -94,19 +90,18 @@ button:disabled { background: #222; color: #555; }
     <button onclick="document.getElementById('modalCancelar').style.display='none'" style="width:100%; height:36px; background:#1e1e1e; color:#fff; border:none; border-radius:8px;">Voltar</button>
   </div>
 </div>
-
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcQMOm11ba3BRV0pRKlVplcGx0goPhtHIHurr-jm0sa0rzs9ujvdeTH4xFEyPIhMKjlQ/exec';
-window.addEventListener('load', () => { setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 2000); });
+window.addEventListener('load', () => { setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 1800); });
 let deferredPrompt=null;
 window.addEventListener('beforeinstallprompt', (e)=>{ e.preventDefault(); deferredPrompt=e; document.getElementById('btnInstalar').style.display='block'; });
 document.getElementById('btnInstalar').addEventListener('click', async ()=>{
-  if(deferredPrompt){ deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; } else { alert('Para instalar:\nNo seu navegador clique em Compartilhar > Adicionar à tela inicial'); }
+  if(deferredPrompt){ deferredPrompt.prompt(); const c=await deferredPrompt.userChoice; deferredPrompt=null; } else { alert('Para instalar:\nNo Chrome clique em ⋮ > Instalar app\nNo iPhone clique em Compartilhar > Adicionar à tela inicial'); }
 });
 function seleccionarBarber(nombre, element) { document.querySelectorAll('.card').forEach(c => c.classList.remove('active')); element.classList.add('active'); document.getElementById('barbeiro').value = nombre; carregarHorarios(); }
 function getHorariosPorDia(dataStr) { const data = new Date(dataStr + 'T12:00:00'); const dia = data.getDay(); if (dia === 0) return []; if (dia === 1) { return ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30']; } if (dia === 6) { return ['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30']; } return ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30']; }
-function esHoy(dataStr) { const hoy = new Date(); const dataSel = new Date(dataStr + 'T12:00:00'); return hoy.toDateString() === dataSel.toDateString(); }
-function getHoraActual() { const ahora = new Date(); return String(ahora.getHours()).padStart(2,'0')+':'+String(ahora.getMinutes()).padStart(2,'0'); }
+function esHoy(dataStr) { const hoy = new Date(); const sel = new Date(dataStr + 'T12:00:00'); return hoy.toDateString() === sel.toDateString(); }
+function getHoraActual() { const a = new Date(); return String(a.getHours()).padStart(2,'0')+':'+String(a.getMinutes()).padStart(2,'0'); }
 const mapaServicos = { 'Corte': { preco: 'R$40', bloques: 1 }, 'Barba': { preco: 'R$30', bloques: 1 }, 'Sobrancelha': { preco: 'R$10', bloques: 1 }, 'Corte e Barba': { preco: 'R$70', bloques: 2 } };
 document.addEventListener('DOMContentLoaded', function() {
     const dataInput = document.getElementById('data'); const hoje = new Date(); dataInput.min = hoje.toISOString().split('T')[0]; const maxData = new Date(); maxData.setDate(hoje.getDate() + 30); dataInput.max = maxData.toISOString().split('T')[0];
@@ -117,86 +112,57 @@ async function carregarHorarios() {
     const data = document.getElementById('data').value; const servico = document.getElementById('servico').value; const barbeiro = document.getElementById('barbeiro').value; const horaSelect = document.getElementById('hora'); const loading = document.getElementById('loading'); const btn = document.getElementById('btnAgendar');
     if (!data ||!servico) { horaSelect.innerHTML = '<option value="">Selecione data e serviço primeiro</option>'; horaSelect.disabled = true; btn.disabled = true; return; }
     const dataObj = new Date(data + 'T12:00:00'); if (dataObj.getDay() === 0) { horaSelect.innerHTML = '<option value="">Domingo não trabalhamos</option>'; horaSelect.disabled = true; btn.disabled = true; loading.style.display = 'none'; return; }
-    loading.style.display = 'block'; horaSelect.disabled = true;
+    loading.style.display = 'block'; horaSelect.disabled = true; horaSelect.innerHTML='<option>Carregando...</option>';
     try {
-        const res = await fetch(`${SCRIPT_URL}?data=${data}&barbeiro=${barbeiro}&v=${Date.now()}`);
+        const url = `${SCRIPT_URL}?data=${data}&barbeiro=${barbeiro}&_=${Date.now()}`;
+        const res = await fetch(url, {cache:'no-store'});
         const json = await res.json();
         const reservas = json.reservas || json;
         const bloqueios = json.bloqueios || [];
-        const todosHorarios = getHorariosPorDia(data); const horariosOcupados = new Set(); const horaActual = getHoraActual(); const esDiaHoy = esHoy(data); const bloquesNecesarios = mapaServicos[servico]?.bloques || 1;
-
-        reservas.forEach(r => {
-          const idx = todosHorarios.indexOf(r.hora);
-          if (idx!== -1) {
-            for (let i = 0; i < (r.bloques||r.bloques||1); i++) {
-              if (idx + i < todosHorarios.length) { horariosOcupados.add(todosHorarios[idx + i]); }
-            }
+        const todosHorarios = getHorariosPorDia(data); const ocupados = new Set(); const esHoyDia = esHoy(data); const hActual = getHoraActual(); const bloquesNecesarios = mapaServicos[servico]?.bloques || 1;
+        reservas.forEach(r=>{ const idx=todosHorarios.indexOf(r.hora); if(idx!==-1){ for(let i=0;i<(r.bloques||1);i++){ if(todosHorarios[idx+i]) ocupados.add(todosHorarios[idx+i]); } } });
+        const esSabado = new Date(data+'T12:00:00').getDay()===6;
+        horaSelect.innerHTML = '<option value="">Selecione um horário</option>'; let hay=false;
+        todosHorarios.forEach(hora=>{
+          if(hora==='12:00') return; if(hora==='11:30' &&!esSabado) return;
+          if(esHoyDia && hora < hActual){ horaSelect.innerHTML+=`<option disabled>${hora} - Passado</option>`; return; }
+          let bloqueado=false; let motivo='Ocupado';
+          for(let b of bloqueios){ if(hora >= b.inicio && hora < b.fim){ bloqueado=true; motivo='Bloqueado'; break; } }
+          if(!bloqueado){
+            const idx=todosHorarios.indexOf(hora);
+            for(let i=0;i<bloquesNecesarios;i++){ const s=todosHorarios[idx+i]; if(!s){ bloqueado=true; motivo='Não cabe'; break; } if(ocupados.has(s)){ bloqueado=true; break; } }
           }
+          if(bloqueado) horaSelect.innerHTML+=`<option disabled>${hora} - ${motivo}</option>`;
+          else { horaSelect.innerHTML+=`<option value="${hora}">${hora}</option>`; hay=true; }
         });
-
-        const esSabado = new Date(data + 'T12:00:00').getDay() === 6;
-        const horariosParaMostrar = todosHorarios.filter(h => { if (h === '12:00') return false; if (h === '11:30' &&!esSabado) return false; return true; }).slice(0, -1);
-        horaSelect.innerHTML = '<option value="">Selecione um horário</option>'; let hay = false;
-        horariosParaMostrar.forEach((hora) => {
-          const idx = todosHorarios.indexOf(hora);
-          const pasado = esDiaHoy && hora < horaActual;
-          let bloqueado = false; let motivo = '';
-          if (pasado) { bloqueado = true; motivo = 'Passado'; }
-          else {
-            // verifica bloqueios
-            for(let b of bloqueios){ if(hora >= b.inicio && hora < b.fim) bloqueado=true, motivo='Bloqueado'; }
-            if(!bloqueado){
-              for (let i = 0; i < bloquesNecesarios; i++) {
-                const s = todosHorarios[idx + i];
-                if (!s) { bloqueado = true; motivo = 'Não cabe'; break; }
-                if (horariosOcupados.has(s)) { bloqueado = true; motivo = 'Ocupado'; break; }
-              }
-            }
-          }
-          if (bloqueado) { horaSelect.innerHTML += `<option disabled>${hora} - ${motivo}</option>`; }
-          else { horaSelect.innerHTML += `<option value="${hora}">${hora}</option>`; hay = true; }
-        });
-        if (!hay) { horaSelect.innerHTML = '<option value="">Agenda cheia</option>'; btn.disabled = true; } else { horaSelect.disabled = false; btn.disabled = false; }
-    } catch (e) { console.log(e); horaSelect.innerHTML = '<option value="">Erro ao carregar</option>'; } finally { loading.style.display = 'none'; }
+        if(!hay){ horaSelect.innerHTML='<option>Agenda cheia</option>'; btn.disabled=true; } else { horaSelect.disabled=false; btn.disabled=false; }
+    } catch(e){ console.error(e); horaSelect.innerHTML='<option>Erro ao carregar</option>'; } finally { loading.style.display='none'; }
 }
 async function solicitarAgendamento() {
-    const btn = document.getElementById('btnAgendar');
-    const confirmDiv = document.getElementById('confirmacao');
-    const data = document.getElementById('data').value;
-    const hora = document.getElementById('hora').value;
-    const cliente = document.getElementById('cliente').value;
-    const telefone = document.getElementById('telefone').value;
-    const servico = document.getElementById('servico').value;
-    if (!data ||!hora ||!cliente ||!telefone ||!servico) { document.getElementById('modalErro').style.display='flex'; return; }
-    btn.disabled = true; btn.textContent = 'VERIFICANDO...'; confirmDiv.style.display = 'block'; confirmDiv.innerHTML = 'Verificando horário no sistema...<br>por favor, aguarde. ⌛';
-    const dados = { data: data, hora: hora, cliente: cliente, telefone: telefone, servico: servico, barbeiro: document.getElementById('barbeiro').value };
-    try {
-        const formData = new URLSearchParams(dados);
-        const response = await fetch(SCRIPT_URL, { method: 'POST', body: formData });
-        const result = await response.json();
-        if (result.success) {
-            confirmDiv.innerHTML = '✅ Agendamento confirmado!<br>Redirecionando para o WhatsApp...';
-            setTimeout(() => { window.location.href = result.whatsapp; }, 500);
-        } else { throw new Error(result.error); }
-    } catch (error) {
-        confirmDiv.style.display = 'none'; btn.disabled = false; btn.textContent = 'Agendar Horário ✅';
-        alert(`⚠️ Horário Indisponível\n\n${error.message}\n\nEsse horário acabou de ser reservado por outra pessoa.\nPor favor, escolha outro horário disponível.`);
-        carregarHorarios();
+    const btn=document.getElementById('btnAgendar'); const confirmDiv=document.getElementById('confirmacao');
+    const data=document.getElementById('data').value; const hora=document.getElementById('hora').value; const cliente=document.getElementById('cliente').value; const telefone=document.getElementById('telefone').value; const servico=document.getElementById('servico').value;
+    if(!data||!hora||!cliente||!telefone||!servico){ document.getElementById('modalErro').style.display='flex'; return; }
+    btn.disabled=true; btn.textContent='VERIFICANDO...'; confirmDiv.style.display='block'; confirmDiv.innerHTML='Verificando...';
+    try{
+        const formData=new URLSearchParams({data,hora,cliente,telefone,servico,barbeiro:document.getElementById('barbeiro').value, _:Date.now()});
+        const res=await fetch(SCRIPT_URL,{method:'POST', body:formData, cache:'no-store'});
+        const result=await res.json();
+        if(result.success){ confirmDiv.innerHTML='✅ Confirmado! Redirecionando...'; setTimeout(()=>window.location.href=result.whatsapp,500); }
+        else throw new Error(result.error);
+    }catch(error){
+        confirmDiv.style.display='none'; btn.disabled=false; btn.textContent='Agendar Horário ✅';
+        alert(`⚠️ Horário Indisponível\n\n${error.message}\n\nEscolha outro horário.`); carregarHorarios();
     }
 }
 function abrirCancelar(){ document.getElementById('modalCancelar').style.display='flex'; }
 function confirmarCancelar(){
-  var d=document.getElementById('cancelData').value;
-  var t=document.getElementById('cancelTelefone').value.replace(/\D/g,'');
+  var d=document.getElementById('cancelData').value; var t=document.getElementById('cancelTelefone').value.replace(/\D/g,'');
   if(!d||!t){ alert('Preencha data e WhatsApp'); return; }
   var w=window.open('','_blank');
-  fetch(SCRIPT_URL,{method:'POST', body:new URLSearchParams({acao:'cancelar', data:d, telefone:t})})
+  fetch(SCRIPT_URL,{method:'POST', body:new URLSearchParams({acao:'cancelar', data:d, telefone:t, _:Date.now()}), cache:'no-store'})
 .then(r=>r.json()).then(r=>{
-    if(r.success && r.whatsapp){
-      document.getElementById('modalCancelar').style.display='none';
-      w.location.href=r.whatsapp;
-      setTimeout(()=>carregarHorarios(),1000);
-    }else{ w.close(); alert(r.error||'Erro ao cancelar'); }
+    if(r.success && r.whatsapp){ document.getElementById('modalCancelar').style.display='none'; w.location.href=r.whatsapp; setTimeout(()=>carregarHorarios(),1000); }
+    else{ w.close(); alert(r.error||'Erro'); }
   }).catch(()=>{ w.close(); alert('Erro conexão'); });
 }
 </script>
