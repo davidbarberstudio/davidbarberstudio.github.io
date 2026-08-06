@@ -8,7 +8,6 @@
 <link rel="apple-touch-icon" href="https://i.ibb.co/Mk0cWNvk/1781700650976.png">
 <link rel="manifest" href='data:application/json;base64,eyJuYW1lIjoiRGF2aWQgQmFyYmVyIFN0dWRpbyIsInNob3J0X25hbWUiOiJEQiBCYXJiZXIiLCJzdGFydF91cmwiOiIuL2luZGV4Lmh0bWwiLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjMDAwMDAwIiwidGhlbWVfY29sb3IiOiIjYzVhMDU5IiwiaWNvbnMiOlt7InNyYyI6Imh0dHBzOi8vaS5pYmIuY28vTWswY1dOdmsvMTc4MTcwMDY1MDk3Ni5wbmciLCJzaXplcyI6IjUxMng1MTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIn1dfQ=='>
 <meta name="theme-color" content="#000000">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <style>
 body, html { margin: 0; padding: 0; background: #000; min-height: 100%; }
 #loader { position: fixed; inset:0; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 99999; transition: opacity 0.5s ease; }
@@ -70,38 +69,28 @@ button:disabled { background: #222; color: #555; }
 <button type="button" id="btnInstalar" class="btn-instalar-interno">📲 BAIXAR APP OFICIAL</button>
 <div class="subtexto-app">Instale nosso app e agende mais rápido ✨</div>
 </div>
-
 <div id="modalErro" class="modal-overlay"><div class="modal-box"><div style="color:#fdf0cd; margin-bottom:20px;">Preencha todos os campos</div><button style="background:#c5a059; color:#000; border:none; padding:12px; border-radius:8px; font-weight:bold; width:100%;" onclick="this.parentElement.parentElement.style.display='none'">OK</button></div></div>
-
 <div id="modalCancelar"><div class="box-cancel"><div style="text-align:center; color:#c5a059; font-weight:bold; font-size:14px; margin-bottom:12px;">Cancelar Agendamento</div><input id="cancelData" type="date" style="width:100%; height:38px; background:#000; color:#fff; border:1px solid #333; border-radius:8px; text-align:center; margin-bottom:8px; box-sizing:border-box;"><input id="cancelTelefone" type="tel" placeholder="Seu WhatsApp" style="width:100%; height:38px; background:#000; color:#fff; border:1px solid #333; border-radius:8px; text-align:center; margin-bottom:14px; box-sizing:border-box;"><button onclick="confirmarCancelar()" style="width:100%; height:40px; background:#c5a059; color:#000; font-weight:bold; border:none; border-radius:8px; margin-bottom:8px;">Confirmar Cancelamento</button><button onclick="fecharCancelar()" style="width:100%; height:36px; background:#1e1e1e; color:#fff; border:none; border-radius:8px;">Voltar</button></div></div>
-
 <div id="modalInstalar" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:1000000; align-items:center; justify-content:center; padding:20px;">
   <div style="background:#111; border:1px solid #c5a059; border-radius:16px; padding:24px; max-width:320px; width:100%; text-align:center;">
     <h3 style="color:#c5a059; margin-bottom:12px;">Instalar App Oficial</h3>
-    <p style="color:#fff; font-size:14px; line-height:1.4; margin-bottom:16px;">
-      Para iPhone: Toque em <b>Compartilhar</b> > <b>Adicionar à tela inicial</b><br><br>
-      Para Android: Toque nos 3 pontos ⋮ > <b>Instalar app</b>
-    </p>
+    <p style="color:#fff; font-size:14px; line-height:1.4; margin-bottom:16px;">Para iPhone: Toque em <b>Compartilhar</b> > <b>Adicionar à tela inicial</b><br><br>Para Android: Toque nos 3 pontos ⋮ > <b>Instalar app</b></p>
     <button onclick="fecharModalInstalar()" style="background:#c5a059; color:#000; border:none; padding:10px 20px; border-radius:8px; font-weight:bold; width:90%;">Aceptar</button>
   </div>
 </div>
-
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcQMOm11ba3BRV0pRKlVplcGx0goPhtHIHurr-jm0sa0rzs9ujvdeTH4xFEyPIhMKjlQ/exec';
-window.addEventListener('load', () => { setTimeout(() => { document.getElementById('loader').classList.add('hidden'); }, 1200); });
-
 let deferredPrompt = null;
+
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
-  console.log('PWA lista para instalar');
 });
 
 async function instalarAppOficial(){
   if (deferredPrompt) {
     deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    console.log('Resultado:', outcome);
+    await deferredPrompt.userChoice;
     deferredPrompt = null;
     return;
   }
@@ -111,6 +100,18 @@ function fecharModalInstalar(){
   document.getElementById('modalInstalar').style.display = 'none';
 }
 document.getElementById('btnInstalar').addEventListener('click', instalarAppOficial);
+
+// LOADER ANTI-BLOQUEO - Se oculta solo si o si
+setTimeout(() => {
+  const loader = document.getElementById('loader');
+  if(loader) loader.classList.add('hidden');
+}, 2500);
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const loader = document.getElementById('loader');
+    if(loader) loader.classList.add('hidden');
+  }, 800);
+});
 
 const mapaServicos={ 'Corte':{preco:'R$40',bloques:1}, 'Barba':{preco:'R$30',bloques:1}, 'Sobrancelha':{preco:'R$10',bloques:1}, 'Corte e Barba':{preco:'R$70',bloques:2} };
 function getHorariosPorDia(dStr){
@@ -122,7 +123,6 @@ function getHorariosPorDia(dStr){
 }
 function esHoy(dStr){ const hoy=new Date(); const sel=new Date(dStr+'T12:00:00'); return hoy.toDateString()===sel.toDateString(); }
 function getHoraActual(){ const a=new Date(); return String(a.getHours()).padStart(2,'0')+':'+String(a.getMinutes()).padStart(2,'0'); }
-
 document.addEventListener('DOMContentLoaded', ()=>{
   const dataInput=document.getElementById('data');
   const hoje=new Date(); dataInput.min=hoje.toISOString().split('T')[0];
@@ -133,7 +133,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
   dataInput.addEventListener('change', carregarHorarios);
   sel.addEventListener('change', carregarHorarios);
 });
-
 async function carregarHorarios(){
   const data=document.getElementById('data').value;
   const servico=document.getElementById('servico').value;
@@ -182,7 +181,6 @@ async function carregarHorarios(){
     horaSelect.innerHTML='<option>Erro ao carregar</option>';
   }finally{ loading.style.display='none'; }
 }
-
 async function solicitarAgendamento(){
   const btn=document.getElementById('btnAgendar'); const conf=document.getElementById('confirmacao');
   const data=document.getElementById('data').value; const hora=document.getElementById('hora').value;
@@ -193,10 +191,9 @@ async function solicitarAgendamento(){
     const fd=new URLSearchParams({data,hora,cliente,telefone,servico,barbeiro:document.getElementById('barbeiro').value});
     const r=await fetch(SCRIPT_URL,{method:'POST', body:fd});
     const txt=await r.text();
-    console.log('Respuesta POST:', txt);
     let result;
     try{ result=JSON.parse(txt); } catch(e){
-      if(txt.includes('<!DOCTYPE')) throw new Error('SCRIPT no está público. Ve a Implementar > Qualquer pessoa');
+      if(txt.includes('<!DOCTYPE')) throw new Error('SCRIPT no está público');
       throw new Error('Resposta inválida');
     }
     if(result.success){ conf.innerHTML='✅ Confirmado!'; setTimeout(()=>window.location.href=result.whatsapp,500); }
@@ -207,31 +204,26 @@ async function solicitarAgendamento(){
     carregarHorarios();
   }
 }
-
-function abrirCancelar(){
-  document.getElementById('modalCancelar').style.display='flex';
-}
-function fecharCancelar(){
-  document.getElementById('modalCancelar').style.display='none';
-}
+function abrirCancelar(){ document.getElementById('modalCancelar').style.display='flex'; }
+function fecharCancelar(){ document.getElementById('modalCancelar').style.display='none'; }
 async function confirmarCancelar(){
-  var dataInput = document.getElementById('cancelData').value;
-  var tel = document.getElementById('cancelTelefone').value.replace(/\D/g,'');
+  const dataInput = document.getElementById('cancelData').value;
+  const tel = document.getElementById('cancelTelefone').value.replace(/\D/g,'');
   if(!dataInput ||!tel){ alert('Preencha data e WhatsApp'); return; }
-  var dataEnvio = dataInput;
+  let dataEnvio = dataInput;
   if(dataInput.includes('/')){
-    var p = dataInput.split('/');
-    dataEnvio = p[2]+'-'+p[1].padStart(2,'0')+'-'+p[0].padStart(2,'0');
+    const p = dataInput.split('/');
+    dataEnvio = `${p[2]}-${p[1].padStart(2,'0')}-${p[0].padStart(2,'0')}`;
   }
   try{
-    var formData = new URLSearchParams({acao:'cancelar', data:dataEnvio, telefone:tel});
-    var res = await fetch(SCRIPT_URL,{method:'POST', body:formData});
-    var r = await res.json();
+    const formData = new URLSearchParams({acao:'cancelar', data:dataEnvio, telefone:tel});
+    const res = await fetch(SCRIPT_URL,{method:'POST', body:formData});
+    const r = await res.json();
     if(r.success && r.whatsapp){
-      document.getElementById('modalCancelar').style.display='none';
+      fecharCancelar();
       window.location.href = r.whatsapp;
     } else if(r.success){
-      alert('✅ Cancelado');
+      alert('✅ Cancelado: '+r.hora);
       fecharCancelar();
       carregarHorarios();
     } else {
