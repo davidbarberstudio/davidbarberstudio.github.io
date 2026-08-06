@@ -33,7 +33,7 @@ button:disabled { background: #222; color: #555; }
 #confirmacao { display: none; margin-top: 15px; color: #fdf0cd; font-weight: bold; background: #110f0a; padding: 14px; border-radius: 10px; border: 1px solid #c5a059; }
 .btn-cancelar-interno { background: transparent!important; border: 1px solid rgba(255,68,68,0.3)!important; color: #ff6b6b!important; margin-top: 25px; font-size: 13px!important; }
 .btn-instalar-interno { background: transparent!important; border: 1px solid #c5a059!important; color: #c5a059!important; font-size: 13px!important; margin-top: 12px; }
-#modalCancelar, #modalInstalar, #modalProcess{ display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:999999; align-items:center; justify-content:center; padding:20px; }
+#modalCancelar, #modalInstalar, #modalProcess, #modalOcupado{ display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:999999; align-items:center; justify-content:center; padding:20px; }
 .box-cancel{ background:#121212; border:1.5px solid #c5a059; border-radius:14px; width:100%; max-width:300px; padding:18px; box-sizing:border-box; }
 .modal-overlay { display: none; position: fixed; inset:0; background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center; }
 .modal-box { background: #1a1a1a; border: 2px solid #c5a059; border-radius: 16px; padding: 25px; text-align: center; width: 320px; }
@@ -70,12 +70,15 @@ button:disabled { background: #222; color: #555; }
 <button type="button" id="btnInstalar" class="btn-instalar-interno">📲 BAIXAR APP OFICIAL</button>
 </div>
 
-<!-- MODAL AGUARDE -->
 <div id="modalProcess"><div style="background:#111; border:1.5px solid #c5a059; border-radius:16px; padding:30px 24px; max-width:300px; width:100%; text-align:center;"><div class="spinner"></div><div style="color:#c5a059; font-weight:bold; font-size:16px; margin-bottom:8px;">Aguarde...</div><div style="color:#fff; font-size:13px;">Estamos verificando seu horário<br>e garantindo sua reserva ✨</div></div></div>
 
 <div id="modalErro" class="modal-overlay"><div class="modal-box"><div style="color:#fdf0cd; margin-bottom:20px;">Preencha todos os campos</div><button style="background:#c5a059; color:#000; border:none; padding:12px; border-radius:8px; font-weight:bold; width:100%;" onclick="this.parentElement.parentElement.style.display='none'">OK</button></div></div>
+
 <div id="modalCancelar"><div class="box-cancel"><div style="text-align:center; color:#c5a059; font-weight:bold; font-size:14px; margin-bottom:12px;">Cancelar Agendamento</div><input id="cancelData" type="date" style="width:100%; height:38px; background:#000; color:#fff; border:1px solid #333; border-radius:8px; text-align:center; margin-bottom:8px; box-sizing:border-box;"><input id="cancelTelefone" type="tel" placeholder="Seu WhatsApp" style="width:100%; height:38px; background:#000; color:#fff; border:1px solid #333; border-radius:8px; text-align:center; margin-bottom:14px; box-sizing:border-box;"><button onclick="confirmarCancelar()" style="width:100%; height:40px; background:#c5a059; color:#000; font-weight:bold; border:none; border-radius:8px; margin-bottom:8px;">Confirmar Cancelamento</button><button onclick="fecharCancelar()" style="width:100%; height:36px; background:#1e1e1e; color:#fff; border:none; border-radius:8px;">Voltar</button></div></div>
-<div id="modalInstalar" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:1000000; align-items:center; justify-content:center; padding:20px;"><div style="background:#111; border:1px solid #c5a059; border-radius:16px; padding:24px; max-width:320px; width:100%; text-align:center;"><h3 style="color:#c5a059; margin-bottom:12px;">Instalar App Oficial</h3><p style="color:#fff; font-size:14px; line-height:1.4; margin-bottom:16px;">Para iPhone: Toque em <b>Compartilhar</b> > <b>Adicionar à tela inicial</b><br><br>Para Android: Toque nos 3 pontos ⋮ > <b>Instalar app</b></p><button onclick="fecharModalInstalar()" style="background:#c5a059; color:#000; border:none; padding:10px 20px; border-radius:8px; font-weight:bold; width:90%;">Aceptar</button></div></div>
+
+<div id="modalInstalar"><div style="background:#111; border:1px solid #c5a059; border-radius:16px; padding:24px; max-width:320px; width:100%; text-align:center;"><h3 style="color:#c5a059; margin-bottom:12px;">Instalar App Oficial</h3><p style="color:#fff; font-size:14px; line-height:1.4; margin-bottom:16px;">Para iPhone: Toque em <b>Compartilhar</b> > <b>Adicionar à tela inicial</b><br><br>Para Android: Toque nos 3 pontos ⋮ > <b>Instalar app</b></p><button onclick="fecharModalInstalar()" style="background:#c5a059; color:#000; border:none; padding:10px 20px; border-radius:8px; font-weight:bold; width:90%;">Aceptar</button></div></div>
+
+<div id="modalOcupado"><div style="background:#111; border:1.5px solid #ff4444; border-radius:16px; padding:24px; max-width:320px; width:100%; text-align:center;"><div style="font-size:40px; margin-bottom:10px;">⚠️</div><h3 style="color:#ff6b6b; margin-bottom:10px;">Horário já agendado!</h3><p style="color:#fff; font-size:14px; line-height:1.4; margin-bottom:18px;">Esse horário acabou de ser agendado por outro cliente. Por favor escolha outro horário disponível.</p><button onclick="fecharOcupado()" style="background:#c5a059; color:#000; border:none; padding:12px 20px; border-radius:8px; font-weight:bold; width:90%;">Escolher outro horário</button></div></div>
 
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcQMOm11ba3BRV0pRKlVplcGx0goPhtHIHurr-jm0sa0rzs9ujvdeTH4xFEyPIhMKjlQ/exec';
@@ -84,6 +87,7 @@ let deferredPrompt = null;
 window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
 async function instalarAppOficial(){ if (deferredPrompt) { deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; return; } document.getElementById('modalInstalar').style.display = 'flex'; }
 function fecharModalInstalar(){ document.getElementById('modalInstalar').style.display = 'none'; }
+function fecharOcupado(){ document.getElementById('modalOcupado').style.display='none'; }
 document.getElementById('btnInstalar').addEventListener('click', instalarAppOficial);
 setTimeout(() => { const l=document.getElementById('loader'); if(l) l.classList.add('hidden'); }, 2500);
 window.addEventListener('load', () => { setTimeout(()=>{ const l=document.getElementById('loader'); if(l) l.classList.add('hidden'); },800); });
@@ -130,7 +134,7 @@ function limparCampos(){
   document.getElementById('confirmacao').style.display = 'none';
 }
 async function solicitarAgendamento(){
-  const btn=document.getElementById('btnAgendar'); const conf=document.getElementById('confirmacao');
+  const btn=document.getElementById('btnAgendar');
   const data=document.getElementById('data').value; const hora=document.getElementById('hora').value; const cliente=document.getElementById('cliente').value; const telefone=document.getElementById('telefone').value; const servico=document.getElementById('servico').value;
   if(!data||!hora||!cliente||!telefone||!servico){ document.getElementById('modalErro').style.display='flex'; return; }
   document.getElementById('modalProcess').style.display='flex';
@@ -140,13 +144,21 @@ async function solicitarAgendamento(){
     const r=await fetch(SCRIPT_URL,{method:'POST', body:fd});
     const result=await r.json();
     if(result.success){
-      conf.style.display='block'; conf.innerHTML='✅ Confirmado! Redirecionando...';
+      document.getElementById('confirmacao').style.display='block';
+      document.getElementById('confirmacao').innerHTML='✅ Confirmado! Redirecionando...';
       limparCampos();
       setTimeout(()=>{ document.getElementById('modalProcess').style.display='none'; window.location.href=result.whatsapp; }, 800);
-    } else throw new Error(result.error);
+    } else {
+      document.getElementById('modalProcess').style.display='none';
+      document.getElementById('modalOcupado').style.display='flex';
+      btn.disabled=false; btn.textContent='Agendar Horário ✅';
+      carregarHorarios();
+    }
   }catch(err){
     document.getElementById('modalProcess').style.display='none';
-    conf.style.display='none'; btn.disabled=false; btn.textContent='Agendar Horário ✅'; alert('⚠️ '+err.message); carregarHorarios();
+    document.getElementById('modalOcupado').style.display='flex';
+    btn.disabled=false; btn.textContent='Agendar Horário ✅';
+    carregarHorarios();
   }
 }
 function abrirCancelar(){ document.getElementById('modalCancelar').style.display='flex'; }
