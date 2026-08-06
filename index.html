@@ -85,15 +85,18 @@ button:disabled { background: #222; color: #555; }
 
 <div id="modalErro" class="modal-overlay"><div class="modal-box"><div class="modal-texto">Preencha todos os campos</div><button class="modal-btn" onclick="this.parentElement.parentElement.style.display='none'">OK</button></div></div>
 
-  <div id="modalCancelar" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:9999; align-items:center; justify-content:center;">
-  <div style="background:#1a1a1a; border:1px solid #c5a059; border-radius:12px; width:90%; max-width:320px; padding:20px; text-align:center;">
-    <h3 style="color:#c5a059; margin-bottom:12px; font-size:15px;">❌ Cancelar</h3>
-    <input id="cancelData" type="date" style="width:100%; padding:8px; margin-bottom:8px; border-radius:6px; background:#000; color:#fff; border:1px solid #333; text-align:center;">
-    <input id="cancelTelefone" type="tel" placeholder="WhatsApp" style="width:100%; padding:8px; margin-bottom:12px; border-radius:6px; background:#000; color:#fff; border:1px solid #333; text-align:center;">
-    <div style="display:flex; gap:8px;">
-      <button onclick="document.getElementById('modalCancelar').style.display='none'" style="flex:1; padding:8px; border-radius:6px; background:#333; color:#fff; border:none;">Fechar</button>
-      <button onclick="confirmarCancelar()" style="flex:1; padding:8px; border-radius:6px; background:#c5a059; color:#000; font-weight:bold; border:none;">Cancelar 1</button>
-    </div>
+  <div id="modalCancelar" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:99999; align-items:center; justify-content:center; padding:20px;">
+  <div style="background:#111; border:2px solid #c5a059; border-radius:14px; width:100%; max-width:300px; padding:18px; box-sizing:border-box;">
+    <h3 style="color:#c5a059; text-align:center; margin:0 0 6px; font-size:15px;">Cancelar Agendamento</h3>
+    <p style="color:#888; text-align:center; font-size:11px; margin-bottom:12px;">Informe a data e WhatsApp da reserva</p>
+    
+    <input id="cancelData" type="date" style="width:100%; height:38px; background:#000; border:1px solid #333; border-radius:6px; color:#fff; text-align:center; font-size:13px; margin-bottom:8px; box-sizing:border-box;">
+    
+    <input id="cancelTelefone" type="tel" placeholder="Seu WhatsApp" style="width:100%; height:38px; background:#000; border:1px solid #333; border-radius:6px; color:#fff; text-align:center; font-size:13px; margin-bottom:14px; box-sizing:border-box;">
+    
+    <button onclick="confirmarCancelar()" style="width:100%; height:40px; background:#c5a059; color:#000; border:none; border-radius:6px; font-weight:bold; font-size:13px; cursor:pointer; margin-bottom:8px;">Confirmar Cancelamento</button>
+    
+    <button onclick="document.getElementById('modalCancelar').style.display='none'" style="width:100%; height:38px; background:#222; color:#fff; border:none; border-radius:6px; font-size:13px; cursor:pointer;">Voltar</button>
   </div>
   </div>
 
@@ -171,29 +174,46 @@ async function solicitarAgendamento() {
     }
 }
   
-function abrirCancelar(){ document.getElementById('modalCancelar').style.display='flex'; }
+function abrirCancelar(){ 
+  document.getElementById('modalCancelar').style.display='flex';
+  // ARREGLA QUE SE VEA GIGANTE - la hace pequeña y centrada
+  const modal = document.querySelector('#modalCancelar > div');
+  if(modal){
+    modal.style.maxWidth = '300px';
+    modal.style.width = '90%';
+    modal.style.padding = '18px';
+    modal.style.margin = '0 auto';
+  }
+  document.getElementById('cancelData').style.cssText = 'width:100%; height:38px; background:#000; border:1px solid #333; border-radius:6px; color:#fff; text-align:center; font-size:13px; margin-bottom:8px; box-sizing:border-box;';
+  document.getElementById('cancelTelefone').style.cssText = 'width:100%; height:38px; background:#000; border:1px solid #333; border-radius:6px; color:#fff; text-align:center; font-size:13px; margin-bottom:14px; box-sizing:border-box;';
+}
 
 async function confirmarCancelar(){
   var data=document.getElementById('cancelData').value;
   var tel=document.getElementById('cancelTelefone').value.replace(/\D/g,'');
   if(!data||!tel){ alert('Preencha data e WhatsApp'); return; }
   if(!confirm('Cancelar o primeiro horário de '+data+' com esse WhatsApp?')) return;
+  
+  // ABRE ANTES PARA QUE NO BLOQUEE EL WHATSAPP
+  var win = window.open('', '_blank');
+  
   try{
     var formData=new URLSearchParams({acao:'cancelar', data:data, telefone:tel});
     var res=await fetch(SCRIPT_URL,{method:'POST', body:formData});
     var r=await res.json();
     if(r.success){
       document.getElementById('modalCancelar').style.display='none';
-      // ABRE WHATSAPP CON MENSAJE DE CANCELAMENTO CON ICONOS
       if(r.whatsapp){
-        window.location.href = r.whatsapp;
+        win.location.href = r.whatsapp; // AHORA SI MANDA MENSAJE
       } else {
+        win.close();
         alert('✅ Cancelado: '+r.hora+' de '+r.cliente);
         carregarHorarios();
       }
-    } else { alert('❌ '+r.error); }
-  }catch(e){ alert('Erro de conexão: '+e); }
+    } else { win.close(); alert('❌ '+r.error); }
+  }catch(e){ win.close(); alert('Erro de conexão: '+e); }
 }
+  
 </script>
 </body>
   </html>
