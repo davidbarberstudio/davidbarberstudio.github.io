@@ -125,25 +125,49 @@ async function carregarHorarios() {
     } catch (e) { horaSelect.innerHTML = '<option value="">Erro ao carregar</option>'; } finally { loading.style.display = 'none'; }
 }
 async function solicitarAgendamento() {
-    const btn = document.getElementById('btnAgendar'); const confirmDiv = document.getElementById('confirmacao'); const data = document.getElementById('data').value; const hora = document.getElementById('hora').value; const cliente = document.getElementById('cliente').value; const telefone = document.getElementById('telefone').value; const servico = document.getElementById('servico').value;
-    if (!data ||!hora ||!cliente ||!telefone ||!servico) { document.getElementById('modalErro').style.display='flex'; return; }
-    btn.disabled = true; btn.textContent = 'VERIFICANDO...'; confirmDiv.style.display = 'block'; confirmDiv.textContent = 'Verificando horário no sistema... por favor, aguarde. ⌛';
-    const dados = { data: data, hora: hora, cliente: cliente, telefone: telefone, servico: servico, barbeiro: document.getElementById('barbeiro').value };
-    try {
-        const formData = new URLSearchParams(dados); const response = await fetch(SCRIPT_URL, { method: 'POST', body: formData }); const result = await response.json();
-        if (result.success) { confirmDiv.textContent = 'Agendamento confirmado! Abrindo WhatsApp... ✅'; confirmDiv.style.color = '#4CAF50'; window.open(result.whatsapp, '_blank'); setTimeout(() => { confirmDiv.style.display = 'none'; document.getElementById('agendaForm').reset(); document.getElementById('hora').innerHTML = '<option value="">Selecione data e serviço primeiro</option>'; document.getElementById('hora').disabled = true; btn.disabled = true; btn.textContent = 'Agendar Horário ✅'; carregarHorarios(); }, 3000); } else { throw new Error(result.error); }
-    } catch (error) { confirmDiv.style.display = 'none'; btn.disabled = false; btn.textContent = 'Agendar Horário ✅'; alert(`⚠️ Horário Indisponível\n\n${error.message}`); carregarHorarios(); }
-}
+    const btn = document.getElementById('btnAgendar');
+    const confirmDiv = document.getElementById('confirmacao');
+    const data = document.getElementById('data').value;
+    const hora = document.getElementById('hora').value;
+    const cliente = document.getElementById('cliente').value;
+    const telefone = document.getElementById('telefone').value;
+    const servico = document.getElementById('servico').value;
+    
+    if (!data ||!hora ||!cliente ||!telefone ||!servico) { 
+        document.getElementById('modalErro').style.display='flex'; 
+        return; 
+    }
+    
+    btn.disabled = true;
+    btn.textContent = 'VERIFICANDO...';
+    confirmDiv.style.display = 'block';
+    confirmDiv.innerHTML = 'Verificando horário no sistema...<br>por favor, aguarde. ⌛';
 
-// --- PARCHES ARREGLADOS ---
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', (e)=>{ e.preventDefault(); deferredPrompt=e; document.getElementById('btnInstalar').style.display='block'; });
-function instalarApp(){
-  if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt.userChoice.then(r=>{ if(r.outcome==='accepted'){ document.getElementById('btnInstalar').style.display='none'; } deferredPrompt=null; });
-  } else {
-    // Fallback si ya está instalado o en iOS
-    if(window.matchMedia('(display-mode: standalone)').matches){ alert('✅ App já instalado!'); } else { alert('Para instalar: No menu do navegador clique em "Instalar app" ou "Adicionar à tela inicial"'); }
-  }
+    const dados = { data: data, hora: hora, cliente: cliente, telefone: telefone, servico: servico, barbeiro: document.getElementById('barbeiro').value };
+    
+    try {
+        const formData = new URLSearchParams(dados);
+        const response = await fetch(SCRIPT_URL, { method: 'POST', body: formData });
+        const result = await response.json();
+        
+        if (result.success) {
+            confirmDiv.innerHTML = '✅ Agendamento confirmado!<br>Redirecionando para o WhatsApp...';
+            confirmDiv.style.color = '#4CAF50';
+            // REDIRECCIÓN DIRECTA - NO PREGUNTA SI QUIERE IR
+            setTimeout(() => {
+                window.location.href = result.whatsapp; // usa location.href en vez de window.open
+            }, 500);
+        } else {
+            throw new Error(result.error);
+        }
+    } catch (error) {
+        confirmDiv.style.display = 'none';
+        btn.disabled = false;
+        btn.textContent = 'Agendar Horário ✅';
+        // MENSAJE EN PORTUGUÉS COMO PEDISTE
+        alert(`⚠️ Horário Indisponível\n\n${error.message}\n\nEsse horário acabou de ser reservado por outra pessoa.\nPor favor, atualize a página e escolha outro horário disponível.`);
+        carregarHorarios();
+    }
 }
 function abrirCancelar(){ document.getElementById('modalCancelar').style.display='flex'; }
 async function confirmarCancelar(){
