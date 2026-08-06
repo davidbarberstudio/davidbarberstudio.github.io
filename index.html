@@ -84,16 +84,16 @@ button:disabled { background: #222; color: #555; }
 </div>
 
 <div id="modalErro" class="modal-overlay"><div class="modal-box"><div class="modal-texto">Preencha todos os campos</div><button class="modal-btn" onclick="this.parentElement.parentElement.style.display='none'">OK</button></div></div>
-
- <div id="modalCancelar" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:99999; align-items:center; justify-content:center; padding:20px;">
-  <div style="background:#151515; border:2px solid #c5a059; border-radius:12px; width:100%; max-width:280px; padding:16px;">
-    <h3 style="color:#c5a059; text-align:center; font-size:14px; margin:0 0 10px;">Cancelar Agendamento</h3>
-    <input id="cancelData" type="date" style="width:100%; height:36px; background:#000; border:1px solid #444; border-radius:6px; color:#fff; text-align:center; margin-bottom:8px;">
-    <input id="cancelTelefone" type="tel" placeholder="Seu WhatsApp" style="width:100%; height:36px; background:#000; border:1px solid #444; border-radius:6px; color:#fff; text-align:center; margin-bottom:12px;">
-    <button onclick="confirmarCancelar()" style="width:100%; height:38px; background:#c5a059; color:#000; font-weight:bold; border:none; border-radius:6px; margin-bottom:6px;">Confirmar Cancelamento</button>
-    <button onclick="document.getElementById('modalCancelar').style.display='none'" style="width:100%; height:36px; background:#222; color:#fff; border:none; border-radius:6px;">Voltar</button>
+<div id="modalCancelar" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:999999; align-items:center; justify-content:center;">
+  <div style="background:#121212; border:1.5px solid #c5a059; border-radius:14px; width:300px; padding:16px;">
+    <div style="text-align:center; color:#c5a059; font-weight:bold; font-size:14px; margin-bottom:12px;">Cancelar Agendamento</div>
+    <div style="text-align:center; color:#666; font-size:10px; margin-bottom:10px;">Informe a data e WhatsApp</div>
+    <input id="cancelData" type="date" style="width:100%; height:36px; background:#000; color:#fff; border:1px solid #333; border-radius:8px; text-align:center; margin-bottom:8px;">
+    <input id="cancelTelefone" type="tel" placeholder="Seu WhatsApp" style="width:100%; height:36px; background:#000; color:#fff; border:1px solid #333; border-radius:8px; text-align:center; margin-bottom:12px;">
+    <button onclick="confirmarCancelar()" style="width:100%; height:40px; background:#c5a059; color:#000; font-weight:bold; border:none; border-radius:8px; margin-bottom:6px;">Confirmar Cancelamento</button>
+    <button onclick="document.getElementById('modalCancelar').style.display='none'" style="width:100%; height:36px; background:#1e1e1e; color:#fff; border:none; border-radius:8px;">Voltar</button>
   </div>
- </div>
+</div>
 
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcQMOm11ba3BRV0pRKlVplcGx0goPhtHIHurr-jm0sa0rzs9ujvdeTH4xFEyPIhMKjlQ/exec';
@@ -185,15 +185,18 @@ function abrirCancelar(){
 
 function abrirCancelar(){ document.getElementById('modalCancelar').style.display='flex'; }
 function confirmarCancelar(){
-  var data=document.getElementById('cancelData').value;
-  var tel=document.getElementById('cancelTelefone').value.replace(/\D/g,'');
-  if(!data||!tel){ alert('Preencha tudo'); return; }
-  var win = window.open('','_blank');
-  fetch(SCRIPT_URL,{method:'POST', body:new URLSearchParams({acao:'cancelar', data:data, telefone:tel})})
+  var d=document.getElementById('cancelData').value;
+  var t=document.getElementById('cancelTelefone').value.replace(/\D/g,'');
+  if(!d||!t){ alert('Preencha data e WhatsApp'); return; }
+  var w=window.open('','_blank');
+  fetch(SCRIPT_URL,{method:'POST', body:new URLSearchParams({acao:'cancelar', data:d, telefone:t})})
  .then(r=>r.json()).then(r=>{
-    if(r.whatsapp){ document.getElementById('modalCancelar').style.display='none'; win.location.href=r.whatsapp; carregarHorarios(); }
-    else{ win.close(); alert(r.error); }
-  });
+    if(r.success && r.whatsapp){
+      document.getElementById('modalCancelar').style.display='none';
+      w.location.href=r.whatsapp;
+      setTimeout(()=>carregarHorarios(),1000);
+    }else{ w.close(); alert(r.error||'Erro'); }
+  }).catch(()=>{ w.close(); alert('Erro conexão'); });
 }
   
 </script>
