@@ -192,26 +192,16 @@ async function confirmarCancelar(){
   var data=document.getElementById('cancelData').value;
   var tel=document.getElementById('cancelTelefone').value.replace(/\D/g,'');
   if(!data||!tel){ alert('Preencha data e WhatsApp'); return; }
-  if(!confirm('Cancelar o primeiro horário de '+data+' com esse WhatsApp?')) return;
   
-  // ABRE ANTES PARA QUE NO BLOQUEE EL WHATSAPP
-  var win = window.open('', '_blank');
+  var formData=new URLSearchParams({acao:'cancelar', data:data, telefone:tel});
+  var res=await fetch(SCRIPT_URL,{method:'POST', body:formData});
+  var r=await res.json();
   
-  try{
-    var formData=new URLSearchParams({acao:'cancelar', data:data, telefone:tel});
-    var res=await fetch(SCRIPT_URL,{method:'POST', body:formData});
-    var r=await res.json();
-    if(r.success){
-      document.getElementById('modalCancelar').style.display='none';
-      if(r.whatsapp){
-        win.location.href = r.whatsapp; // AHORA SI MANDA MENSAJE
-      } else {
-        win.close();
-        alert('✅ Cancelado: '+r.hora+' de '+r.cliente);
-        carregarHorarios();
-      }
-    } else { win.close(); alert('❌ '+r.error); }
-  }catch(e){ win.close(); alert('Erro de conexão: '+e); }
+  alert(JSON.stringify(r)); // <-- ESTO TE VA A DECIR QUE PASA
+  
+  if(r.whatsapp){
+    window.open(r.whatsapp, '_blank');
+  }
 }
   
 </script>
