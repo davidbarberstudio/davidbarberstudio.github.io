@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>David Barber Studio v3.0.3</title>
+<title>David Barber Studio v3.0.5</title>
 <link rel="icon" href="./1781700842770.png">
 <link rel="apple-touch-icon" href="./1781700842770.png">
 <link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#000000">
-<!-- VERSAO 3.0.3 - BLOQUEIO INCLUSIVE (<=) + MODAL AGUARDE CANCELAR -->
+<!-- v3.0.5 FINAL - BLOQUEIO INCLUSIVE + CANCELAMENTO WHATSAPP DIRECTO -->
 <style>
 body, html { margin: 0; padding: 0; background: #000; min-height: 100%; }
 #loader { position: fixed; inset:0; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 99999; transition: opacity 0.5s ease; }
@@ -47,7 +47,7 @@ button:disabled { background: #222; color: #555; }
 <div class="db-header">DB</div>
 <div class="titulo">DAVID BARBER STUDIO</div>
 <div class="slogan">Estilo, Precisão e Confiança</div>
-<div class="horarios-info">🕒 Seg: 08:30–11:00, 13:00–17:00<br>🕒 Ter a Sex: 08:30–11:00, 13:00–19:00<br>🕒 Sáb: 08:00–11:30, 13:00–17:00<br><span style="font-size:10px; opacity:0.5;">v3.0.3</span></div>
+<div class="horarios-info">🕒 Seg: 08:30–11:00, 13:00–17:00<br>🕒 Ter a Sex: 08:30–11:00, 13:00–19:00<br>🕒 Sáb: 08:00–11:30, 13:00–17:00<br><span style="font-size:10px; opacity:0.5;">v3.0.5 FINAL</span></div>
 <div id="form-container">
 <form id="agendaForm">
 <label>💈 Profissional</label>
@@ -144,9 +144,12 @@ async function solicitarAgendamento(){
     const result=await r.json();
     if(result.success){
       document.getElementById('confirmacao').style.display='block';
-      document.getElementById('confirmacao').innerHTML='✅ Confirmado! Redirecionando...';
+      document.getElementById('confirmacao').innerHTML='✅ Confirmado! Abrindo WhatsApp...';
       limparCampos();
-      setTimeout(()=>{ document.getElementById('modalProcess').style.display='none'; window.location.href=result.whatsapp; }, 800);
+      setTimeout(()=>{
+        document.getElementById('modalProcess').style.display='none';
+        abrirWhatsAppDirecto(result.whatsapp);
+      }, 800);
     } else {
       document.getElementById('modalProcess').style.display='none';
       document.getElementById('modalOcupado').style.display='flex';
@@ -162,6 +165,28 @@ async function solicitarAgendamento(){
 }
 function abrirCancelar(){ document.getElementById('modalCancelar').style.display='flex'; }
 function fecharCancelar(){ document.getElementById('modalCancelar').style.display='none'; }
+
+// FUNCION QUE ABRE DIRECTO EN WHATSAPP SIN PAGINA INTERMEDIA - ANDROID Y IPHONE
+function abrirWhatsAppDirecto(waUrl){
+  try{
+    const phone = waUrl.split('/')[3].split('?')[0];
+    const text = waUrl.split('text=')[1];
+    // Intenta abrir app nativa primero (iOS y Android)
+    const deepLink = `whatsapp://send?phone=${phone}&text=${text}`;
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isAndroid = /Android/.test(navigator.userAgent);
+    if(isIOS || isAndroid){
+      window.location.href = deepLink;
+      // Fallback si no abre en 1200ms
+      setTimeout(()=>{ window.open(waUrl, '_blank'); }, 1200);
+    } else {
+      window.open(waUrl, '_blank');
+    }
+  }catch(e){
+    window.open(waUrl, '_blank');
+  }
+}
+
 async function confirmarCancelar(){
   const dataInput = document.getElementById('cancelData').value;
   const tel = document.getElementById('cancelTelefone').value.replace(/\D/g,'');
@@ -176,8 +201,7 @@ async function confirmarCancelar(){
     const r = await res.json();
     document.getElementById('modalCancelando').style.display='none';
     if(r.success && r.whatsapp){
-      const win=window.open(r.whatsapp,'_blank');
-      if(!win) window.location.href=r.whatsapp;
+      abrirWhatsAppDirecto(r.whatsapp);
     } else if(r.success){
       alert('✅ Cancelado: '+r.hora);
       carregarHorarios();
