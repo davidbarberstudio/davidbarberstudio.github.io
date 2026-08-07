@@ -112,11 +112,8 @@ async function carregarHorarios(){
     horaSelect.innerHTML='<option value="">Selecione um horário</option>'; let hay=false;
     todos.forEach((hora, idxHora)=>{
       if(hora==='12:00') return; if(hora==='11:30' &&!esSab) return; if(esHoyDia && hora < hActual){ horaSelect.innerHTML+=`<option disabled>${hora} - Passado</option>`; return; }
-      // BLOQUEIOS ARREGLADO + SOPORTE TODOS LOS DIAS
       let bloq=false; let mot='Ocupado';
-      for(let b of bloqueios){
-        if(hora>=b.inicio && hora<b.fim){ bloq=true; mot='Bloqueado'; break; }
-      }
+      for(let b of bloqueios){ if(hora>=b.inicio && hora<b.fim){ bloq=true; mot='Bloqueado'; break; } }
       if(!bloq){ for(let i=0;i<bloquesNec;i++){ const s=todos[idxHora+i]; if(!s){ if(i===0){ bloq=true; mot='Não cabe'; break; } continue; } if(ocupados.has(s)){ bloq=true; break; } } }
       if(bloq) horaSelect.innerHTML+=`<option disabled>${hora} - ${mot}</option>`; else { horaSelect.innerHTML+=`<option value="${hora}">${hora}</option>`; hay=true; }
     });
