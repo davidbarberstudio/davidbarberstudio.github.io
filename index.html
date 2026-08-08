@@ -8,7 +8,7 @@
 <link rel="apple-touch-icon" href="./1781700842770.png">
 <link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#000000">
-<!-- v3.1.3 FINAL - FIX WHATSAPP DIRECTO + HOJE AUTO + CLIENTES VIP/INACTIVO -->
+<!-- v3.1.3 FINAL - FIX WHATSAPP DIRECTO SIN API.WHATSAPP.COM -->
 <style>
 body, html { margin: 0; padding: 0; background: #000; min-height: 100%; }
 #loader { position: fixed; inset:0; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 99999; transition: opacity 0.5s ease; }
@@ -166,29 +166,23 @@ async function solicitarAgendamento(){
 function abrirCancelar(){ document.getElementById('modalCancelar').style.display='flex'; }
 function fecharCancelar(){ document.getElementById('modalCancelar').style.display='none'; }
 
-// FIX v3.1.3 - ABRE WHATSAPP DIRECTO SIN PAGINA INTERMEDIA - TE DEJA EN LA AGENDA
 function abrirWhatsAppDirecto(waUrl){
   try{
     const phone = waUrl.split('/')[3].split('?')[0];
     const text = waUrl.split('text=')[1];
-    const deepLink = `whatsapp://send?phone=${phone}&text=${text}`;
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
     const isAndroid = /Android/.test(navigator.userAgent);
-    if(isIOS || isAndroid){
-      // Abre app directo
-      window.location.href = deepLink;
-      // Fallback a wa.me en pestaña nueva si no abre, sin sacarte de la agenda
-      setTimeout(()=>{ window.open(waUrl, '_blank'); }, 1200);
+    if(isAndroid){
+      window.location.href = `intent://send?phone=${phone}&text=${text}#Intent;scheme=whatsapp;package=com.whatsapp;end`;
     } else {
-      window.open(waUrl, '_blank');
+      window.location.href = `whatsapp://send?phone=${phone}&text=${text}`;
     }
-    // Te deja en la agenda, no en página blanca
     setTimeout(()=>{
-      const btn = document.getElementById('btnAgendar');
-      if(btn){ btn.disabled=true; btn.textContent='Agendar Horário ✅'; }
-    }, 1500);
+      document.getElementById('modalProcess').style.display='none';
+      document.getElementById('modalCancelando').style.display='none';
+      limparCampos();
+    }, 1000);
   }catch(e){
-    window.open(waUrl, '_blank');
+    window.location.href = waUrl;
   }
 }
 
