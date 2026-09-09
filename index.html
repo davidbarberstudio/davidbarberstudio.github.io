@@ -87,7 +87,16 @@ document.getElementById('btnInstalar').addEventListener('click', instalarAppOfic
 setTimeout(() => { const l=document.getElementById('loader'); if(l) l.classList.add('hidden'); }, 2500);
 window.addEventListener('load', () => { setTimeout(()=>{ const l=document.getElementById('loader'); if(l) l.classList.add('hidden'); },800); });
 function renderBarbeiros(){ const cont = document.getElementById('barbeirosContainer'); cont.innerHTML = ''; BARBEIROS.forEach((b,i)=>{ const div = document.createElement('div'); div.className = 'card'+(i===0?' active':''); div.innerHTML = `<img src="${b.foto}"><br>${b.nome}`; div.onclick = ()=>{ document.querySelectorAll('.card').forEach(c=>c.classList.remove('active')); div.classList.add('active'); document.getElementById('barbeiro').value = b.id; carregarHorarios(); }; cont.appendChild(div); }); if(BARBEIROS.length>0) document.getElementById('barbeiro').value = BARBEIROS[0].id; }
-const mapaServicos={ 'Corte':{preco:'R$40',bloques:1}, 'Barba':{preco:'R$30',bloques:1}, 'Sobrancelha':{preco:'R$10',bloques:1}, 'Corte e Barba':{preco:'R$70',bloques:2} };
+const mapaServicos={
+  'Corte Social':{preco:'R$35',bloques:1},
+  'Corte Degradé':{preco:'R$40',bloques:1},
+  'Corte e Barba':{preco:'R$60',bloques:2},
+  'Barba':{preco:'R$30',bloques:1},
+  'Sobrancelha':{preco:'R$10',bloques:1},
+  'Limpieza Facial':{preco:'R$20',bloques:1},
+  'Corte + Limpieza Facial':{preco:'R$50',bloques:2},
+  'Corte e Barba + Limpieza Facial':{preco:'R$70',bloques:2}
+};
 function getHorariosPorDia(dStr){ const d=new Date(dStr+'T12:00:00'); const dia=d.getDay(); if(dia===0) return []; if(dia===1) return ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30']; if(dia===6) return ['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30']; return ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30']; }
 function esHoy(dStr){ const hoy=new Date(); const sel=new Date(dStr+'T12:00:00'); return hoy.toDateString()===sel.toDateString(); }
 function getHoraActual(){ const a=new Date(); return String(a.getHours()).padStart(2,'0')+':'+String(a.getMinutes()).padStart(2,'0'); }
