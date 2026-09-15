@@ -140,6 +140,10 @@ function limparCampos(){
   document.getElementById('btnAgendar').disabled = true;
   document.getElementById('confirmacao').style.display = 'none';
 }
+function limparCamposCancelar(){
+  document.getElementById('cancelData').value = '';
+  document.getElementById('cancelTelefone').value = '';
+}
 async function solicitarAgendamento(){
   const btn=document.getElementById('btnAgendar');
   const data=document.getElementById('data').value; const hora=document.getElementById('hora').value; const cliente=document.getElementById('cliente').value; const telefone=document.getElementById('telefone').value; const servico=document.getElementById('servico').value;
@@ -197,6 +201,7 @@ async function confirmarCancelar(){
     const res = await fetch(SCRIPT_URL,{method:'POST', body:formData});
     const r = await res.json();
     document.getElementById('modalCancelando').style.display='none';
+    limparCamposCancelar();
     if(r.success && r.whatsapp){
       abrirWhatsAppDirecto(r.whatsapp);
     } else if(r.success){
@@ -207,6 +212,7 @@ async function confirmarCancelar(){
     }
   }catch(e){
     document.getElementById('modalCancelando').style.display='none';
+    limparCamposCancelar();
     alert('Erro conexão');
   }
 }
