@@ -62,7 +62,6 @@ function mostrar(){
 }
 function cambiarFiltro(f,b){filtroActual=f;document.querySelectorAll('.filtro').forEach(x=>x.classList.remove('activo'));b.classList.add('activo');mostrar()}
 function getClienteById(id){return clientes.find(c=>c.ID===id)}
-
 async function registrarCorte(id){
   if(!confirm('Registrar corte?'))return;
   let c = getClienteById(id);
@@ -73,10 +72,19 @@ async function registrarCorte(id){
   c.CortesUsados = (c.CortesUsados || 0) + 1;
   mostrar();
   comprovanteCorte(c, cortesAntes, totalAntes);
-  try{ await api('registrarCorte',{id}); }catch(e){}
-  carregar();
+  try{ 
+    await api('registrarCorte',{id}); 
+    setTimeout(async ()=>{
+      let d = await api('getClientes');
+      let fresh = Array.isArray(d)?d:(d.clientes||[]);
+      let f = fresh.find(x=>x.ID===id);
+      if(f && f.CortesRestantes <= c.CortesRestantes){
+        clientes = fresh;
+        mostrar();
+      }
+    }, 3000);
+  }catch(e){}
 }
-
 async function renovar(id,paq){
   if(!confirm('Renovar membresia?'))return;
   let c = getClienteById(id);
