@@ -62,23 +62,38 @@ function mostrar(){
 }
 function cambiarFiltro(f,b){filtroActual=f;document.querySelectorAll('.filtro').forEach(x=>x.classList.remove('activo'));b.classList.add('activo');mostrar()}
 function getClienteById(id){return clientes.find(c=>c.ID===id)}
+
 async function registrarCorte(id){
   if(!confirm('Registrar corte?'))return;
-  let cAntes=getClienteById(id);
-  let totalAntes=cAntes?cAntes.CortesTotales:5;
-  let cortesAntes=cAntes?cAntes.CortesRestantes:0;
-  await api('registrarCorte',{id});
-  await carregar();
-  let c=getClienteById(id);
-  if(c) comprovanteCorte(c, cortesAntes, totalAntes);
+  let c = getClienteById(id);
+  if(!c) return;
+  let cortesAntes = c.CortesRestantes || 0;
+  let totalAntes = c.CortesTotales || 5;
+  c.CortesRestantes = Math.max(0, cortesAntes - 1);
+  c.CortesUsados = (c.CortesUsados || 0) + 1;
+  mostrar();
+  comprovanteCorte(c, cortesAntes, totalAntes);
+  try{ await api('registrarCorte',{id}); }catch(e){}
+  carregar();
 }
+
 async function renovar(id,paq){
   if(!confirm('Renovar membresia?'))return;
+  let c = getClienteById(id);
+  if(c){
+    let total = (paq||'').includes('5') ? 5 : 3;
+    c.CortesTotales = total;
+    c.CortesRestantes = total;
+    c.CortesUsados = 0;
+    mostrar();
+  }
   await api('renovarMembresia',{id,tipo:paq});
   await carregar();
 }
 async function eliminarCliente(id){
   if(!confirm('¿Eliminar esta tarjeta? Se borra el cliente y no se puede deshacer.')) return;
+  clientes = clientes.filter(c => c.ID !== id);
+  mostrar();
   let res = await api('eliminarCliente',{id});
   if(!res || (Array.isArray(res) && res.length===0)){
     await api('deleteCliente',{id});
