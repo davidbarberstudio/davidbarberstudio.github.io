@@ -8,38 +8,114 @@
 <link rel="apple-touch-icon" href="./1781700842770.png">
 <link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#000000">
+
 <style>
-body, html { margin: 0; padding: 0; background: #000; min-height: 100%; }
-#loader { position: fixed; inset:0; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 99999; transition: opacity 0.5s ease; }
-#loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-#loader img { width: 180px; max-width: 80%; }
-.loader-bar { width: 220px; height: 6px; background: #222; margin-top: 25px; border-radius: 10px; overflow: hidden; }
-.loader-bar span { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, #967433, #c5a059, #fdf0cd); animation: loading 2s forwards; }
-@keyframes loading { 0% { width: 0; } 100% { width: 100%; } }
-body { font-family: 'Segoe UI', Arial, sans-serif; color: #ddd; text-align: center; padding: 20px; }
-.db-header { font-size: 54px; font-weight: bold; background: linear-gradient(135deg, #967433 0%, #fdf0cd 30%, #c5a059 70%, #ffffff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.titulo { font-size: 22px; font-weight: bold; letter-spacing: 4px; background: linear-gradient(135deg, #c5a059 0%, #fdf0cd 50%, #c5a059 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.slogan { font-size: 10px; color: #fff; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 14px; }
-.horarios-info { font-size: 12px; color: #c5a059; margin-bottom: 15px; border-bottom: 1px dashed #2c2514; padding-bottom: 15px; }
-#form-container { max-width: 420px; margin: auto; padding: 25px; border-radius: 14px; background: #111; border: 1px solid #c5a059; }
-.barbeiros-grid { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
-.card { background: #000; border-radius: 14px; padding: 12px; width: 115px; cursor: pointer; border: 2px solid transparent; margin: auto; }
-.card img { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #c5a059; object-fit:cover; }
-.card.active { border: 2px solid #fdf0cd; }
-label { display: block; margin: 16px 0 8px; font-weight: bold; font-size: 15px; text-align: left; color: #c5a059; }
-select, input { width: 90%; padding: 14px; margin-bottom: 12px; border-radius: 10px; border: 1px solid #333; background: #000; color: #fff; font-size: 16px; }
-button { background: linear-gradient(90deg, #967433, #c5a059); color: #000; border: none; padding: 14px; font-size: 17px; font-weight: bold; border-radius: 12px; cursor: pointer; margin-top: 15px; width: 90%; }
-button:disabled { background: #222; color: #555; }
-#confirmacao { display: none; margin-top: 15px; color: #fdf0cd; font-weight: bold; background: #110f0a; padding: 14px; border-radius: 10px; border: 1px solid #c5a059; }
-.btn-cancelar-interno { background: transparent!important; border: 1px solid rgba(255,68,68,0.3)!important; color: #ff6b6b!important; margin-top: 25px; font-size: 13px!important; }
-.btn-instalar-interno { background: transparent!important; border: 1px solid #c5a059!important; color: #c5a059!important; font-size: 13px!important; margin-top: 12px; }
-#modalCancelar, #modalInstalar, #modalProcess, #modalOcupado, #modalCancelando{ display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:999999; align-items:center; justify-content:center; padding:20px; }
-.box-cancel{ background:#121212; border:1.5px solid #c5a059; border-radius:14px; width:100%; max-width:300px; padding:18px; box-sizing:border-box; }
-.modal-overlay { display: none; position: fixed; inset:0; background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center; }
-.modal-box { background: #1a1a1a; border: 2px solid #c5a059; border-radius: 16px; padding: 25px; text-align: center; width: 320px; }
-.spinner { width:40px; height:40px; border:4px solid #222; border-top:4px solid #c5a059; border-radius:50%; animation: spin 1s linear infinite; margin:0 auto 15px; }
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800;900&display=swap');
+*{box-sizing:border-box}
+body, html { margin:0; padding:0; background:#FFFCF6; min-height:100%; }
+body { font-family:'Inter', -apple-system, sans-serif; color:#1A1A1A; text-align:center; padding:0 0 40px 0; }
+
+/* LOADER - CLARO PREMIUM */
+#loader { position:fixed; inset:0; background:#FFFCF6; display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:99999; transition:opacity 0.5s ease; }
+#loader.hidden { opacity:0; visibility:hidden; pointer-events:none; }
+#loader img { width:120px; filter:drop-shadow(0 10px 20px rgba(197,160,89,0.2)); }
+.loader-bar { width:180px; height:4px; background:#F0E6D3; margin-top:22px; border-radius:10px; overflow:hidden; }
+.loader-bar span { display:block; height:100%; width:0%; background:linear-gradient(90deg, #967433, #c5a059, #fdf0cd); animation:loading 2s forwards; }
+@keyframes loading { 0%{width:0} 100%{width:100%} }
+
+/* HEADER DORADO - COMO PEDISTE: STUDIO DB + TITULO + SLOGAN DENTRO DEL DORADO */
+.db-header, .titulo, .slogan { position:relative; z-index:2; }
+body > .db-header:first-of-type { display:none; } /* ocultamos el DB suelto, lo metemos dentro del header dorado via CSS? lo recreamos con pseudo */
+
+body { position:relative; }
+body::before {
+  content:"";
+  position:absolute;
+  top:0; left:0; right:0;
+  height:360px;
+  background:linear-gradient(135deg, #967433 0%, #B68D3F 15%, #D4AF37 30%, #E8C765 50%, #C5A059 70%, #967433 100%);
+  border-radius:0 0 36px 36px;
+  z-index:0;
+}
+
+/* Reconstruimos header dorado con los 3 divs existentes */
+.db-header { font-family:'Playfair Display', serif; font-size:72px; font-weight:900; color:#111; margin-top:0; padding-top:48px; position:relative; z-index:1; letter-spacing:-2px; line-height:1; text-shadow:0 1px 0 rgba(255,255,255,0.3); }
+.titulo { font-family:'Inter', sans-serif; font-size:15px; font-weight:800; letter-spacing:6px; color:#111; margin-top:10px; position:relative; z-index:1; }
+.slogan { font-size:11px; color:rgba(0,0,0,0.65); letter-spacing:4px; text-transform:uppercase; font-weight:600; margin-top:8px; margin-bottom:28px; position:relative; z-index:1; }
+
+/* HORARIOS PILL BLANCA PREMIUM */
+.horarios-info { 
+  position:relative; z-index:1;
+  max-width:420px; margin:0 auto 18px auto;
+  font-size:12.5px; color:#5A4A2F; line-height:1.6;
+  background:rgba(255,255,255,0.92); backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,0.8);
+  border-radius:20px; padding:16px 20px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+  text-align:left;
+}
+
+/* FORM CARD BLANCA PREMIUM */
+#form-container { 
+  position:relative; z-index:1;
+  max-width:420px; margin:8px auto 0 auto; 
+  padding:28px 26px 24px 26px; 
+  border-radius:28px; 
+  background:#FFFFFF; 
+  border:1px solid rgba(197,160,89,0.12); 
+  box-shadow:0 20px 60px rgba(0,0,0,0.08), 0 2px 0 rgba(255,255,255,1) inset;
+  text-align:left;
+}
+
+.barbeiros-grid { display:flex; gap:12px; justify-content:flex-start; flex-wrap:wrap; margin-bottom:4px; }
+.card { background:#FFFEFC; border-radius:20px; padding:14px 10px 12px 10px; width:112px; cursor:pointer; border:1.5px solid #F0E6D3; margin:0; transition:all 0.2s; text-align:center; font-size:13px; font-weight:600; color:#3A2E1A; }
+.card img { width:64px; height:64px; border-radius:50%; border:2px solid #E8DCC8; object-fit:cover; display:block; margin:0 auto 8px auto; }
+.card.active { border:2px solid #C5A059; background:#FFF9E6; box-shadow:0 8px 20px rgba(197,160,89,0.18); transform:translateY(-1px); }
+.card.active img { border-color:#C5A059; }
+
+label { display:block; margin:20px 0 8px 2px; font-weight:700; font-size:11px; text-align:left; color:#1A1A1A; letter-spacing:1px; text-transform:uppercase; }
+
+select, input { 
+  width:100%; padding:16px 16px; margin-bottom:6px; 
+  border-radius:14px; border:1.5px solid #EDE6D8; 
+  background:#FFFFFF; color:#1A1A1A; font-size:15px; font-family:'Inter', sans-serif;
+  outline:none; transition:all 0.2s;
+  -webkit-appearance:none; appearance:none;
+}
+select:focus, input:focus { border-color:#C5A059; box-shadow:0 0 0 4px rgba(197,160,89,0.12); }
+input::placeholder { color:#B8A88A; }
+
+#hora[multiple] { padding:8px; height:auto; }
+#hora[multiple] option { padding:12px 14px; border-radius:10px; margin:4px; font-weight:500; }
+#hora[multiple] option:checked { background:#111; color:#FDF0CD; }
+#hora[multiple] option:disabled { color:#C4B7A0; background:#FAF6EF; }
+
+button#btnAgendar { 
+  background:#111111; color:#FDF0CD; border:none; 
+  padding:18px; font-size:15px; font-weight:800; letter-spacing:0.5px;
+  border-radius:16px; cursor:pointer; margin-top:18px; width:100%; 
+  box-shadow:0 12px 30px rgba(0,0,0,0.18);
+  transition:all 0.2s;
+}
+button#btnAgendar:hover { transform:translateY(-1px); box-shadow:0 16px 36px rgba(0,0,0,0.22); }
+button#btnAgendar:disabled { background:#EDE6D8; color:#A89B85; box-shadow:none; transform:none; }
+
+#confirmacao { display:none; margin-top:16px; color:#5A4A1A; font-weight:700; background:#FFF9E6; padding:14px 16px; border-radius:12px; border:1px solid #F0E6D3; text-align:center; font-size:14px; }
+
+.btn-cancelar-interno { background:#FFFBF5!important; border:1.5px solid #F0E6D3!important; color:#8B7355!important; margin-top:14px; font-size:12px!important; font-weight:700!important; border-radius:14px!important; padding:14px!important; width:100%!important; letter-spacing:0.5px; }
+.btn-instalar-interno { background:#FFFFFF!important; border:1.5px solid #111!important; color:#111!important; font-size:12px!important; font-weight:800!important; margin-top:10px; border-radius:14px!important; padding:14px!important; width:100%!important; }
+
+#modalCancelar, #modalInstalar, #modalProcess, #modalOcupado, #modalCancelando, .modal-overlay { display:none; position:fixed; inset:0; background:rgba(28,20,5,0.32); backdrop-filter:blur(14px); z-index:999999; align-items:center; justify-content:center; padding:20px; }
+.box-cancel, .modal-box, #modalProcess > div, #modalCancelando > div, #modalInstalar > div, #modalOcupado > div { 
+  background:#FFFFFF!important; border:1.5px solid #F0E6D3!important; border-radius:24px!important; width:100%; max-width:340px; padding:22px!important; box-sizing:border-box; 
+  box-shadow:0 30px 80px rgba(0,0,0,0.18)!important; text-align:center; color:#1A1A1A!important;
+}
+.box-cancel input { background:#FFFEFC!important; border:1.5px solid #EDE6D8!important; color:#1A1A1A!important; }
+.spinner { width:36px; height:36px; border:3px solid #F0E6D3; border-top:3px solid #C5A059; border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 14px; }
+@keyframes spin { 0%{transform:rotate(0)} 100%{transform:rotate(360deg)} }
+.loading { font-size:13px; color:#8B7355; margin:8px 0; font-weight:600; }
 </style>
+
 </head>
 <body>
 <div id="loader"><img src="./1781700842770.png"><div class="loader-bar"><span></span></div></div>
@@ -78,10 +154,8 @@ button:disabled { background: #222; color: #555; }
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcQMOm11ba3BRV0pRKlVplcGx0goPhtHIHurr-jm0sa0rzs9ujvdeTH4xFEyPIhMKjlQ/exec';
 const BARBEIROS = [ { id: 'David', nome: 'David', foto: 'https://i.ibb.co/B5GDCLGN/IMG-20241012-152952-2.jpg' } ];
-// --- FIX MULTI ---
 let barbeirosSelecionados = ['David'];
 let horariosSelecionados = [];
-
 let deferredPrompt = null;
 window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
 async function instalarAppOficial(){ if (deferredPrompt) { deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; return; } document.getElementById('modalInstalar').style.display = 'flex'; }
@@ -90,7 +164,6 @@ function fecharOcupado(){ document.getElementById('modalOcupado').style.display=
 document.getElementById('btnInstalar').addEventListener('click', instalarAppOficial);
 setTimeout(() => { const l=document.getElementById('loader'); if(l) l.classList.add('hidden'); }, 2500);
 window.addEventListener('load', () => { setTimeout(()=>{ const l=document.getElementById('loader'); if(l) l.classList.add('hidden'); },800); });
-
 function renderBarbeiros(){
   const cont = document.getElementById('barbeirosContainer');
   cont.innerHTML = '';
@@ -100,7 +173,6 @@ function renderBarbeiros(){
     div.className = 'card'+(isActive?' active':'');
     div.innerHTML = `<img src="${b.foto}"><br>${b.nome}`;
     div.onclick = ()=>{
-      // FIX MULTI-BARBERO: toggle
       if(barbeirosSelecionados.includes(b.id)){
         if(barbeirosSelecionados.length>1){
           barbeirosSelecionados = barbeirosSelecionados.filter(x=>x!==b.id);
@@ -117,7 +189,6 @@ function renderBarbeiros(){
   });
   document.getElementById('barbeiro').value = barbeirosSelecionados.join(',');
 }
-
 const mapaServicos={
   'Corte Social':{preco:'R$35',bloques:1},
   'Corte Degradé':{preco:'R$40',bloques:1},
@@ -131,19 +202,16 @@ const mapaServicos={
 function getHorariosPorDia(dStr){ const d=new Date(dStr+'T12:00:00'); const dia=d.getDay(); if(dia===0) return []; if(dia===1) return ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30']; if(dia===6) return ['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30']; return ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30']; }
 function esHoy(dStr){ const hoy=new Date(); const sel=new Date(dStr+'T12:00:00'); return hoy.toDateString()===sel.toDateString(); }
 function getHoraActual(){ const a=new Date(); return String(a.getHours()).padStart(2,'0')+':'+String(a.getMinutes()).padStart(2,'0'); }
-
 document.addEventListener('DOMContentLoaded', ()=>{
   renderBarbeiros();
   const dataInput=document.getElementById('data'); const hoje=new Date(); dataInput.min=hoje.toISOString().split('T')[0]; const max=new Date(); max.setDate(hoje.getDate()+30); dataInput.max=max.toISOString().split('T')[0];
   const sel=document.getElementById('servico'); sel.innerHTML='<option value="">Selecione um serviço</option>'; for(const s in mapaServicos){ sel.innerHTML+=`<option value="${s}">${s} — ${mapaServicos[s].preco}</option>`; }
   dataInput.addEventListener('change', carregarHorarios); sel.addEventListener('change', carregarHorarios);
-  // FIX MULTI-HORARIO: listener para select multiple
   const horaEl=document.getElementById('hora');
   horaEl.addEventListener('change', ()=>{
     horariosSelecionados = Array.from(horaEl.selectedOptions).map(o=>o.value).filter(v=>v && !v.includes('Passado') && !v.includes('Ocupado') && !v.includes('Bloqueado') && !v.includes('Agenda') && !v.includes('Selecione'));
   });
 });
-
 async function carregarHorarios(){
   const data=document.getElementById('data').value; const servico=document.getElementById('servico').value;
   const horaSelect=document.getElementById('hora'); const loading=document.getElementById('loading'); const btn=document.getElementById('btnAgendar');
@@ -151,7 +219,6 @@ async function carregarHorarios(){
   if(new Date(data+'T12:00:00').getDay()===0){ horaSelect.innerHTML='<option value="">Domingo não trabalhamos</option>'; horaSelect.disabled=true; horaSelect.removeAttribute('multiple'); btn.disabled=true; return; }
   loading.style.display='block'; horaSelect.disabled=true; horaSelect.innerHTML='<option>Carregando...</option>';
   try{
-    // FIX MULTI-BARBERO: fetch para cada barbero seleccionado
     const barbeirosParaFetch = barbeirosSelecionados.length>0 ? barbeirosSelecionados : ['David'];
     let todasReservas = [];
     let todosBloqueios = [];
@@ -201,7 +268,6 @@ async function carregarHorarios(){
     if(!hay){ horaSelect.innerHTML='<option>Agenda cheia</option>'; horaSelect.removeAttribute('multiple'); btn.disabled=true; } else { horaSelect.disabled=false; btn.disabled=false; }
   }catch(e){ horaSelect.innerHTML='<option>Erro ao carregar</option>'; horaSelect.removeAttribute('multiple'); } finally{ loading.style.display='none'; }
 }
-
 function limparCampos(){
   document.getElementById('cliente').value = '';
   document.getElementById('telefone').value = '';
