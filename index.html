@@ -1,230 +1,221 @@
 <!DOCTYPE html>
-<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DAVID BARBER STUDIO - FINAL</title>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>David Barber Studio v3.1.3 FINAL FIX PLAY STORE</title>
+<link rel="icon" href="./1781700842770.png">
+<link rel="apple-touch-icon" href="./1781700842770.png">
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#000000">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}body{background:#050505;color:#fff;font-family:Inter,system-ui,sans-serif}
-#loader{position:fixed;inset:0;background:#000;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.db-top{font-size:14px;letter-spacing:8px;color:#c5a059;font-weight:700;margin-bottom:12px}
-.db-main{font-size:56px;font-weight:900;letter-spacing:4px;background:linear-gradient(180deg,#fff 0%,#fdf0cd 20%,#c5a059 50%,#967433 80%,#fff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 2px 4px rgba(197,160,89,0.5));text-align:center;line-height:1}
-.db-sub{font-size:11px;letter-spacing:6px;color:#fff;margin-top:10px;text-transform:uppercase;opacity:.7}
-.bar{width:220px;height:2px;background:rgba(197,160,89,0.15);margin-top:28px;border-radius:2px;overflow:hidden} .bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,#967433,#fdf0cd,#c5a059,#fff);box-shadow:0 0 8px #c5a059;transition:width .1s}
-.perc{font-size:13px;color:#c5a059;margin-top:12px;letter-spacing:2px;font-weight:700}
-.container{max-width:460px;margin:0 auto;padding:20px}
-.hero{margin:40px 0 30px} .badge{border:1px solid #c5a059;padding:4px 10px;border-radius:20px;font-size:9px;letter-spacing:3px;color:#c5a059} .title{font-size:56px;font-weight:900;letter-spacing:-3px} .title span{background:linear-gradient(90deg,#967433,#fdf0cd);-webkit-background-clip:text;-webkit-text-fill-color:transparent} .sub{font-size:10px;letter-spacing:4px;color:#c5a059;text-transform:uppercase;margin-top:8px}
-.label{font-size:10px;letter-spacing:3px;color:#c5a059;margin:32px 0 14px;display:flex;gap:8px} .label b{font-size:32px;opacity:.15}
-.barbero-card{width:160px;background:#111;border:1px solid #222;border-radius:20px;padding:18px;text-align:center;position:relative;margin:auto;cursor:pointer;transition:.3s} .barbero-card.active{border-color:#fdf0cd;background:linear-gradient(180deg, rgba(197,160,89,0.25), rgba(150,116,51,0.35));box-shadow:0 0 0 2px #c5a059, 0 8px 24px rgba(197,160,89,0.4);transform:scale(1.05)} .barbero-img{width:120px;height:120px;border-radius:50%;border:2px solid #c5a059;object-fit:cover;display:block;margin:0 auto} .check{position:absolute;top:8px;right:8px;width:22px;height:22px;background:linear-gradient(135deg,#fdf0cd,#c5a059);border-radius:50%;display:none;align-items:center;justify-content:center;color:#000;font-size:13px;font-weight:900;box-shadow:0 2px 8px rgba(197,160,89,0.6);border:1px solid #fff} .barbero-card.active .check{display:flex}
-.serv-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px} .serv{background:#111;border:1px solid #222;border-radius:20px;padding:14px;cursor:pointer;position:relative;transition:.3s} .serv.active{border-color:#c5a059;background:linear-gradient(135deg, rgba(197,160,89,0.45), rgba(120,85,25,0.65));box-shadow:0 0 0 2px #c5a059, 0 8px 20px rgba(197,160,89,0.5);transform:scale(1.03)} .serv .price{background:linear-gradient(90deg,#967433,#c5a059);color:#000;font-weight:700;font-size:11px;padding:3px 8px;border-radius:10px;margin-top:8px;display:inline-block} .check-serv{position:absolute;top:6px;right:6px;width:18px;height:18px;background:linear-gradient(135deg,#fdf0cd,#c5a059);border-radius:50%;display:none;align-items:center;justify-content:center;color:#000;font-size:11px;font-weight:900;border:1px solid #fff} .serv.active .check-serv{display:flex} .serv.active div{color:#fdf0cd;font-weight:800}
-.fecha-wrap{margin:0 -20px;padding:0 20px} .month-badge{background:#111;border:1px solid #c5a059;color:#c5a059;font-size:10px;letter-spacing:3px;padding:6px 14px;border-radius:20px;margin-bottom:12px;display:inline-block}
-.carrusel{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px} .carrusel::-webkit-scrollbar{display:none}
-.day{min-width:72px;height:84px;background:#111;border:1px solid #222;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;scroll-snap-align:center;cursor:pointer;transition:.3s;position:relative} .day .wd{font-size:9px;color:#888} .day .d{font-size:28px;font-weight:800} .day.active{background:linear-gradient(135deg, rgba(197,160,89,0.35), rgba(150,116,51,0.5));border-color:#fdf0cd;box-shadow:0 0 0 2px #c5a059, 0 8px 20px rgba(197,160,89,0.4);transform:scale(1.08);color:#fdf0cd;font-weight:800} .day.disabled{opacity:.35;pointer-events:none;background:#0a0a0a;border-color:#1a1a1a} .day.passed{opacity:.25;pointer-events:none;text-decoration:line-through} .day.ocupado{opacity:.4;pointer-events:none;background:#1a1a1a;border-color:#333;text-decoration:line-through}
-.inp{width:100%;background:#111;border:1px solid #222;border-radius:16px;padding:16px;color:#fff;outline:none} .inp:focus{border-color:#c5a059}
-.horas{display:grid;grid-template-columns:repeat(3,1fr);gap:8px} .hora{background:#111;border:1px solid #222;border-radius:12px;padding:10px;text-align:center;cursor:pointer;transition:.3s;font-size:13px} .hora.active{background:linear-gradient(90deg,#967433,#c5a059);color:#000;font-weight:700;border-color:#fdf0cd;transform:scale(1.05)} .hora.ocupado{background:#1a1a1a;border-color:#222;color:#555;text-decoration:line-through;pointer-events:none;opacity:.6} .hora.passado{background:#0a0a0a;border-color:#1a1a1a;color:#333;text-decoration:line-through;pointer-events:none;opacity:.3}
-.resumo{background:rgba(17,17,17,.8);border:1px solid rgba(197,160,89,.3);border-radius:24px;padding:24px;margin-top:20px;min-height:60px} .btn{width:100%;height:56px;border-radius:28px;border:none;font-weight:800;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px} .btn-gold{background:linear-gradient(90deg,#967433,#c5a059);color:#000;box-shadow:0 8px 24px rgba(197,160,89,0.3)} .btn-red{background:rgba(255,68,68,.12);border:1px solid rgba(255,68,68,.4);color:#ff6b6b;height:44px;border-radius:22px;font-size:14px;width:48%} .btn-app{background:rgba(197,160,89,.12);border:1px solid #c5a059;color:#c5a059;height:44px;border-radius:22px;font-size:14px;width:48%} .flex{display:flex;gap:12px;margin-top:12px}
-/* MODAL REAL como Armando */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:10000;display:none;align-items:center;justify-content:center;padding:20px}
-.modal-overlay.show{display:flex}
-.modal{background:#111;border:1px solid #c5a059;border-radius:24px;padding:28px;max-width:360px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.8)}
-.modal .icon{font-size:32px;margin-bottom:12px} .modal .title-modal{font-size:18px;font-weight:800;color:#fdf0cd;margin-bottom:8px} .modal .msg{font-size:13px;color:#aaa;line-height:1.5} .modal .btn-modal{margin-top:20px;background:linear-gradient(90deg,#967433,#c5a059);color:#000;border:none;border-radius:20px;padding:12px 24px;font-weight:800;cursor:pointer;width:100%}
-.spinner{width:32px;height:32px;border:3px solid rgba(197,160,89,0.2);border-top-color:#c5a059;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 12px} @keyframes spin{to{transform:rotate(360deg)}}
-</style></head><body>
-<div id="loader">
-<div class="db-top">STUDIO DB</div>
-<div class="db-main">STUDIO DB</div>
-<div class="db-sub">David Barber Studio</div>
-<div class="bar"><span id="barFill"></span></div>
-<div class="perc" id="perc">0%</div>
+body, html { margin: 0; padding: 0; background: #000; min-height: 100%; }
+#loader { position: fixed; inset:0; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 99999; transition: opacity 0.5s ease; }
+#loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+#loader img { width: 180px; max-width: 80%; }
+.loader-bar { width: 220px; height: 6px; background: #222; margin-top: 25px; border-radius: 10px; overflow: hidden; }
+.loader-bar span { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, #967433, #c5a059, #fdf0cd); animation: loading 2s forwards; }
+@keyframes loading { 0% { width: 0; } 100% { width: 100%; } }
+body { font-family: 'Segoe UI', Arial, sans-serif; color: #ddd; text-align: center; padding: 20px; }
+.db-header { font-size: 54px; font-weight: bold; background: linear-gradient(135deg, #967433 0%, #fdf0cd 30%, #c5a059 70%, #ffffff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.titulo { font-size: 22px; font-weight: bold; letter-spacing: 4px; background: linear-gradient(135deg, #c5a059 0%, #fdf0cd 50%, #c5a059 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.slogan { font-size: 10px; color: #fff; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 14px; }
+.horarios-info { font-size: 12px; color: #c5a059; margin-bottom: 15px; border-bottom: 1px dashed #2c2514; padding-bottom: 15px; }
+#form-container { max-width: 420px; margin: auto; padding: 25px; border-radius: 14px; background: #111; border: 1px solid #c5a059; }
+.barbeiros-grid { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+.card { background: #000; border-radius: 14px; padding: 12px; width: 115px; cursor: pointer; border: 2px solid transparent; margin: auto; }
+.card img { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #c5a059; object-fit:cover; }
+.card.active { border: 2px solid #fdf0cd; }
+label { display: block; margin: 16px 0 8px; font-weight: bold; font-size: 15px; text-align: left; color: #c5a059; }
+select, input { width: 90%; padding: 14px; margin-bottom: 12px; border-radius: 10px; border: 1px solid #333; background: #000; color: #fff; font-size: 16px; }
+button { background: linear-gradient(90deg, #967433, #c5a059); color: #000; border: none; padding: 14px; font-size: 17px; font-weight: bold; border-radius: 12px; cursor: pointer; margin-top: 15px; width: 90%; }
+button:disabled { background: #222; color: #555; }
+#confirmacao { display: none; margin-top: 15px; color: #fdf0cd; font-weight: bold; background: #110f0a; padding: 14px; border-radius: 10px; border: 1px solid #c5a059; }
+.btn-cancelar-interno { background: transparent!important; border: 1px solid rgba(255,68,68,0.3)!important; color: #ff6b6b!important; margin-top: 25px; font-size: 13px!important; }
+.btn-instalar-interno { background: transparent!important; border: 1px solid #c5a059!important; color: #c5a059!important; font-size: 13px!important; margin-top: 12px; }
+#modalCancelar, #modalInstalar, #modalProcess, #modalOcupado, #modalCancelando{ display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:999999; align-items:center; justify-content:center; padding:20px; }
+.box-cancel{ background:#121212; border:1.5px solid #c5a059; border-radius:14px; width:100%; max-width:300px; padding:18px; box-sizing:border-box; }
+.modal-overlay { display: none; position: fixed; inset:0; background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center; }
+.modal-box { background: #1a1a1a; border: 2px solid #c5a059; border-radius: 16px; padding: 25px; text-align: center; width: 320px; }
+.spinner { width:40px; height:40px; border:4px solid #222; border-top:4px solid #c5a059; border-radius:50%; animation: spin 1s linear infinite; margin:0 auto 15px; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<div id="loader"><img src="./1781700842770.png"><div class="loader-bar"><span></span></div></div>
+<div class="db-header">DB</div>
+<div class="titulo">DAVID BARBER STUDIO</div>
+<div class="slogan">Estilo, Precisão e Confiança</div>
+<div class="horarios-info">🕒 Seg: 08:30–11:00, 13:00–17:00<br>🕒 Ter a Sex: 08:30–11:00, 13:00–19:00<br>🕒 Sáb: 08:00–11:30, 13:00–17:00<br><span style="font-size:10px; opacity:0.5;">v3.1.3 FINAL FIX DIRECTO</span></div>
+<div id="form-container">
+<form id="agendaForm">
+<label>💈 Profissional</label>
+<div id="barbeirosContainer" class="barbeiros-grid"></div>
+<input type="hidden" id="barbeiro" value="David">
+<label>✂️ Serviço Ofertado</label>
+<select id="servico" required><option value="">Selecione</option></select>
+<label>📅 Data do Agendamento</label>
+<input type="date" id="data" required>
+<label>👤 Seu Nome</label>
+<input type="text" id="cliente" required>
+<label>📱 Seu WhatsApp</label>
+<input type="tel" id="telefone" required>
+<label>⏰ Horários Disponíveis</label>
+<select id="hora" required disabled><option value="">Selecione data e serviço primeiro</option></select>
+<div class="loading" id="loading" style="display:none;">Carregando horários...</div>
+<button type="button" id="btnAgendar" onclick="solicitarAgendamento()" disabled>Agendar Horário ✅</button>
+</form>
+<div id="confirmacao"></div>
+<button type="button" class="btn-cancelar-interno" onclick="abrirCancelar()">CANCELAR MEU AGENDAMENTO ❌</button>
+<button type="button" id="btnInstalar" class="btn-instalar-interno">📲 BAIXAR APP OFICIAL</button>
 </div>
-
-<div class="modal-overlay" id="modalLoading"><div class="modal"><div class="spinner"></div><div class="title-modal">Aguarde...</div><div class="msg" id="loadingMsg">Verificando horário disponível</div></div></div>
-<div class="modal-overlay" id="modalSuccess"><div class="modal"><div class="icon">✅</div><div class="title-modal">Horário Confirmado!</div><div class="msg" id="successMsg">Seu horário foi agendado com sucesso. Abrindo WhatsApp...</div><button class="btn-modal" onclick="closeModals()">Fechar</button></div></div>
-<div class="modal-overlay" id="modalError"><div class="modal"><div class="icon">❌</div><div class="title-modal">Horário Ocupado</div><div class="msg" id="errorMsg">Este horário já foi agendado por outro cliente. Escolha outro horário.</div><button class="btn-modal" onclick="closeModals()">Entendi</button></div></div>
-
-<div class="container">
-<div class="hero"><span class="badge">AVENTUREIRO • JOINVILLE</span><div class="title">STUDIO <span>DB</span></div><div style="font-size:12px;letter-spacing:8px;color:#c5a059">DAVID BARBER STUDIO</div><div class="sub">Estilo, Precisão e Confiança</div></div>
-<div class="label"><b>01</b> PROFISSIONAL</div>
-<div style="display:flex;justify-content:center"><div class="barbero-card" id="barberoCard"><div class="check">✔️</div><img class="barbero-img" src="data:image/jpeg;base64,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"><div style="margin-top:12px;font-weight:700">David</div><div style="font-size:10px;color:#c5a059">+10 anos • Barbeiro</div></div></div>
-<div class="label"><b>02</b> SERVIÇO — 2 COLUNAS</div>
-<div class="serv-grid" id="servGrid"></div>
-<div class="label"><b>03</b> DATA — CARRUSEL MANUAL</div>
-<div class="fecha-wrap"><span class="month-badge" id="monthBadge"></span><div class="carrusel" id="carrusel"></div><div style="font-size:9px;color:#555;letter-spacing:2px;margin-top:6px">← DESLIZE MANUAL →</div></div>
-<div class="label"><b>04</b> CONTATO</div>
-<div style="display:flex;flex-direction:column;gap:12px">
-<input class="inp" id="nome" placeholder="Seu nome completo">
-<input class="inp" type="tel" inputmode="numeric" pattern="[0-9]*" autocomplete="tel" id="whatsapp" placeholder="(47) 9 9999-9999 — teclado numérico">
-</div>
-<div class="label"><b>05</b> HORÁRIO — LADO A LADO</div>
-<div class="horas" id="horas"><div style="grid-column:1/-1;font-size:11px;color:#666;text-align:center;padding:20px">Selecione uma data para ver horários</div></div>
-<div class="label"><b>06</b> RESUMO — SEM SOMA</div>
-<div class="resumo" id="resumo">Nenhuma seleção ainda — selecione barbeiro, serviço, data e horário...</div>
-<button class="btn btn-gold" id="agendar">Agendar Horário ✅</button>
-<div class="flex"><button class="btn btn-red" id="btnCancelar">❌ Cancelar Horário</button><button class="btn btn-app">📲 Baixar App</button></div>
-<div style="margin-top:30px;font-size:9px;color:#444;text-align:center">SCRIPT REAL • 95991554792 • FOTO BASE64 • LOADER ESPEJO • HORAS PASADAS BLOQUEADAS + SHEET</div>
-</div>
+<div id="modalProcess"><div style="background:#111; border:1.5px solid #c5a059; border-radius:16px; padding:30px 24px; max-width:300px; width:100%; text-align:center;"><div class="spinner"></div><div style="color:#c5a059; font-weight:bold; font-size:16px; margin-bottom:8px;">Aguarde...</div><div style="color:#fff; font-size:13px;">Estamos verificando seu horário<br>e garantindo sua reserva ✨</div></div></div>
+<div id="modalErro" class="modal-overlay"><div class="modal-box"><div style="color:#fdf0cd; margin-bottom:20px;">Preencha todos os campos</div><button style="background:#c5a059; color:#000; border:none; padding:12px; border-radius:8px; font-weight:bold; width:100%;" onclick="this.parentElement.parentElement.style.display='none'">OK</button></div></div>
+<div id="modalCancelar"><div class="box-cancel"><div style="text-align:center; color:#c5a059; font-weight:bold; font-size:14px; margin-bottom:12px;">Cancelar Agendamento</div><input id="cancelData" type="date" style="width:100%; height:38px; background:#000; color:#fff; border:1px solid #333; border-radius:8px; text-align:center; margin-bottom:8px; box-sizing:border-box;"><input id="cancelTelefone" type="tel" placeholder="Seu WhatsApp" style="width:100%; height:38px; background:#000; color:#fff; border:1px solid #333; border-radius:8px; text-align:center; margin-bottom:14px; box-sizing:border-box;"><button onclick="confirmarCancelar()" style="width:100%; height:40px; background:#c5a059; color:#000; font-weight:bold; border:none; border-radius:8px; margin-bottom:8px;">Confirmar Cancelamento</button><button onclick="fecharCancelar()" style="width:100%; height:36px; background:#1e1e1e; color:#fff; border:none; border-radius:8px;">Voltar</button></div></div>
+<div id="modalCancelando"><div style="background:#121212; border:1.5px solid #c5a059; border-radius:16px; width:100%; max-width:300px; padding:30px 20px; text-align:center; box-sizing:border-box;"><div class="spinner"></div><div style="color:#c5a059; font-weight:bold; font-size:16px; margin-bottom:8px;">Aguarde...</div><div style="color:#fff; font-size:13px; line-height:1.3;">Estamos cancelando seu<br>agendamento ✨</div></div></div>
+<div id="modalInstalar"><div style="background:#111; border:1px solid #c5a059; border-radius:16px; padding:24px; max-width:320px; width:100%; text-align:center;"><h3 style="color:#c5a059; margin-bottom:12px;">Instalar App Oficial</h3><p style="color:#fff; font-size:14px; line-height:1.4; margin-bottom:16px;">Para iPhone: Toque em <b>Compartilhar</b> > <b>Adicionar à tela inicial</b><br><br>Para Android: Toque nos 3 pontos ⋮ > <b>Instalar app</b></p><button onclick="fecharModalInstalar()" style="background:#c5a059; color:#000; border:none; padding:10px 20px; border-radius:8px; font-weight:bold; width:90%;">Aceptar</button></div></div>
+<div id="modalOcupado"><div style="background:#111; border:1.5px solid #ff4444; border-radius:16px; padding:24px; max-width:320px; width:100%; text-align:center;"><div style="font-size:40px; margin-bottom:10px;">⚠️</div><h3 style="color:#ff6b6b; margin-bottom:10px;">Horário já agendado!</h3><p style="color:#fff; font-size:14px; line-height:1.4; margin-bottom:18px;">Esse horário acabou de ser agendado por outro cliente. Por favor escolha outro horário disponível.</p><button onclick="fecharOcupado()" style="background:#c5a059; color:#000; border:none; padding:12px 20px; border-radius:8px; font-weight:bold; width:90%;">Escolher outro horário</button></div></div>
 <script>
-const SCRIPT_URL='https://script.google.com/macros/s/AKfycbzcQMOm11ba3BRV0pRKlVplcGx0goPhtHIHurr-jm0sa0rzs9ujvdeTH4xFEyPIhMKjlQ/exec';
-const WHATSAPP_NUM='5595991554792';
-const mapa={'Corte Social':{preco:35,blocos:1},'Corte Degradé':{preco:40,blocos:1},'Corte e Barba':{preco:60,blocos:2},'Barba':{preco:30,blocos:1},'Sobrancelha':{preco:10,blocos:1},'Limpeza Facial':{preco:20,blocos:1},'Corte+Limpieza':{preco:50,blocos:2},'Corte e Barba+Limpieza':{preco:70,blocos:2}};
-
-// Loader
-let p=0;const bar=document.getElementById('barFill');const perc=document.getElementById('perc');const loader=document.getElementById('loader');
-const int=setInterval(()=>{p+=Math.floor(Math.random()*12)+4;if(p>=100){p=100;bar.style.width='100%';perc.textContent='100%';clearInterval(int);setTimeout(()=>{loader.style.transition='opacity .6s';loader.style.opacity='0';setTimeout(()=>loader.style.display='none',600)},400)}else{bar.style.width=p+'%';perc.textContent=p+'%'} },80);
-
-function showModal(id){document.getElementById(id).classList.add('show')}
-function closeModals(){document.querySelectorAll('.modal-overlay').forEach(m=>m.classList.remove('show'))}
-
-let selectedDate=null;
-const grid=document.getElementById('servGrid');
-Object.entries(mapa).forEach(([k,v])=>{const d=document.createElement('div');d.className='serv';d.innerHTML='<div class="check-serv">✔️</div><div style="font-size:13px;font-weight:600">'+k+'</div><div class="price">R$ '+v.preco+'</div>';d.onclick=()=>{document.querySelectorAll('.serv').forEach(s=>s.classList.remove('active'));d.classList.add('active');upd()};grid.appendChild(d)});
-
-const car=document.getElementById('carrusel');const monthBadge=document.getElementById('monthBadge');const hoje=new Date();const meses=['JANEIRO','FEVEREIRO','MARÇO','ABRIL','MAIO','JUNHO','JULHO','AGOSTO','SETEMBRO','OUTUBRO','NOVEMBRO','DEZEMBRO'];monthBadge.textContent=meses[hoje.getMonth()]+' '+hoje.getFullYear();
-
-for(let i=0;i<32;i++){
-const dt=new Date();dt.setHours(0,0,0,0);dt.setDate(hoje.getDate()+i);
-const wd=['DOM','SEG','TER','QUA','QUI','SEX','SAB'][dt.getDay()];
-const d=document.createElement('div');
-d.className='day'+(dt.getDay()===0?' disabled':'');
-d.dataset.iso=dt.toISOString().split('T')[0];
-d.innerHTML='<div class="wd">'+wd+'</div><div class="d">'+dt.getDate()+'</div>';
-if(dt.getDay()!==0){
-d.onclick=async ()=>{
-document.querySelectorAll('.day').forEach(x=>x.classList.remove('active'));
-d.classList.add('active');
-selectedDate=dt;
-await loadHoras(dt);
-upd();
-}
-}
-car.appendChild(d);
-}
-
-async function loadHoras(date){
-const cont=document.getElementById('horas');
-cont.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:20px"><div class="spinner" style="width:24px;height:24px"></div><div style="font-size:11px;color:#c5a059;margin-top:8px">Consultando horários no Sheet...</div></div>';
-
-// Horarios base por dia
-let horariosBase = date.getDay()===6 ? ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00'] : ['08:30','09:00','09:30','10:00','10:30','11:00','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00'];
-
-let ocupados=[];
-try{
-const iso=date.toISOString().split('T')[0];
-const url = SCRIPT_URL + '?action=getOcupados&data=' + iso + '&barbeiro=david';
-console.log('Fetching', url);
-const res = await fetch(url);
-if(res.ok){
-const data = await res.json();
-console.log('Ocupados:', data);
-if(Array.isArray(data)) ocupados=data;
-else if(data.ocupados) ocupados=data.ocupados;
-else if(data.horarios) ocupados=data.horarios;
-}
-}catch(e){console.log('Erro sheet, usando vazio', e)}
-
-cont.innerHTML='';
-const agora=new Date();
-const esHoy = date.toDateString()===agora.toDateString();
-
-horariosBase.forEach(h=>{
-const el=document.createElement('div');
-el.className='hora';
-el.textContent=h;
-
-const [hh,mm]=h.split(':').map(Number);
-const horaDate=new Date(date); horaDate.setHours(hh,mm,0,0);
-
-// 1) Bloquear horas pasadas
-if(esHoy && horaDate < agora){
-el.classList.add('passado');
-el.title='Horário já passou';
-} else if(ocupados.includes(h) || ocupados.includes(h+':00')){
-el.classList.add('ocupado');
-el.title='Horário ocupado - Sheet';
-} else {
-el.onclick=()=>{el.classList.toggle('active');upd()};
-}
-
-cont.appendChild(el);
-});
-
-if(ocupados.length===0 && !esHoy){
-console.log('Nenhum ocupado retornado - pode ser que Sheet esteja vazio ou action diferente');
-}
-}
-
-document.getElementById('barberoCard').onclick=function(){this.classList.toggle('active');upd()};
-
-function upd(){
-const barbero=document.querySelector('.barbero-card.active');
-const serv=document.querySelector('.serv.active');
-const dia=document.querySelector('.day.active');
-const horas=[...document.querySelectorAll('.hora.active')].map(x=>x.textContent);
-const nome=document.getElementById('nome').value;
-const zap=document.getElementById('whatsapp').value;
-const r=document.getElementById('resumo');
-if(!barbero&&!serv&&!dia&&horas.length===0&&!nome&&!zap){
-r.innerHTML='Nenhuma seleção ainda — selecione barbeiro, serviço, data e horário...';
-return
-}
-r.innerHTML='<div style="font-size:12px;line-height:1.8"><b style="color:#c5a059">Barbeiro:</b> '+(barbero?'David':'—')+'<br><b style="color:#c5a059">Serviço:</b> '+(serv?serv.textContent:'—')+'<br><b style="color:#c5a059">Data:</b> '+(dia?dia.textContent:'—')+' ('+(selectedDate?selectedDate.toISOString().split('T')[0]:'')+')<br><b style="color:#c5a059">Nome:</b> '+(nome||'—')+'<br><b style="color:#c5a059">WhatsApp:</b> '+(zap||'—')+'<br><b style="color:#c5a059">Horários:</b> '+(horas.join(', ')||'—')+'</div>';
-}
-
-document.getElementById('nome').addEventListener('input',upd);
-document.getElementById('whatsapp').addEventListener('input',e=>{
-let v=e.target.value.replace(/\D/g,'');
-if(v.length>11)v=v.slice(0,11);
-if(v.length>6)v=v.replace(/^(\d{2})(\d{5})(\d{0,4})/,'($1) $2-$3');
-else if(v.length>2)v=v.replace(/^(\d{2})(\d{0,5})/,'($1) $2');
-e.target.value=v;upd()
-});
-
-document.getElementById('agendar').onclick=async ()=>{
-const barbero=document.querySelector('.barbero-card.active');
-const serv=document.querySelector('.serv.active');
-const dia=document.querySelector('.day.active');
-const horas=[...document.querySelectorAll('.hora.active')].map(x=>x.textContent);
-const nome=document.getElementById('nome').value;
-const zap=document.getElementById('whatsapp').value;
-
-if(!barbero){alert('Selecione o barbeiro');return}
-if(!serv){alert('Selecione o serviço');return}
-if(!dia){alert('Selecione a data');return}
-if(horas.length===0){alert('Selecione o horário');return}
-if(!nome||!zap){alert('Preencha nome e WhatsApp');return}
-
-showModal('modalLoading');
-document.getElementById('loadingMsg').textContent='Enviando para planilha...';
-
-try{
-const payload={
-nome:nome,
-whatsapp:zap,
-data:selectedDate.toISOString().split('T')[0],
-horarios:horas,
-servico:serv.textContent,
-barbeiro:'David',
-blocos:1
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcQMOm11ba3BRV0pRKlVplcGx0goPhtHIHurr-jm0sa0rzs9ujvdeTH4xFEyPIhMKjlQ/exec';
+const BARBEIROS = [ { id: 'David', nome: 'David', foto: 'https://i.ibb.co/B5GDCLGN/IMG-20241012-152952-2.jpg' } ];
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
+async function instalarAppOficial(){ if (deferredPrompt) { deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; return; } document.getElementById('modalInstalar').style.display = 'flex'; }
+function fecharModalInstalar(){ document.getElementById('modalInstalar').style.display = 'none'; }
+function fecharOcupado(){ document.getElementById('modalOcupado').style.display='none'; }
+document.getElementById('btnInstalar').addEventListener('click', instalarAppOficial);
+setTimeout(() => { const l=document.getElementById('loader'); if(l) l.classList.add('hidden'); }, 2500);
+window.addEventListener('load', () => { setTimeout(()=>{ const l=document.getElementById('loader'); if(l) l.classList.add('hidden'); },800); });
+function renderBarbeiros(){ const cont = document.getElementById('barbeirosContainer'); cont.innerHTML = ''; BARBEIROS.forEach((b,i)=>{ const div = document.createElement('div'); div.className = 'card'+(i===0?' active':''); div.innerHTML = `<img src="${b.foto}"><br>${b.nome}`; div.onclick = ()=>{ document.querySelectorAll('.card').forEach(c=>c.classList.remove('active')); div.classList.add('active'); document.getElementById('barbeiro').value = b.id; carregarHorarios(); }; cont.appendChild(div); }); if(BARBEIROS.length>0) document.getElementById('barbeiro').value = BARBEIROS[0].id; }
+const mapaServicos={
+  'Corte Social':{preco:'R$35',bloques:1},
+  'Corte Degradé':{preco:'R$40',bloques:1},
+  'Corte e Barba':{preco:'R$60',bloques:2},
+  'Barba':{preco:'R$30',bloques:1},
+  'Sobrancelha':{preco:'R$10',bloques:1},
+  'Limpieza Facial':{preco:'R$20',bloques:1},
+  'Corte + Limpieza Facial':{preco:'R$50',bloques:2},
+  'Corte e Barba + Limpieza Facial':{preco:'R$70',bloques:2}
 };
-
-const formData=new FormData();
-formData.append('data', JSON.stringify(payload));
-
-const res=await fetch(SCRIPT_URL, {method:'POST', body:formData});
-console.log('POST result', res);
-
-closeModals();
-showModal('modalSuccess');
-document.getElementById('successMsg').innerHTML='Seu horário '+horas.join(', ')+' em '+selectedDate.toLocaleDateString('pt-BR')+' foi agendado.<br><br>Abrindo WhatsApp...';
-
-setTimeout(()=>{
-const msg=encodeURIComponent('Olá David! Quero confirmar meu horário:\n\nBarbeiro: David\nServiço: '+serv.textContent+'\nData: '+selectedDate.toLocaleDateString('pt-BR')+'\nHorário: '+horas.join(', ')+'\nNome: '+nome+'\nWhatsApp: '+zap);
-window.location.href='https://wa.me/'+WHATSAPP_NUM+'?text='+msg;
-},1500);
-
-}catch(err){
-console.error(err);
-closeModals();
-showModal('modalError');
-document.getElementById('errorMsg').textContent='Erro ao conectar com a planilha: '+err.message+'. Tente novamente.';
+function getHorariosPorDia(dStr){ const d=new Date(dStr+'T12:00:00'); const dia=d.getDay(); if(dia===0) return []; if(dia===1) return ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30']; if(dia===6) return ['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30']; return ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30']; }
+function esHoy(dStr){ const hoy=new Date(); const sel=new Date(dStr+'T12:00:00'); return hoy.toDateString()===sel.toDateString(); }
+function getHoraActual(){ const a=new Date(); return String(a.getHours()).padStart(2,'0')+':'+String(a.getMinutes()).padStart(2,'0'); }
+document.addEventListener('DOMContentLoaded', ()=>{
+  renderBarbeiros();
+  const dataInput=document.getElementById('data'); const hoje=new Date(); dataInput.min=hoje.toISOString().split('T')[0]; const max=new Date(); max.setDate(hoje.getDate()+30); dataInput.max=max.toISOString().split('T')[0];
+  const sel=document.getElementById('servico'); sel.innerHTML='<option value="">Selecione um serviço</option>'; for(const s in mapaServicos){ sel.innerHTML+=`<option value="${s}">${s} — ${mapaServicos[s].preco}</option>`; }
+  dataInput.addEventListener('change', carregarHorarios); sel.addEventListener('change', carregarHorarios);
+});
+async function carregarHorarios(){
+  const data=document.getElementById('data').value; const servico=document.getElementById('servico').value; const barbeiro=document.getElementById('barbeiro').value;
+  const horaSelect=document.getElementById('hora'); const loading=document.getElementById('loading'); const btn=document.getElementById('btnAgendar');
+  if(!data||!servico){ horaSelect.innerHTML='<option value="">Selecione data e serviço primeiro</option>'; horaSelect.disabled=true; btn.disabled=true; return; }
+  if(new Date(data+'T12:00:00').getDay()===0){ horaSelect.innerHTML='<option value="">Domingo não trabalhamos</option>'; horaSelect.disabled=true; btn.disabled=true; return; }
+  loading.style.display='block'; horaSelect.disabled=true; horaSelect.innerHTML='<option>Carregando...</option>';
+  try{
+    const url=`${SCRIPT_URL}?data=${data}&barbeiro=${barbeiro}&_=${Date.now()}`; const res=await fetch(url, {cache:'no-store'}); const json=await res.json();
+    const reservas = Array.isArray(json)? json : (json.reservas || []); const bloqueios = json.bloqueios || [];
+    const todos=getHorariosPorDia(data); const ocupados=new Set();
+    const hActual=getHoraActual(); const esHoyDia=esHoy(data); const bloquesNec=mapaServicos[servico]?.bloques||1;
+    reservas.forEach(r=>{ const idx=todos.indexOf(r.hora); if(idx!==-1){ for(let i=0;i<(r.bloques||1);i++){ if(todos[idx+i]) ocupados.add(todos[idx+i]); } } });
+    const esSab=new Date(data+'T12:00:00').getDay()===6;
+    horaSelect.innerHTML='<option value="">Selecione um horário</option>'; let hay=false;
+    todos.forEach((hora, idxHora)=>{
+      if(hora==='12:00') return; if(hora==='11:30' &&!esSab) return; if(esHoyDia && hora < hActual){ horaSelect.innerHTML+=`<option disabled>${hora} - Passado</option>`; return; }
+      let bloq=false; let mot='Ocupado';
+      for(let b of bloqueios){ if(hora>=b.inicio && hora<=b.fim){ bloq=true; mot='Bloqueado'; break; } }
+      if(!bloq){ for(let i=0;i<bloquesNec;i++){ const s=todos[idxHora+i]; if(!s){ if(i===0){ bloq=true; mot='Não cabe'; break; } continue; } if(ocupados.has(s)){ bloq=true; break; } } }
+      if(bloq) horaSelect.innerHTML+=`<option disabled>${hora} - ${mot}</option>`; else { horaSelect.innerHTML+=`<option value="${hora}">${hora}</option>`; hay=true; }
+    });
+    if(!hay){ horaSelect.innerHTML='<option>Agenda cheia</option>'; btn.disabled=true; } else { horaSelect.disabled=false; btn.disabled=false; }
+  }catch(e){ horaSelect.innerHTML='<option>Erro ao carregar</option>'; } finally{ loading.style.display='none'; }
 }
-};
-
-document.getElementById('btnCancelar').onclick=()=>{alert('Funcionalidade cancelar em breve - por enquanto cancele pelo WhatsApp: '+WHATSAPP_NUM)};
-</script></body></html>
+function limparCampos(){
+  document.getElementById('cliente').value = '';
+  document.getElementById('telefone').value = '';
+  document.getElementById('data').value = '';
+  document.getElementById('servico').selectedIndex = 0;
+  document.getElementById('hora').innerHTML = '<option value="">Selecione data e serviço primeiro</option>';
+  document.getElementById('hora').disabled = true;
+  document.getElementById('btnAgendar').disabled = true;
+  document.getElementById('confirmacao').style.display = 'none';
+}
+function limparCamposCancelar(){
+  document.getElementById('cancelData').value = '';
+  document.getElementById('cancelTelefone').value = '';
+}
+async function solicitarAgendamento(){
+  const btn=document.getElementById('btnAgendar');
+  const data=document.getElementById('data').value; const hora=document.getElementById('hora').value; const cliente=document.getElementById('cliente').value; const telefone=document.getElementById('telefone').value; const servico=document.getElementById('servico').value;
+  if(!data||!hora||!cliente||!telefone||!servico){ document.getElementById('modalErro').style.display='flex'; return; }
+  document.getElementById('modalProcess').style.display='flex';
+  btn.disabled=true; btn.textContent='VERIFICANDO...';
+  try{
+    const fd=new URLSearchParams({data,hora,cliente,telefone,servico,barbeiro:document.getElementById('barbeiro').value});
+    const r=await fetch(SCRIPT_URL,{method:'POST', body:fd});
+    const result=await r.json();
+    if(result.success){
+      document.getElementById('confirmacao').style.display='block';
+      document.getElementById('confirmacao').innerHTML='✅ Confirmado! Abrindo WhatsApp...';
+      limparCampos();
+      setTimeout(()=>{
+        document.getElementById('modalProcess').style.display='none';
+        abrirWhatsAppDirecto(result.whatsapp);
+      }, 800);
+    } else {
+      document.getElementById('modalProcess').style.display='none';
+      document.getElementById('modalOcupado').style.display='flex';
+      btn.disabled=false; btn.textContent='Agendar Horário ✅';
+      carregarHorarios();
+    }
+  }catch(err){
+    document.getElementById('modalProcess').style.display='none';
+    document.getElementById('modalOcupado').style.display='flex';
+    btn.disabled=false; btn.textContent='Agendar Horário ✅';
+    carregarHorarios();
+  }
+}
+function abrirCancelar(){ document.getElementById('modalCancelar').style.display='flex'; }
+function fecharCancelar(){ document.getElementById('modalCancelar').style.display='none'; }
+function abrirWhatsAppDirecto(waUrl){
+  try{
+    let m = waUrl.match(/wa\.me\/(\d+)/);
+    let phone = m? m[1] : "5595991554792";
+    let text = waUrl.split('text=')[1] || "";
+    let appUrl = "whatsapp://send?phone=" + phone + "&text=" + text;
+    window.location.href = appUrl;
+  }catch(e){
+    window.open(waUrl, '_blank');
+  }
+}
+async function confirmarCancelar(){
+  const dataInput = document.getElementById('cancelData').value;
+  const tel = document.getElementById('cancelTelefone').value.replace(/\D/g,'');
+  if(!dataInput ||!tel){ alert('Preencha data e WhatsApp'); return; }
+  document.getElementById('modalCancelar').style.display='none';
+  document.getElementById('modalCancelando').style.display='flex';
+  let dataEnvio = dataInput;
+  if(dataInput.includes('/')){ const p=dataInput.split('/'); dataEnvio=`${p[2]}-${p[1].padStart(2,'0')}-${p[0].padStart(2,'0')}`; }
+  try{
+    const formData = new URLSearchParams({acao:'cancelar', data:dataEnvio, telefone:tel});
+    const res = await fetch(SCRIPT_URL,{method:'POST', body:formData});
+    const r = await res.json();
+    document.getElementById('modalCancelando').style.display='none';
+    limparCamposCancelar();
+    if(r.success && r.whatsapp){
+      abrirWhatsAppDirecto(r.whatsapp);
+    } else if(r.success){
+      alert('✅ Cancelado: '+r.hora);
+      carregarHorarios();
+    } else {
+      alert(r.error||'Erro');
+    }
+  }catch(e){
+    document.getElementById('modalCancelando').style.display='none';
+    limparCamposCancelar();
+    alert('Erro conexão');
+  }
+}
+</script>
+</body>
+</html>
