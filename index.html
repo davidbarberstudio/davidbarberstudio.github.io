@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>David Barber Studio v3.1.3 FINAL FIX PLAY STORE</title>
+<title>David Barber Studio - Index-multi-4.0 MULTI 10 BARBEIROS</title>
 <link rel="icon" href="./1781700842770.png">
 <link rel="apple-touch-icon" href="./1781700842770.png">
 <link rel="manifest" href="./manifest.json">
@@ -21,11 +21,12 @@ body { font-family: 'Segoe UI', Arial, sans-serif; color: #ddd; text-align: cent
 .titulo { font-size: 22px; font-weight: bold; letter-spacing: 4px; background: linear-gradient(135deg, #c5a059 0%, #fdf0cd 50%, #c5a059 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .slogan { font-size: 10px; color: #fff; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 14px; }
 .horarios-info { font-size: 12px; color: #c5a059; margin-bottom: 15px; border-bottom: 1px dashed #2c2514; padding-bottom: 15px; }
-#form-container { max-width: 420px; margin: auto; padding: 25px; border-radius: 14px; background: #111; border: 1px solid #c5a059; }
+#form-container { max-width: 460px; margin: auto; padding: 25px; border-radius: 14px; background: #111; border: 1px solid #c5a059; }
 .barbeiros-grid { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
-.card { background: #000; border-radius: 14px; padding: 12px; width: 115px; cursor: pointer; border: 2px solid transparent; margin: auto; }
+.card { background: #000; border-radius: 14px; padding: 12px; width: 115px; cursor: pointer; border: 2px solid transparent; margin: auto; transition: all 0.2s; position:relative; }
 .card img { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #c5a059; object-fit:cover; }
-.card.active { border: 2px solid #fdf0cd; }
+.card.active { border: 2px solid #fdf0cd; box-shadow: 0 0 12px rgba(197,160,89,0.4); }
+.card.active::after { content:'✓'; position:absolute; top:6px; right:8px; background:#c5a059; color:#000; width:20px; height:20px; border-radius:50%; font-size:12px; font-weight:bold; display:flex; align-items:center; justify-content:center; }
 label { display: block; margin: 16px 0 8px; font-weight: bold; font-size: 15px; text-align: left; color: #c5a059; }
 select, input { width: 90%; padding: 14px; margin-bottom: 12px; border-radius: 10px; border: 1px solid #333; background: #000; color: #fff; font-size: 16px; }
 button { background: linear-gradient(90deg, #967433, #c5a059); color: #000; border: none; padding: 14px; font-size: 17px; font-weight: bold; border-radius: 12px; cursor: pointer; margin-top: 15px; width: 90%; }
@@ -39,6 +40,18 @@ button:disabled { background: #222; color: #555; }
 .modal-box { background: #1a1a1a; border: 2px solid #c5a059; border-radius: 16px; padding: 25px; text-align: center; width: 320px; }
 .spinner { width:40px; height:40px; border:4px solid #222; border-top:4px solid #c5a059; border-radius:50%; animation: spin 1s linear infinite; margin:0 auto 15px; }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* MULTI 4.0 STYLES */
+.horarios-multi-container { text-align:left; margin-top:10px; }
+.barbeiro-horario-grupo { margin-bottom:18px; border:1px solid #222; border-radius:12px; padding:12px; background:#0a0a0a; }
+.barbeiro-horario-titulo { color:#fdf0cd; font-weight:bold; font-size:14px; margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+.barbeiro-horario-titulo img { width:28px; height:28px; border-radius:50%; border:1px solid #c5a059; }
+.horario-grid { display:flex; flex-wrap:wrap; gap:8px; }
+.horario-btn { padding:10px 14px; border-radius:8px; border:1px solid #333; background:#000; color:#fff; font-size:13px; cursor:pointer; transition:all 0.15s; }
+.horario-btn:hover { border-color:#c5a059; }
+.horario-btn.selected { background:linear-gradient(90deg,#967433,#c5a059); color:#000; font-weight:bold; border-color:#fdf0cd; }
+.horario-btn:disabled { background:#1a1a1a; color:#555; border-color:#222; cursor:not-allowed; text-decoration:line-through; }
+.resumo-multi { background:#0e0c07; border:1px dashed #c5a059; border-radius:10px; padding:12px; margin-top:15px; font-size:13px; color:#fdf0cd; text-align:left; display:none; }
 </style>
 </head>
 <body>
@@ -46,39 +59,70 @@ button:disabled { background: #222; color: #555; }
 <div class="db-header">DB</div>
 <div class="titulo">DAVID BARBER STUDIO</div>
 <div class="slogan">Estilo, Precisão e Confiança</div>
-<div class="horarios-info">🕒 Seg: 08:30–11:00, 13:00–17:00<br>🕒 Ter a Sex: 08:30–11:00, 13:00–19:00<br>🕒 Sáb: 08:00–11:30, 13:00–17:00<br><span style="font-size:10px; opacity:0.5;">v3.1.3 FINAL FIX DIRECTO</span></div>
+<div class="horarios-info">🕒 Seg: 08:30–11:00, 13:00–17:00<br>🕒 Ter a Sex: 08:30–11:00, 13:00–19:00<br>🕒 Sáb: 08:00–11:30, 13:00–17:00<br><span style="font-size:10px; opacity:0.5;">Index-multi-4.0 | 10 BARBEIROS | MULTI-HORA</span></div>
 <div id="form-container">
 <form id="agendaForm">
-<label>💈 Profissional</label>
+<label>💈 Profissional (1 a 10 - clique para selecionar múltiplos)</label>
 <div id="barbeirosContainer" class="barbeiros-grid"></div>
 <input type="hidden" id="barbeiro" value="David">
+
 <label>✂️ Serviço Ofertado</label>
 <select id="servico" required><option value="">Selecione</option></select>
+
 <label>📅 Data do Agendamento</label>
 <input type="date" id="data" required>
+
 <label>👤 Seu Nome</label>
 <input type="text" id="cliente" required>
+
 <label>📱 Seu WhatsApp</label>
 <input type="tel" id="telefone" required>
-<label>⏰ Horários Disponíveis</label>
-<select id="hora" required disabled><option value="">Selecione data e serviço primeiro</option></select>
-<div class="loading" id="loading" style="display:none;">Carregando horários...</div>
+
+<label>⏰ Horários Disponíveis (clique em vários para reserva multi-hora)</label>
+<div id="horariosMulti" class="horarios-multi-container">
+  <select id="hora" style="display:none;"><option value="">Selecione data e serviço primeiro</option></select>
+  <div id="loading" style="display:none; color:#c5a059; font-size:13px;">Carregando horários...</div>
+  <div id="gridHorarios"></div>
+</div>
+
+<div id="resumoMulti" class="resumo-multi"></div>
+
 <button type="button" id="btnAgendar" onclick="solicitarAgendamento()" disabled>Agendar Horário ✅</button>
 </form>
 <div id="confirmacao"></div>
 <button type="button" class="btn-cancelar-interno" onclick="abrirCancelar()">CANCELAR MEU AGENDAMENTO ❌</button>
 <button type="button" id="btnInstalar" class="btn-instalar-interno">📲 BAIXAR APP OFICIAL</button>
 </div>
+
 <div id="modalProcess"><div style="background:#111; border:1.5px solid #c5a059; border-radius:16px; padding:30px 24px; max-width:300px; width:100%; text-align:center;"><div class="spinner"></div><div style="color:#c5a059; font-weight:bold; font-size:16px; margin-bottom:8px;">Aguarde...</div><div style="color:#fff; font-size:13px;">Estamos verificando seu horário<br>e garantindo sua reserva ✨</div></div></div>
 <div id="modalErro" class="modal-overlay"><div class="modal-box"><div style="color:#fdf0cd; margin-bottom:20px;">Preencha todos os campos</div><button style="background:#c5a059; color:#000; border:none; padding:12px; border-radius:8px; font-weight:bold; width:100%;" onclick="this.parentElement.parentElement.style.display='none'">OK</button></div></div>
 <div id="modalCancelar"><div class="box-cancel"><div style="text-align:center; color:#c5a059; font-weight:bold; font-size:14px; margin-bottom:12px;">Cancelar Agendamento</div><input id="cancelData" type="date" style="width:100%; height:38px; background:#000; color:#fff; border:1px solid #333; border-radius:8px; text-align:center; margin-bottom:8px; box-sizing:border-box;"><input id="cancelTelefone" type="tel" placeholder="Seu WhatsApp" style="width:100%; height:38px; background:#000; color:#fff; border:1px solid #333; border-radius:8px; text-align:center; margin-bottom:14px; box-sizing:border-box;"><button onclick="confirmarCancelar()" style="width:100%; height:40px; background:#c5a059; color:#000; font-weight:bold; border:none; border-radius:8px; margin-bottom:8px;">Confirmar Cancelamento</button><button onclick="fecharCancelar()" style="width:100%; height:36px; background:#1e1e1e; color:#fff; border:none; border-radius:8px;">Voltar</button></div></div>
 <div id="modalCancelando"><div style="background:#121212; border:1.5px solid #c5a059; border-radius:16px; width:100%; max-width:300px; padding:30px 20px; text-align:center; box-sizing:border-box;"><div class="spinner"></div><div style="color:#c5a059; font-weight:bold; font-size:16px; margin-bottom:8px;">Aguarde...</div><div style="color:#fff; font-size:13px; line-height:1.3;">Estamos cancelando seu<br>agendamento ✨</div></div></div>
 <div id="modalInstalar"><div style="background:#111; border:1px solid #c5a059; border-radius:16px; padding:24px; max-width:320px; width:100%; text-align:center;"><h3 style="color:#c5a059; margin-bottom:12px;">Instalar App Oficial</h3><p style="color:#fff; font-size:14px; line-height:1.4; margin-bottom:16px;">Para iPhone: Toque em <b>Compartilhar</b> > <b>Adicionar à tela inicial</b><br><br>Para Android: Toque nos 3 pontos ⋮ > <b>Instalar app</b></p><button onclick="fecharModalInstalar()" style="background:#c5a059; color:#000; border:none; padding:10px 20px; border-radius:8px; font-weight:bold; width:90%;">Aceptar</button></div></div>
 <div id="modalOcupado"><div style="background:#111; border:1.5px solid #ff4444; border-radius:16px; padding:24px; max-width:320px; width:100%; text-align:center;"><div style="font-size:40px; margin-bottom:10px;">⚠️</div><h3 style="color:#ff6b6b; margin-bottom:10px;">Horário já agendado!</h3><p style="color:#fff; font-size:14px; line-height:1.4; margin-bottom:18px;">Esse horário acabou de ser agendado por outro cliente. Por favor escolha outro horário disponível.</p><button onclick="fecharOcupado()" style="background:#c5a059; color:#000; border:none; padding:12px 20px; border-radius:8px; font-weight:bold; width:90%;">Escolher outro horário</button></div></div>
+
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzcQMOm11ba3BRV0pRKlVplcGx0goPhtHIHurr-jm0sa0rzs9ujvdeTH4xFEyPIhMKjlQ/exec';
-const BARBEIROS = [ { id: 'David', nome: 'David', foto: 'https://i.ibb.co/B5GDCLGN/IMG-20241012-152952-2.jpg' } ];
+
+// === Index-multi-4.0 - 10 BARBEIROS OPCIÓN B ===
+// 1 visible, 9 ocultas con display:none - mejor que sobre y no que falte
+const BARBEIROS = [
+  { id: 'David', nome: 'David', foto: 'https://i.ibb.co/B5GDCLGN/IMG-20241012-152952-2.jpg', hidden: false },
+  { id: 'Barbeiro2', nome: 'Barbeiro 2', foto: 'https://i.ibb.co/B5GDCLGN/IMG-20241012-152952-2.jpg', hidden: true },
+  { id: 'Barbeiro3', nome: 'Barbeiro 3', foto: 'https://i.ibb.co/B5GDCLGN/IMG-20241012-152952-2.jpg', hidden: true },
+  { id: 'Barbeiro4', nome: 'Barbeiro 4', foto: 'https://i.ibb.co/B5GDCLGN/IMG-20241012-152952-2.jpg', hidden: true },
+  { id: 'Barbeiro5', nome: 'Barbeiro 5', foto: 'https://i.ibb.co/B5GDCLGN/IMG-20241012-152952-2.jpg', hidden: true },
+  { id: 'Barbeiro6', nome: 'Barbeiro 6', foto: 'https://i.ibb.co/B5GDCLGN/IMG-20241012-152952-2.jpg', hidden: true },
+  { id: 'Barbeiro7', nome: 'Barbeiro 7', foto: 'https://i.ibb.co/B5GDCLGN/IMG-20241012-152952-2.jpg', hidden: true },
+  { id: 'Barbeiro8', nome: 'Barbeiro 8', foto: 'https://i.ibb.co/B5GDCLGN/IMG-20241012-152952-2.jpg', hidden: true },
+  { id: 'Barbeiro9', nome: 'Barbeiro 9', foto: 'https://i.ibb.co/B5GDCLGN/IMG-20241012-152952-2.jpg', hidden: true },
+  { id: 'Barbeiro10', nome: 'Barbeiro 10', foto: 'https://i.ibb.co/B5GDCLGN/IMG-20241012-152952-2.jpg', hidden: true }
+];
+
+let selectedBarbeiros = ['David']; // MULTI: array de barbeiros selecionados
+let selectedSlots = {}; // { David: ['14:00','14:30'], Barbeiro2: ['15:00'] }
 let deferredPrompt = null;
+
 window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; });
 async function instalarAppOficial(){ if (deferredPrompt) { deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; return; } document.getElementById('modalInstalar').style.display = 'flex'; }
 function fecharModalInstalar(){ document.getElementById('modalInstalar').style.display = 'none'; }
@@ -86,7 +130,35 @@ function fecharOcupado(){ document.getElementById('modalOcupado').style.display=
 document.getElementById('btnInstalar').addEventListener('click', instalarAppOficial);
 setTimeout(() => { const l=document.getElementById('loader'); if(l) l.classList.add('hidden'); }, 2500);
 window.addEventListener('load', () => { setTimeout(()=>{ const l=document.getElementById('loader'); if(l) l.classList.add('hidden'); },800); });
-function renderBarbeiros(){ const cont = document.getElementById('barbeirosContainer'); cont.innerHTML = ''; BARBEIROS.forEach((b,i)=>{ const div = document.createElement('div'); div.className = 'card'+(i===0?' active':''); div.innerHTML = `<img src="${b.foto}"><br>${b.nome}`; div.onclick = ()=>{ document.querySelectorAll('.card').forEach(c=>c.classList.remove('active')); div.classList.add('active'); document.getElementById('barbeiro').value = b.id; carregarHorarios(); }; cont.appendChild(div); }); if(BARBEIROS.length>0) document.getElementById('barbeiro').value = BARBEIROS[0].id; }
+
+function renderBarbeiros(){
+  const cont = document.getElementById('barbeirosContainer');
+  cont.innerHTML = '';
+  BARBEIROS.forEach((b)=>{
+    const div = document.createElement('div');
+    div.className = 'card' + (selectedBarbeiros.includes(b.id) ? ' active' : '');
+    if(b.hidden) div.style.display = 'none'; // OCULTO - PARA ACTIVAR: borrar esta linea o poner hidden:false
+    div.innerHTML = `<img src="${b.foto}"><br>${b.nome}`;
+    div.onclick = ()=>{
+      // MULTI TOGGLE LOGIC - profesional sin error
+      if(selectedBarbeiros.includes(b.id)){
+        if(selectedBarbeiros.length > 1){
+          selectedBarbeiros = selectedBarbeiros.filter(id => id !== b.id);
+          delete selectedSlots[b.id];
+        }
+      } else {
+        selectedBarbeiros.push(b.id);
+      }
+      document.getElementById('barbeiro').value = selectedBarbeiros[0] || 'David';
+      renderBarbeiros();
+      carregarHorarios();
+      atualizarResumo();
+    };
+    cont.appendChild(div);
+  });
+  document.getElementById('barbeiro').value = selectedBarbeiros[0] || 'David';
+}
+
 const mapaServicos={
   'Corte Social':{preco:'R$35',bloques:1},
   'Corte Degradé':{preco:'R$40',bloques:1},
@@ -97,61 +169,169 @@ const mapaServicos={
   'Corte + Limpieza Facial':{preco:'R$50',bloques:2},
   'Corte e Barba + Limpieza Facial':{preco:'R$70',bloques:2}
 };
+
 function getHorariosPorDia(dStr){ const d=new Date(dStr+'T12:00:00'); const dia=d.getDay(); if(dia===0) return []; if(dia===1) return ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30']; if(dia===6) return ['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30']; return ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30']; }
 function esHoy(dStr){ const hoy=new Date(); const sel=new Date(dStr+'T12:00:00'); return hoy.toDateString()===sel.toDateString(); }
 function getHoraActual(){ const a=new Date(); return String(a.getHours()).padStart(2,'0')+':'+String(a.getMinutes()).padStart(2,'0'); }
+
 document.addEventListener('DOMContentLoaded', ()=>{
   renderBarbeiros();
   const dataInput=document.getElementById('data'); const hoje=new Date(); dataInput.min=hoje.toISOString().split('T')[0]; const max=new Date(); max.setDate(hoje.getDate()+30); dataInput.max=max.toISOString().split('T')[0];
   const sel=document.getElementById('servico'); sel.innerHTML='<option value="">Selecione um serviço</option>'; for(const s in mapaServicos){ sel.innerHTML+=`<option value="${s}">${s} — ${mapaServicos[s].preco}</option>`; }
   dataInput.addEventListener('change', carregarHorarios); sel.addEventListener('change', carregarHorarios);
 });
+
 async function carregarHorarios(){
-  const data=document.getElementById('data').value; const servico=document.getElementById('servico').value; const barbeiro=document.getElementById('barbeiro').value;
-  const horaSelect=document.getElementById('hora'); const loading=document.getElementById('loading'); const btn=document.getElementById('btnAgendar');
-  if(!data||!servico){ horaSelect.innerHTML='<option value="">Selecione data e serviço primeiro</option>'; horaSelect.disabled=true; btn.disabled=true; return; }
-  if(new Date(data+'T12:00:00').getDay()===0){ horaSelect.innerHTML='<option value="">Domingo não trabalhamos</option>'; horaSelect.disabled=true; btn.disabled=true; return; }
-  loading.style.display='block'; horaSelect.disabled=true; horaSelect.innerHTML='<option>Carregando...</option>';
+  const data=document.getElementById('data').value; const servico=document.getElementById('servico').value;
+  const loading=document.getElementById('loading'); const btn=document.getElementById('btnAgendar'); const grid=document.getElementById('gridHorarios');
+  if(!data||!servico){ grid.innerHTML='<div style="color:#666; font-size:13px;">Selecione data e serviço primeiro</div>'; btn.disabled=true; return; }
+  if(new Date(data+'T12:00:00').getDay()===0){ grid.innerHTML='<div style="color:#ff6b6b;">Domingo não trabalhamos</div>'; btn.disabled=true; return; }
+  
+  loading.style.display='block'; grid.innerHTML=''; btn.disabled=true;
+  
   try{
-    const url=`${SCRIPT_URL}?data=${data}&barbeiro=${barbeiro}&_=${Date.now()}`; const res=await fetch(url, {cache:'no-store'}); const json=await res.json();
-    const reservas = Array.isArray(json)? json : (json.reservas || []); const bloqueios = json.bloqueios || [];
-    const todos=getHorariosPorDia(data); const ocupados=new Set();
+    // MULTI FETCH - 1 consulta para todos os barbeiros selecionados (profissional - evita timeout)
+    const barbeirosParam = selectedBarbeiros.join(',');
+    const url=`${SCRIPT_URL}?data=${data}&barbeiro=${encodeURIComponent(barbeirosParam)}&_=${Date.now()}`;
+    const res=await fetch(url, {cache:'no-store'});
+    const json=await res.json();
+    const reservas = Array.isArray(json)? json : (json.reservas || []);
+    const bloqueios = json.bloqueios || [];
+    
+    const todos=getHorariosPorDia(data);
     const hActual=getHoraActual(); const esHoyDia=esHoy(data); const bloquesNec=mapaServicos[servico]?.bloques||1;
-    reservas.forEach(r=>{ const idx=todos.indexOf(r.hora); if(idx!==-1){ for(let i=0;i<(r.bloques||1);i++){ if(todos[idx+i]) ocupados.add(todos[idx+i]); } } });
     const esSab=new Date(data+'T12:00:00').getDay()===6;
-    horaSelect.innerHTML='<option value="">Selecione um horário</option>'; let hay=false;
-    todos.forEach((hora, idxHora)=>{
-      if(hora==='12:00') return; if(hora==='11:30' &&!esSab) return; if(esHoyDia && hora < hActual){ horaSelect.innerHTML+=`<option disabled>${hora} - Passado</option>`; return; }
-      let bloq=false; let mot='Ocupado';
-      for(let b of bloqueios){ if(hora>=b.inicio && hora<=b.fim){ bloq=true; mot='Bloqueado'; break; } }
-      if(!bloq){ for(let i=0;i<bloquesNec;i++){ const s=todos[idxHora+i]; if(!s){ if(i===0){ bloq=true; mot='Não cabe'; break; } continue; } if(ocupados.has(s)){ bloq=true; break; } } }
-      if(bloq) horaSelect.innerHTML+=`<option disabled>${hora} - ${mot}</option>`; else { horaSelect.innerHTML+=`<option value="${hora}">${hora}</option>`; hay=true; }
+
+    // Agrupar reservas por barbeiro
+    const reservasPorBarbeiro = {};
+    selectedBarbeiros.forEach(b => reservasPorBarbeiro[b] = new Set());
+    reservas.forEach(r=>{
+      const bNome = (r.barbeiro || 'David').trim();
+      // match case-insensitive con selected
+      const match = selectedBarbeiros.find(sb => sb.toLowerCase() === bNome.toLowerCase()) || (selectedBarbeiros.includes(bNome) ? bNome : null);
+      const target = match || bNome;
+      if(!reservasPorBarbeiro[target]) reservasPorBarbeiro[target] = new Set();
+      const idx=todos.indexOf(r.hora);
+      if(idx!==-1){
+        for(let i=0;i<(r.bloques||r.blocos||1);i++){
+          if(todos[idx+i]) reservasPorBarbeiro[target].add(todos[idx+i]);
+        }
+      }
     });
-    if(!hay){ horaSelect.innerHTML='<option>Agenda cheia</option>'; btn.disabled=true; } else { horaSelect.disabled=false; btn.disabled=false; }
-  }catch(e){ horaSelect.innerHTML='<option>Erro ao carregar</option>'; } finally{ loading.style.display='none'; }
+
+    grid.innerHTML='';
+    selectedBarbeiros.forEach(barbId=>{
+      const barbInfo = BARBEIROS.find(b=>b.id===barbId) || {nome:barbId, foto:''};
+      const grupo = document.createElement('div');
+      grupo.className='barbeiro-horario-grupo';
+      grupo.innerHTML=`<div class="barbeiro-horario-titulo"><img src="${barbInfo.foto}">${barbInfo.nome}</div><div class="horario-grid" id="grid-${barbId}"></div>`;
+      grid.appendChild(grupo);
+      const g = grupo.querySelector(`#grid-${barbId}`);
+      let hay=false;
+      todos.forEach((hora, idxHora)=>{
+        if(hora==='12:00') return; if(hora==='11:30' &&!esSab) return;
+        let disabled=false; let motivo='';
+        if(esHoyDia && hora < hActual){ disabled=true; motivo='Passado'; }
+        if(!disabled){
+          for(let b of bloqueios){ if(hora>=b.inicio && hora<=b.fim){ disabled=true; motivo='Bloqueado'; break; } }
+        }
+        if(!disabled){
+          for(let i=0;i<bloquesNec;i++){ const s=todos[idxHora+i]; if(!s){ if(i===0){ disabled=true; motivo='Não cabe'; break; } continue; } if(reservasPorBarbeiro[barbId] && reservasPorBarbeiro[barbId].has(s)){ disabled=true; motivo='Ocupado'; break; } }
+        }
+        const btnH=document.createElement('button');
+        btnH.type='button';
+        btnH.className='horario-btn' + (selectedSlots[barbId] && selectedSlots[barbId].includes(hora) ? ' selected' : '');
+        btnH.textContent = disabled ? `${hora} - ${motivo}` : hora;
+        btnH.disabled = disabled;
+        if(!disabled){
+          hay=true;
+          btnH.onclick=()=>{
+            if(!selectedSlots[barbId]) selectedSlots[barbId]=[];
+            if(selectedSlots[barbId].includes(hora)){
+              selectedSlots[barbId]=selectedSlots[barbId].filter(h=>h!==hora);
+            } else {
+              selectedSlots[barbId].push(hora);
+              selectedSlots[barbId].sort();
+            }
+            // actualizar visual
+            const isSel = selectedSlots[barbId].includes(hora);
+            if(isSel) btnH.classList.add('selected'); else btnH.classList.remove('selected');
+            atualizarResumo();
+          };
+        }
+        g.appendChild(btnH);
+      });
+      if(!hay){ g.innerHTML='<div style="color:#666; font-size:12px;">Agenda cheia</div>'; }
+    });
+
+    atualizarResumo();
+
+  }catch(e){
+    grid.innerHTML='<div style="color:#ff6b6b;">Erro ao carregar</div>';
+  } finally{
+    loading.style.display='none';
+  }
 }
+
+function atualizarResumo(){
+  const resumo=document.getElementById('resumoMulti'); const btn=document.getElementById('btnAgendar');
+  const totalSlots = Object.values(selectedSlots).reduce((a,b)=>a+b.length,0);
+  if(totalSlots===0){ resumo.style.display='none'; btn.disabled=true; return; }
+  let txt = `<b>📋 Resumo Multi:</b><br>`;
+  for(let barb in selectedSlots){
+    if(selectedSlots[barb].length>0){
+      txt += `💈 ${barb}: ${selectedSlots[barb].join(', ')}<br>`;
+    }
+  }
+  txt += `<br><small>Total: ${totalSlots} horário(s)</small>`;
+  resumo.innerHTML=txt;
+  resumo.style.display='block';
+  btn.disabled=false;
+}
+
 function limparCampos(){
   document.getElementById('cliente').value = '';
   document.getElementById('telefone').value = '';
   document.getElementById('data').value = '';
   document.getElementById('servico').selectedIndex = 0;
-  document.getElementById('hora').innerHTML = '<option value="">Selecione data e serviço primeiro</option>';
-  document.getElementById('hora').disabled = true;
+  selectedSlots = {};
+  document.getElementById('gridHorarios').innerHTML='';
+  document.getElementById('resumoMulti').style.display='none';
   document.getElementById('btnAgendar').disabled = true;
   document.getElementById('confirmacao').style.display = 'none';
 }
-function limparCamposCancelar(){
-  document.getElementById('cancelData').value = '';
-  document.getElementById('cancelTelefone').value = '';
-}
+function limparCamposCancelar(){ document.getElementById('cancelData').value=''; document.getElementById('cancelTelefone').value=''; }
+
 async function solicitarAgendamento(){
   const btn=document.getElementById('btnAgendar');
-  const data=document.getElementById('data').value; const hora=document.getElementById('hora').value; const cliente=document.getElementById('cliente').value; const telefone=document.getElementById('telefone').value; const servico=document.getElementById('servico').value;
-  if(!data||!hora||!cliente||!telefone||!servico){ document.getElementById('modalErro').style.display='flex'; return; }
+  const data=document.getElementById('data').value; const cliente=document.getElementById('cliente').value.trim(); const telefone=document.getElementById('telefone').value.trim(); const servico=document.getElementById('servico').value;
+  const totalSlots = Object.values(selectedSlots).reduce((a,b)=>a+b.length,0);
+  if(!data||totalSlots===0||!cliente||!telefone||!servico){ document.getElementById('modalErro').style.display='flex'; return; }
+
+  // Construir reservas no formato que seu SCRIPT-PROD-FINAL-MULTI-ILIMITADO já entende
+  // Formato: David:14:00,14:30|Barbeiro2:15:00
+  const reservasStr = Object.entries(selectedSlots)
+    .filter(([_, horas])=> horas.length>0)
+    .map(([barb, horas])=> `${barb}:${horas.join(',')}`)
+    .join('|');
+
+  // Para compatibilidade, pegar primeira hora
+  const primeiraBarb = Object.keys(selectedSlots).find(b=>selectedSlots[b].length>0);
+  const primeiraHora = selectedSlots[primeiraBarb][0];
+
   document.getElementById('modalProcess').style.display='flex';
   btn.disabled=true; btn.textContent='VERIFICANDO...';
+
   try{
-    const fd=new URLSearchParams({data,hora,cliente,telefone,servico,barbeiro:document.getElementById('barbeiro').value});
+    const fd=new URLSearchParams({
+      data: data,
+      hora: primeiraHora, // compatibilidade com v3.1.3
+      cliente: cliente,
+      telefone: telefone,
+      servico: servico,
+      barbeiro: primeiraBarb,
+      reservas: reservasStr // MULTI - novo formato
+    });
     const r=await fetch(SCRIPT_URL,{method:'POST', body:fd});
     const result=await r.json();
     if(result.success){
@@ -161,6 +341,7 @@ async function solicitarAgendamento(){
       setTimeout(()=>{
         document.getElementById('modalProcess').style.display='none';
         abrirWhatsAppDirecto(result.whatsapp);
+        btn.textContent='Agendar Horário ✅';
       }, 800);
     } else {
       document.getElementById('modalProcess').style.display='none';
@@ -175,6 +356,7 @@ async function solicitarAgendamento(){
     carregarHorarios();
   }
 }
+
 function abrirCancelar(){ document.getElementById('modalCancelar').style.display='flex'; }
 function fecharCancelar(){ document.getElementById('modalCancelar').style.display='none'; }
 function abrirWhatsAppDirecto(waUrl){
@@ -184,9 +366,7 @@ function abrirWhatsAppDirecto(waUrl){
     let text = waUrl.split('text=')[1] || "";
     let appUrl = "whatsapp://send?phone=" + phone + "&text=" + text;
     window.location.href = appUrl;
-  }catch(e){
-    window.open(waUrl, '_blank');
-  }
+  }catch(e){ window.open(waUrl, '_blank'); }
 }
 async function confirmarCancelar(){
   const dataInput = document.getElementById('cancelData').value;
@@ -202,14 +382,9 @@ async function confirmarCancelar(){
     const r = await res.json();
     document.getElementById('modalCancelando').style.display='none';
     limparCamposCancelar();
-    if(r.success && r.whatsapp){
-      abrirWhatsAppDirecto(r.whatsapp);
-    } else if(r.success){
-      alert('✅ Cancelado: '+r.hora);
-      carregarHorarios();
-    } else {
-      alert(r.error||'Erro');
-    }
+    if(r.success && r.whatsapp){ abrirWhatsAppDirecto(r.whatsapp); }
+    else if(r.success){ alert('✅ Cancelado: '+r.hora); carregarHorarios(); }
+    else { alert(r.error||'Erro'); }
   }catch(e){
     document.getElementById('modalCancelando').style.display='none';
     limparCamposCancelar();
