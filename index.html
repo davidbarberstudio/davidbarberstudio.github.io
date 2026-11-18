@@ -8,6 +8,8 @@
 <link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#000000">
 <link rel="apple-touch-icon" href="./dbm-icon-192.png">
+<link rel="preconnect" href="https://images.unsplash.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Cinzel:wght@700;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -36,10 +38,10 @@ html,body{margin:0;padding:0;background:radial-gradient(ellipse at 50% -20%, rgb
 .title-block .desc{font-size:12px;color:#aaa;margin-top:10px;line-height:1.5}
 .title-block .desc em{color:#666;font-style:normal}
 .section{background:#141414;border:1px solid #1f1f1f;border-radius:18px;padding:14px;margin-top:16px}
-.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.section-header .name{font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;display:flex;align-items:center;gap:8px}
+.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;background:linear-gradient(90deg, rgba(197,160,89,0.18) 0%, rgba(60,50,20,0.18) 45%, rgba(20,20,20,0) 100%);border:1px solid rgba(197,160,89,0.14);border-radius:12px;padding:10px 12px}
+.section-header .name{font-size:13px;font-weight:800;letter-spacing:1px;color:#fff;display:flex;align-items:center;gap:8px;text-transform:uppercase}
 .section-header .name::before{content:'';width:16px;height:2px;background:#c5a059;display:inline-block}
-.section-header .count{font-size:10px;color:#888;letter-spacing:1px}
+.section-header .count{font-size:10px;color:#c5a059;letter-spacing:1px;font-weight:700}
 .barbeiro-card{display:flex;align-items:flex-start;gap:12px;background:#1c1c1c;border:1px solid #262626;border-radius:14px;padding:12px;cursor:pointer;transition:all 0.2s;margin-bottom:10px;position:relative}
 .barbeiro-card:last-child{margin-bottom:0}
 .barbeiro-card.active{border-color:#c5a059;background:#22201a;box-shadow:0 0 0 1px rgba(233,196,106,0.3)}
@@ -54,18 +56,20 @@ html,body{margin:0;padding:0;background:radial-gradient(ellipse at 50% -20%, rgb
 .badge-dispo{display:inline-flex;align-items:center;gap:4px;background:#1f1f1f;border:1px solid #2a2a2a;border-radius:10px;padding:3px 8px;font-size:10px;color:#aaa;margin-top:6px}
 .badge-dispo b{color:#c5a059}
 .servicos-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.servico-card{background:#1c1c1c;border:1px solid #262626;border-radius:12px;padding:10px;cursor:pointer;transition:all 0.2s;position:relative;text-align:left}
-.servico-card.active{border-color:#c5a059;background:#22201a}
-.servico-card .s-top{display:flex;justify-content:space-between;align-items:flex-start}
-.servico-card .s-name{font-size:11px;font-weight:700;color:#fff;letter-spacing:0.8px}
-.servico-card .s-price{font-size:12px;font-weight:800;color:#c5a059}
+.servico-card{background:#1c1c1c;border:1px solid #262626;border-radius:14px;padding:0;cursor:pointer;transition:all 0.2s;position:relative;text-align:left;overflow:hidden}
+.servico-card.active{border-color:#c5a059;background:#22201a;box-shadow:0 0 0 2px rgba(197,160,89,0.35)}
+.servico-card .s-foto{width:100%;height:118px;object-fit:cover;display:block;background:#2a2a2a}
+.servico-card .s-body{padding:10px}
+.servico-card .s-top{display:flex;justify-content:space-between;align-items:flex-start;gap:6px}
+.servico-card .s-name{font-size:11px;font-weight:700;color:#fff;letter-spacing:0.8px;line-height:1.3}
+.servico-card .s-price{font-size:13px;font-weight:800;color:#c5a059;white-space:nowrap}
 .servico-card .s-desc{font-size:10px;color:#888;margin-top:4px;line-height:1.3}
 .servico-card .s-icon{font-size:12px;color:#666;margin-right:4px}
-.servico-card.active .s-check{position:absolute;top:8px;right:8px;width:18px;height:18px;background:#c5a059;color:#000;border-radius:50%;font-size:11px;display:flex;align-items:center;justify-content:center}
+.servico-card.active .s-check{position:absolute;top:8px;right:8px;width:22px;height:22px;background:#c5a059;color:#000;border-radius:50%;font-size:12px;display:flex;align-items:center;justify-content:center;font-weight:800;box-shadow:0 2px 8px rgba(0,0,0,0.5);z-index:2}
 .promo-pill{font-size:9px;background:#c5a059;color:#000;border-radius:8px;padding:2px 6px;margin-top:6px;display:inline-block;font-weight:700}
-.data-scroll{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none}
+.data-scroll{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none;scroll-snap-type:x mandatory}
 .data-scroll::-webkit-scrollbar{display:none}
-.data-chip{flex:0 0 62px;background:#1c1c1c;border:1px solid #262626;border-radius:12px;padding:8px 6px;text-align:center;cursor:pointer;transition:all 0.2s}
+.data-chip{flex:0 0 62px;background:#1c1c1c;border:1px solid #262626;border-radius:12px;padding:8px 6px;text-align:center;cursor:pointer;transition:all 0.2s;scroll-snap-align:start}
 .data-chip.active{background:#c5a059;border-color:#c5a059}
 .data-chip.active *{color:#000 !important}
 .data-chip .d-sem{font-size:9px;color:#888}
@@ -129,7 +133,7 @@ html,body{margin:0;padding:0;background:radial-gradient(ellipse at 50% -20%, rgb
     <div style="font-size:10px;color:#666;margin-top:8px">Toque para selecionar • Toque novamente para remover</div>
   </div>
   <div class="section">
-    <div class="section-header"><div class="name">Serviço</div><div class="count"></div></div>
+    <div class="section-header"><div class="name">Serviço</div><div class="count">TOQUE NA FOTO</div></div>
     <div id="servicosGrid" class="servicos-grid"></div>
     <select id="servico" style="display:none"><option value="">Selecione</option></select>
     <input type="hidden" id="barbeiro" value="">
@@ -144,7 +148,7 @@ html,body{margin:0;padding:0;background:radial-gradient(ellipse at 50% -20%, rgb
     <div class="section-header"><div class="name">Seus dados</div><div class="count">OBRIGATÓRIO</div></div>
     <div class="input-group"><label>NOME DO CLIENTE *</label><input id="cliente" placeholder="Ex. João Silva"></div>
     <div class="input-group"><label>TELEFONE / WHATSAPP *</label><input id="telefone" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="(47) 9 9999-9999" autocomplete="tel"></div>
-    <div class="note"><b>•</b> Usamos seu nome e WhatsApp só para confirmar o horário. Se for Promoção Dupla, informe o nome do amigo na mensagem.</div>
+    <div class="note"><b>•</b> Usamos seu nome e 【entity-WhatsApp¦canonical_name=WhatsApp】 só para confirmar o horário. Se for Promoção Dupla, informe o nome do amigo na mensagem.</div>
   </div>
   <div class="section">
     <div class="section-header"><div class="name">Horário</div><div class="count" id="horarioCount">—</div></div>
@@ -195,29 +199,25 @@ let selectedBarbeiros=['David']; let selectedSlots={}; let selectedServico=''; l
   if('serviceWorker' in navigator){
   navigator.serviceWorker.register('./sw.js').catch(()=>{});
 }
-let cacheReservas = new Map(); // FIX NET LENTA: cache
+let cacheReservas = new Map();
 let isLoadingHorarios = false;
 let lastFetchId = 0;
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e});
 document.getElementById('btnInstalar').addEventListener('click',()=>{if(deferredPrompt){deferredPrompt.prompt();deferredPrompt=null;return}document.getElementById('modalInstalar').style.display='flex'});
-
-// LOADER PROFISSIONAL - espera DOM + 1.2s mínimo, no depende de internet
 let pct=0; const bar=document.getElementById('loader-bar-inner'); const pctEl=document.getElementById('loader-pct');
 const li=setInterval(()=>{pct+=Math.random()*14+3; if(pct>=100){pct=100;clearInterval(li);setTimeout(()=>{document.getElementById('loader').classList.add('hidden')},300)} bar.style.width=pct+'%'; pctEl.textContent=Math.floor(pct)+'%';},90);
 setTimeout(()=>{document.getElementById('loader').classList.add('hidden'); clearInterval(li);},2500);
-
 const mapaServicos={
-  'Corte Social':{preco:'R$35',bloques:1,desc:'Máquina e tesoura • finalização • 30 min'},
-  'Corte Degradé':{preco:'R$40',bloques:1,desc:'Degradê moderno • 30 min'},
-  'Corte e Barba':{preco:'R$60',bloques:2,desc:'Ritual completo • mais pedido • 60 min'},
-  'Barba':{preco:'R$30',bloques:1,desc:'Toalha quente e acabamento • 20 min'},
-  'Sobrancelha':{preco:'R$10',bloques:1,desc:'Design e navalha • 10 min'},
-  'Limpieza Facial':{preco:'R$20',bloques:1,desc:'Cuidados • 15 min'},
-  'Corte + Limpieza Facial':{preco:'R$50',bloques:2,desc:'Estilo • 50 min'},
-  'Corte e Barba + Limpieza Facial':{preco:'R$70',bloques:2,desc:'Premium • 70 min'},
-  'Promoção Dupla':{preco:'R$70',bloques:2,desc:'Traga um amigo • R$40+R$30=R$70 • 2 pessoas • 60 min • R$5 OFF',promo:true}
+  'Corte Social':{preco:'R$35',bloques:1,desc:'Máquina e tesoura • finalização',foto:'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&q=80'},
+  'Corte Degradé':{preco:'R$40',bloques:1,desc:'Degradê moderno',foto:'https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=600&q=80'},
+  'Corte e Barba':{preco:'R$60',bloques:2,desc:'Ritual completo • mais pedido',foto:'https://images.unsplash.com/photo-1621605815971-fbc98d2e5b63?w=600&q=80'},
+  'Barba':{preco:'R$30',bloques:1,desc:'Toalha quente e acabamento',foto:'https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=600&q=80'},
+  'Sobrancelha':{preco:'R$10',bloques:1,desc:'Design e navalha',foto:'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=600&q=80'},
+  'Limpieza Facial':{preco:'R$20',bloques:1,desc:'Cuidados',foto:'https://images.unsplash.com/photo-1570172619644-dfd03c5d8814?w=600&q=80'},
+  'Corte + Limpieza Facial':{preco:'R$50',bloques:2,desc:'Estilo',foto:'https://images.unsplash.com/photo-1512690459411-b9245aed614b?w=600&q=80'},
+  'Corte e Barba + Limpieza Facial':{preco:'R$70',bloques:2,desc:'Premium',foto:'https://images.unsplash.com/photo-1517832606299-7ae9b720a186?w=600&q=80'},
+  'Promoção Dupla':{preco:'R$70',bloques:2,desc:'Traga um amigo • 2 pessoas',promo:true,foto:'https://images.unsplash.com/photo-1534297635766-a262cdcb8ee4?w=600&q=80'}
 };
-
 function renderBarbeiros(){
   const cont=document.getElementById('barbeirosContainer'); cont.innerHTML='';
   BARBEIROS.forEach(b=>{
@@ -230,22 +230,19 @@ function renderBarbeiros(){
   });
   document.getElementById('barbeiroCount').textContent = selectedBarbeiros.length===0?'NENHUM SELECIONADO':selectedBarbeiros.length+' SELECIONADO(S)';
 }
-
 function renderServicos(){
   const grid=document.getElementById('servicosGrid'); const sel=document.getElementById('servico'); grid.innerHTML=''; sel.innerHTML='<option value="">Selecione</option>';
   for(const s in mapaServicos){
     const info=mapaServicos[s];
     const card=document.createElement('div'); card.className='servico-card'+(selectedServico===s?' active':'');
-    card.innerHTML=`<div class="s-top"><div class="s-name">${s.toUpperCase()}</div><div class="s-price">${info.preco}</div></div><div class="s-desc">${info.desc}</div>${info.promo?'<div class="promo-pill">RETO AMIGO</div>':''}${selectedServico===s?'<div class="s-check">✓</div>':''}`;
+    card.innerHTML=`${info.foto?`<img class="s-foto" src="${info.foto}" alt="${s}" loading="lazy" onerror="this.style.display='none'">`:''}<div class="s-body"><div class="s-top"><div class="s-name">${s.toUpperCase()}</div><div class="s-price">${info.preco}</div></div><div class="s-desc">${info.desc}</div>${info.promo?'<div class="promo-pill">RETO AMIGO</div>':''}</div>${selectedServico===s?'<div class="s-check">✓</div>':''}`;
     card.onclick=()=>{ if(isLoadingHorarios) return; selectedServico=s; sel.value=s; document.querySelectorAll('.servico-card').forEach(c=>c.classList.remove('active')); card.classList.add('active'); carregarHorarios(); atualizarResumo(); };
     grid.appendChild(card); sel.innerHTML+=`<option value="${s}">${s}</option>`;
   }
 }
-
 function getHorariosPorDia(dStr){ const d=new Date(dStr+'T12:00:00'); const dia=d.getDay(); if(dia===0) return []; if(dia===1) return ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30']; if(dia===6) return ['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30']; return ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30']; }
 function esHoy(dStr){ const hoy=new Date(); const sel=new Date(dStr+'T12:00:00'); return hoy.toDateString()===sel.toDateString(); }
 function getHoraActual(){ const a=new Date(); return String(a.getHours()).padStart(2,'0')+':'+String(a.getMinutes()).padStart(2,'0'); }
-
 function renderFecha(){
   const scroll=document.getElementById('fechaScroll'); const hoje=new Date(); scroll.innerHTML=''; const pills=document.getElementById('pillsHorarioExp'); pills.innerHTML='';
   pills.innerHTML='<div class="pill-horario">SEG 08:30-11 / 13:30-17</div><div class="pill-horario">TER-SEX 08:30-11 / 13-19</div><div class="pill-horario">SÁB 08:00-11:30 / 13-17</div>';
@@ -259,7 +256,6 @@ function renderFecha(){
     scroll.appendChild(el);
   }
 }
-
 document.addEventListener('DOMContentLoaded',()=>{
   renderBarbeiros(); renderServicos(); renderFecha();
   const dataInput=document.getElementById('data'); const hoje=new Date(); dataInput.min=hoje.toISOString().split('T')[0]; const max=new Date(); max.setDate(hoje.getDate()+30); dataInput.max=max.toISOString().split('T')[0];
@@ -267,16 +263,14 @@ document.addEventListener('DOMContentLoaded',()=>{
   const tel=document.getElementById('telefone'); tel.addEventListener('input',e=>{let v=e.target.value.replace(/\D/g,''); if(v.length>11) v=v.slice(0,11); if(v.length>6) e.target.value=`(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`; else if(v.length>2) e.target.value=`(${v.slice(0,2)}) ${v.slice(2)}`; else e.target.value=v; atualizarResumo();});
   document.getElementById('cliente').addEventListener('input',atualizarResumo);
   atualizarResumo();
-  // Detecta internet lenta
   window.addEventListener('offline',()=>{document.getElementById('netWarn').style.display='block'; document.getElementById('netWarn').textContent='📵 Sin internet — conecta WiFi o datos para ver horarios reales';});
   window.addEventListener('online',()=>{document.getElementById('netWarn').style.display='none'; carregarHorarios(true);});
 });
-
 async function fetchComRetry(url, tentativas=3){
   for(let i=1;i<=tentativas;i++){
     try{
       const controller = new AbortController();
-      const timeout = setTimeout(()=>controller.abort(), 12000); // 12s timeout para 4G lento
+      const timeout = setTimeout(()=>controller.abort(), 12000);
       const res = await fetch(url,{cache:'no-store', signal: controller.signal});
       clearTimeout(timeout);
       if(!res.ok) throw new Error('HTTP '+res.status);
@@ -290,7 +284,6 @@ async function fetchComRetry(url, tentativas=3){
     }
   }
 }
-
 async function carregarHorarios(forcar=false){
   const data=document.getElementById('data').value||selectedDateStr; const servico=selectedServico||document.getElementById('servico').value;
   const loading=document.getElementById('loading'); const grid=document.getElementById('gridHorarios'); const resumoBox=document.getElementById('resumoHorariosBox');
@@ -298,30 +291,24 @@ async function carregarHorarios(forcar=false){
   if(selectedBarbeiros.length===0){ grid.innerHTML='<div style="color:#c5a059;font-size:11px;text-align:center;padding:12px;border:1px dashed #333;border-radius:10px">Escolha David para liberar os horários reais do dia, respeitando o expediente.</div>'; return; }
   if(!data||!servico){ grid.innerHTML='<div style="color:#666;font-size:11px;text-align:center;padding:10px">Selecione serviço e data</div>'; return; }
   if(new Date(data+'T12:00:00').getDay()===0){ grid.innerHTML='<div style="color:#ff6b6b;text-align:center;font-size:12px">DOMINGO FECHADO</div>'; return; }
-
-  // FIX NET LENTA: cache
   const cacheKey = data+'|'+selectedBarbeiros.join(',')+'|'+servico;
   if(!forcar && cacheReservas.has(cacheKey)){
     const cached = cacheReservas.get(cacheKey);
     renderGridHorarios(cached.reservas, cached.bloqueios, data, servico);
     return;
   }
-
   if(isLoadingHorarios) return;
   isLoadingHorarios=true;
   lastFetchId++;
   const currentId = lastFetchId;
   loading.style.display='block'; grid.innerHTML=''; netWarn.style.display='none';
-  // Bloquea clicks
   document.querySelectorAll('.data-chip, .servico-card, .barbeiro-card').forEach(el=>el.style.pointerEvents='none');
-
   try{
     const param=selectedBarbeiros.join(','); const url=`${SCRIPT_URL}?data=${data}&barbeiro=${encodeURIComponent(param)}&_=${Date.now()}`;
     const json = await fetchComRetry(url, 3);
-    if(currentId !== lastFetchId) return; // request vieja, ignora
+    if(currentId !== lastFetchId) return;
     const reservas=Array.isArray(json)?json:(json.reservas||[]); const bloqueios=json.bloqueios||[];
     cacheReservas.set(cacheKey, {reservas, bloqueios});
-    // Limpia cache si crece mucho
     if(cacheReservas.size>30){ const firstKey = cacheReservas.keys().next().value; cacheReservas.delete(firstKey); }
     renderGridHorarios(reservas, bloqueios, data, servico);
     netWarn.style.display='none';
@@ -336,7 +323,6 @@ async function carregarHorarios(forcar=false){
     }
   }
 }
-
 function renderGridHorarios(reservas, bloqueios, data, servico){
   const grid=document.getElementById('gridHorarios'); const resumoBox=document.getElementById('resumoHorariosBox');
   const todos=getHorariosPorDia(data); const hActual=getHoraActual(); const esHoyDia=esHoy(data); const bloquesNec=mapaServicos[servico]?.bloques||1; const esSab=new Date(data+'T12:00:00').getDay()===6;
@@ -362,7 +348,6 @@ function renderGridHorarios(reservas, bloqueios, data, servico){
   } else { resumoBox.style.display='none'; }
   atualizarResumo();
 }
-
 function atualizarResumo(){
   const elNome=document.getElementById('resumoNome'); const elFone=document.getElementById('resumoFone'); const elEdit=document.getElementById('resumoEdit');
   const elServ=document.getElementById('resumoServico'); const elData=document.getElementById('resumoData'); const elHoras=document.getElementById('resumoHoras');
@@ -375,9 +360,7 @@ function atualizarResumo(){
   const total=Object.values(selectedSlots).reduce((a,b)=>a+b.length,0);
   if(total>0){ let horasTxt=''; let precoTotal=0; let bloquesTotal=0; for(let barb in selectedSlots){ if(selectedSlots[barb].length>0){ const horas=selectedSlots[barb].join(', '); horasTxt+= (horasTxt?' | ':'')+barb+': '+horas; const svc=mapaServicos[selectedServico]; if(svc){ precoTotal+= parseInt(svc.preco.replace(/\D/g,''))*selectedSlots[barb].length; bloquesTotal+= svc.bloques*selectedSlots[barb].length; } } } elHoras.textContent=horasTxt; elDetalhe.textContent=`${total} horário(s) • ${bloquesTotal*30} min • R$${precoTotal} • Horário bloqueado por 10 min após envio no WhatsApp`; elBarbBox.style.display='block'; elBarbBox.innerHTML=`<div><div class="c-label">BARBEIRO</div><div class="c-name" style="font-size:12px">`+Object.entries(selectedSlots).filter(([_,h])=>h.length>0).map(([barb,horas])=>`<span style="background:#c5a059;color:#000;border-radius:12px;padding:3px 8px;font-size:11px;font-weight:700">● ${barb} • ${horas.join(', ')}</span>`).join(' ')+`</div></div>`; btn.disabled=false; btn.textContent=`CONFIRMAR: ${nome.toUpperCase()} • ${total} HORÁRIO(S)`; } else { elHoras.textContent='— Selecione horários'; elBarbBox.style.display='none'; elDetalhe.textContent='— horários • Horário bloqueado por 10 min após envio no WhatsApp'; btn.disabled=true; btn.textContent='CONFIRMAR: —'; }
 }
-
 function limparCampos(){ document.getElementById('cliente').value=''; document.getElementById('telefone').value=''; document.getElementById('data').value=''; selectedDateStr=''; selectedServico=''; selectedSlots={}; document.getElementById('servico').selectedIndex=0; document.querySelectorAll('.servico-card').forEach(c=>c.classList.remove('active')); document.getElementById('gridHorarios').innerHTML=''; document.getElementById('resumoHorariosBox').style.display='none'; document.getElementById('btnAgendar').disabled=true; document.getElementById('confirmacao').style.display='none'; cacheReservas.clear(); renderFecha(); atualizarResumo(); }
-
 async function solicitarAgendamento(){
   const data=document.getElementById('data').value||selectedDateStr; const cliente=document.getElementById('cliente').value.trim(); const telefone=document.getElementById('telefone').value.trim(); const servico=selectedServico;
   const total=Object.values(selectedSlots).reduce((a,b)=>a+b.length,0);
@@ -403,7 +386,7 @@ async function confirmarCancelar(){
   document.getElementById('modalCancelar').style.display='none'; document.getElementById('modalCancelando').style.display='flex';
   let dataEnvio=dataInput; if(dataInput.includes('/')){const p=dataInput.split('/'); dataEnvio=`${p[2]}-${p[1].padStart(2,'0')}-${p[0].padStart(2,'0')}`;}
   try{
-    const formData=new URLSearchParams({acao:'cancelar',data:dataEnvio,telefone:tel});
+    const formData=new URLSearchParams({acao:'cancelar',data:dataEnvio,[STRIPPED]
     const res=await fetch(SCRIPT_URL,{method:'POST',body:formData}); const r=await res.json();
     document.getElementById('modalCancelando').style.display='none';
     if(r.success && r.whatsapp){abrirWhatsAppDirecto(r.whatsapp);} else if(r.success){alert('✅ Cancelado: '+r.hora); carregarHorarios(true);} else {alert(r.error||'Erro');}
