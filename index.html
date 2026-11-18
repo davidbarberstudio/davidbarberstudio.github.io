@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>David Barber Studio | Joinville - 5 Pasos</title>
+<title>David Barber Studio | Joinville - 6 Pasos</title>
 <link rel="icon" href="./1781700842770.png">
 <link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#000000">
@@ -23,110 +23,111 @@ html,body{margin:0;padding:0;background:radial-gradient(ellipse at 50% -20%, rgb
 .loader-bar span{display:block;height:100%;width:0%;background:linear-gradient(90deg,#967433,#c5a059,#fdf0cd,#c5a059,#967433);background-size:200% auto;animation:barShine 1.5s linear infinite;transition:width 0.2s ease}
 @keyframes barShine{0%{background-position:0%}100%{background-position:200%}}
 #loader-pct{margin-top:14px;font-size:13px;color:#c5a059;letter-spacing:3px;font-weight:700;text-align:center}
-.page{max-width:480px;margin:0 auto;padding:16px 14px 110px}
-.top-mini{display:flex;align-items:center;justify-content:space-between;padding:6px 2px}
+.page{max-width:480px;margin:0 auto;padding:14px 14px 120px}
+.top-mini{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 2px}
 .top-mini .db{font-size:11px;letter-spacing:1px;color:#c5a059;font-weight:700}
 .top-mini .loc{font-size:10px;color:#888}
+.top-actions{display:flex;gap:6px}
+.btn-top-mini{background:transparent;border:1px solid #333;color:#aaa;border-radius:20px;padding:5px 9px;font-size:10px;cursor:pointer}
+.btn-top-mini.gold{color:#c5a059;border-color:#4a3a1a}
 .step{display:none}
 .step.active{display:block}
-.step-title{font-family:'Cinzel',serif;font-size:32px;font-weight:800;line-height:1;color:#e8c77a;margin:14px 0 4px}
-.step-sub{font-size:12px;color:#aaa;margin-bottom:14px}
+.step-title{font-family:'Cinzel',serif;font-size:38px;font-weight:800;line-height:1;color:#e8c77a;margin:14px 0 6px}
+.step-sub{font-size:14px;color:#aaa;margin-bottom:14px;line-height:1.5}
 .progress-wrap{margin:12px 0 16px}
-.progress-top{display:flex;justify-content:space-between;font-size:11px;color:#c5a059;margin-bottom:8px}
+.progress-top{display:flex;justify-content:space-between;font-size:12px;color:#c5a059;margin-bottom:8px}
 .progress-top b{color:#fff}
-.progress-bar{height:6px;background:#222;border-radius:10px;overflow:hidden}
+.progress-bar{height:7px;background:#222;border-radius:10px;overflow:hidden}
 .progress-bar span{display:block;height:100%;background:linear-gradient(90deg,#967433,#fde9b3);border-radius:10px;transition:width .3s}
-.progress-nums{display:flex;justify-content:space-between;font-size:10px;color:#666;margin-top:6px}
+.progress-nums{display:flex;justify-content:space-between;font-size:11px;color:#666;margin-top:6px}
 .progress-nums b{color:#c5a059}
 .section{background:#141414;border:1px solid #1f1f1f;border-radius:18px;padding:14px;margin-top:12px}
-.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;background:linear-gradient(90deg, rgba(197,160,89,0.18) 0%, rgba(60,50,20,0.18) 45%, rgba(20,20,20,0) 100%);border:1px solid rgba(197,160,89,0.14);border-radius:12px;padding:10px 12px}
-.section-header .name{font-size:13px;font-weight:800;letter-spacing:1px;color:#fff;text-transform:uppercase}
-.section-header .count{font-size:10px;color:#c5a059;letter-spacing:1px;font-weight:700}
 .barbeiro-hero{border-radius:18px;overflow:hidden;border:1px solid #262626;background:#1c1c1c}
-.barbeiro-hero img{width:100%;height:340px;object-fit:cover;display:block}
-.barbeiro-hero .bh-body{padding:14px}
-.barbeiro-hero .bh-name{font-size:22px;font-weight:800;color:#fff}
-.barbeiro-hero .bh-spec{font-size:11px;color:#c5a059;letter-spacing:1px;margin:4px 0}
-.barbeiro-hero .bh-desc{font-size:11px;color:#aaa;line-height:1.5}
-.pill-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
-.pill-row span{font-size:10px;background:#222;border:1px solid #333;border-radius:20px;padding:5px 10px;color:#ddd}
-.btn-gold{width:100%;background:#c5a059;color:#000;border:none;border-radius:12px;padding:14px;font-weight:800;font-size:13px;letter-spacing:1px;cursor:pointer;margin-top:12px}
-.servicos-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.servico-card{background:#1c1c1c;border:1px solid #262626;border-radius:14px;padding:0;cursor:pointer;position:relative;text-align:left;overflow:hidden}
+.barbeiro-hero img{width:100%;height:360px;object-fit:cover;display:block}
+.barbeiro-hero .bh-body{padding:16px}
+.barbeiro-hero .bh-name{font-size:26px;font-weight:800;color:#fff}
+.barbeiro-hero .bh-spec{font-size:12px;color:#c5a059;letter-spacing:1px;margin:6px 0}
+.barbeiro-hero .bh-desc{font-size:13px;color:#aaa;line-height:1.6}
+.pill-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.pill-row span{font-size:11px;background:#222;border:1px solid #333;border-radius:20px;padding:6px 11px;color:#ddd}
+.btn-gold{width:100%;background:#c5a059;color:#000;border:none;border-radius:12px;padding:16px;font-weight:800;font-size:14px;letter-spacing:1px;cursor:pointer;margin-top:12px}
+.servicos-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.servico-card{background:#1c1c1c;border:1px solid #262626;border-radius:16px;padding:0;cursor:pointer;position:relative;text-align:left;overflow:hidden}
 .servico-card.active{border-color:#c5a059;background:#22201a;box-shadow:0 0 0 2px rgba(197,160,89,0.35)}
-.servico-card .s-foto{width:100%;height:118px;object-fit:cover;display:block;background:#2a2a2a}
-.servico-card .s-body{padding:10px}
+.servico-card .s-foto{width:100%;height:132px;object-fit:cover;display:block;background:#2a2a2a}
+.servico-card .s-body{padding:12px}
 .servico-card .s-top{display:flex;justify-content:space-between;gap:6px}
-.servico-card .s-name{font-size:11px;font-weight:700;color:#fff;line-height:1.3}
-.servico-card .s-price{font-size:13px;font-weight:800;color:#c5a059;white-space:nowrap}
-.servico-card .s-desc{font-size:10px;color:#888;margin-top:4px;line-height:1.3}
-.servico-card.active .s-check{position:absolute;top:8px;right:8px;width:22px;height:22px;background:#c5a059;color:#000;border-radius:50%;font-size:12px;display:flex;align-items:center;justify-content:center;font-weight:800;z-index:2}
-.promo-pill{font-size:9px;background:#c5a059;color:#000;border-radius:8px;padding:2px 6px;margin-top:6px;display:inline-block;font-weight:700}
-.badge-mais{font-size:9px;background:#c5a059;color:#000;border-radius:8px;padding:2px 6px;display:inline-block;font-weight:700}
+.servico-card .s-name{font-size:13px;font-weight:700;color:#fff;line-height:1.3}
+.servico-card .s-price{font-size:15px;font-weight:800;color:#c5a059;white-space:nowrap}
+.servico-card .s-desc{font-size:11px;color:#888;margin-top:5px;line-height:1.4}
+.servico-card.active .s-check{position:absolute;top:8px;right:8px;width:24px;height:24px;background:#c5a059;color:#000;border-radius:50%;font-size:13px;display:flex;align-items:center;justify-content:center;font-weight:800;z-index:2}
+.promo-pill{font-size:10px;background:#c5a059;color:#000;border-radius:8px;padding:3px 7px;margin-top:6px;display:inline-block;font-weight:700}
+.badge-mais{font-size:10px;background:#c5a059;color:#000;border-radius:8px;padding:3px 7px;display:inline-block;font-weight:700}
 .data-scroll{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none;scroll-snap-type:x mandatory}
 .data-scroll::-webkit-scrollbar{display:none}
-.data-chip{flex:0 0 62px;background:#1c1c1c;border:1px solid #262626;border-radius:12px;padding:8px 6px;text-align:center;cursor:pointer;scroll-snap-align:start}
+.data-chip{flex:0 0 68px;background:#1c1c1c;border:1px solid #262626;border-radius:14px;padding:10px 6px;text-align:center;cursor:pointer;scroll-snap-align:start}
 .data-chip.active{background:#c5a059;border-color:#c5a059}
 .data-chip.active *{color:#000 !important}
-.data-chip .d-sem{font-size:9px;color:#888}
-.data-chip .d-num{font-size:18px;font-weight:800;color:#fff;margin:2px 0}
-.data-chip .d-mes{font-size:9px;color:#666}
+.data-chip .d-sem{font-size:10px;color:#888}
+.data-chip .d-num{font-size:20px;font-weight:800;color:#fff;margin:2px 0}
+.data-chip .d-mes{font-size:10px;color:#666}
 .data-chip.dom{opacity:0.3;pointer-events:none}
-.selected-date-box{background:#c5a059;color:#000;border-radius:12px;padding:12px;font-weight:700;font-size:13px;text-align:center;margin-top:10px;display:none}
-.horario-label{font-size:10px;color:#888;letter-spacing:2px;margin:14px 0 8px}
+.selected-date-box{background:#c5a059;color:#000;border-radius:12px;padding:13px;font-weight:700;font-size:14px;text-align:center;margin-top:10px;display:none}
+.horario-label{font-size:11px;color:#888;letter-spacing:2px;margin:16px 0 10px}
 .horario-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.horario-btn{padding:14px 6px;border-radius:12px;border:1px solid #262626;background:#1c1c1c;color:#fff;font-size:14px;font-weight:700;cursor:pointer}
+.horario-btn{padding:16px 6px;border-radius:14px;border:1px solid #262626;background:#1c1c1c;color:#fff;font-size:16px;font-weight:700;cursor:pointer}
 .horario-btn.selected{background:#c5a059;color:#000;border-color:#c5a059}
 .horario-btn:disabled{background:#111;color:#444;border-color:#1a1a1a;text-decoration:line-through;cursor:not-allowed}
-.input-group{margin-bottom:12px}
-.input-group label{font-size:10px;letter-spacing:1px;color:#888;display:block;margin-bottom:6px}
-.input-group input{width:100%;background:#1c1c1c;border:1px solid #262626;border-radius:12px;padding:16px;color:#fff;font-size:14px;outline:none}
+.input-group{margin-bottom:14px}
+.input-group label{font-size:11px;letter-spacing:1px;color:#888;display:block;margin-bottom:7px}
+.input-group input{width:100%;background:#1c1c1c;border:1px solid #262626;border-radius:12px;padding:17px;color:#fff;font-size:15px;outline:none}
 .input-group input:focus{border-color:#c5a059}
-.note{font-size:10px;color:#888;margin-top:8px;line-height:1.5}
-.resumo-box{background:#141414;border:1px solid #262626;border-radius:18px;padding:14px;margin-top:12px}
-.r-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #222;font-size:12px}
+.note{font-size:11px;color:#888;margin-top:8px;line-height:1.6}
+.resumo-premium{background:linear-gradient(180deg,#1e1a12 0%,#141414 100%);border:1px solid #c5a059;border-radius:20px;padding:20px;margin-top:12px}
+.resumo-premium .rp-title{font-family:'Cinzel',serif;font-size:22px;color:#e8c77a;text-align:center;margin-bottom:16px}
+.r-row{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid #2a2a2a;font-size:14px}
 .r-row:last-child{border:none}
-.r-row span:first-child{color:#888}
+.r-row span:first-child{color:#aaa}
 .r-row span:last-child{color:#fff;font-weight:700;text-align:right}
-.chip-hora{background:#c5a059;color:#000;border-radius:12px;padding:3px 8px;margin:2px;display:inline-block;font-size:11px;font-weight:700}
-.btn-confirm{width:100%;background:#c5a059;color:#000;border:none;border-radius:12px;padding:16px;font-weight:800;font-size:13px;letter-spacing:1px;margin-top:14px;cursor:pointer}
+.chip-hora{background:#c5a059;color:#000;border-radius:12px;padding:4px 10px;margin:2px;display:inline-block;font-size:12px;font-weight:700}
+.btn-confirm{width:100%;background:#c5a059;color:#000;border:none;border-radius:14px;padding:18px;font-weight:800;font-size:15px;letter-spacing:1px;margin-top:16px;cursor:pointer}
 .btn-confirm:disabled{background:#222;color:#555}
-.btn-sec{width:100%;background:transparent;border:1px solid #333;color:#ff7a7a;border-radius:12px;padding:12px;margin-top:10px;font-size:12px;cursor:pointer}
+.btn-sec{width:100%;background:transparent;border:1px solid #333;color:#ff7a7a;border-radius:12px;padding:13px;margin-top:10px;font-size:13px;cursor:pointer}
 .bottom-nav{position:fixed;left:0;right:0;bottom:0;background:#0a0a0a;border-top:1px solid #222;padding:10px 12px 14px;z-index:1000}
 .bottom-nav-inner{max-width:480px;margin:0 auto;display:flex;gap:10px;align-items:center}
-.btn-voltar{background:#1c1c1c;color:#fff;border:1px solid #333;border-radius:22px;padding:12px 16px;font-size:12px;cursor:pointer}
-.btn-proximo{flex:1;background:#c5a059;color:#000;border:none;border-radius:22px;padding:14px;font-weight:800;font-size:13px;cursor:pointer}
+.btn-voltar{background:#1c1c1c;color:#fff;border:1px solid #333;border-radius:22px;padding:13px 17px;font-size:13px;cursor:pointer}
+.btn-proximo{flex:1;background:#c5a059;color:#000;border:none;border-radius:22px;padding:15px;font-weight:800;font-size:14px;cursor:pointer}
 .btn-proximo:disabled{background:#222;color:#666}
-.paso-label{font-size:11px;color:#aaa;text-align:center;flex:0 0 auto}
+.paso-label{font-size:12px;color:#aaa;text-align:center;flex:0 0 auto}
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);backdrop-filter:blur(6px);z-index:999999;align-items:center;justify-content:center;padding:20px}
 .modal-box{background:#1c1c1c;border:1px solid #c5a059;border-radius:16px;padding:20px;width:100%;max-width:320px;text-align:center}
 .spinner{width:36px;height:36px;border:3px solid #222;border-top:3px solid #c5a059;border-radius:50%;animation:spin 0.9s linear infinite;margin:0 auto 12px}
 @keyframes spin{to{transform:rotate(360deg)}}
-.net-warn{background:#2a1f0a;border:1px solid #c5a059;color:#fde9b3;border-radius:10px;padding:10px;font-size:11px;text-align:center;margin:10px 0;display:none}
+.net-warn{background:#2a1f0a;border:1px solid #c5a059;color:#fde9b3;border-radius:10px;padding:10px;font-size:12px;text-align:center;margin:10px 0;display:none}
 .success-box{text-align:center;padding:20px 0}
-.success-box h1{font-family:'Cinzel',serif;font-size:36px;color:#fff;margin:8px 0}
+.success-box h1{font-family:'Cinzel',serif;font-size:38px;color:#fff;margin:8px 0}
 </style>
 </head>
 <body>
 <div id="loader"><div id="loader-logo">DAVID BARBER</div><div id="loader-sub">Studio DB</div><div class="loader-bar"><span id="loader-bar-inner"></span></div><div id="loader-pct">0%</div></div>
 
 <div class="page">
-<div class="top-mini"><div class="db">DB DAVID BARBER STUDIO</div><div class="loc">JOINVILLE - SC</div></div>
+<div class="top-mini"><div><div class="db">DB DAVID BARBER STUDIO</div><div class="loc">JOINVILLE - SC</div></div><div class="top-actions"><button class="btn-top-mini gold" onclick="document.getElementById('btnInstalar').click()">BAIXAR APP</button><button class="btn-top-mini" onclick="abrirCancelar()">CANCELAR</button></div></div>
 
 <!-- PASO 1 -->
 <div class="step active" id="step1">
 <div class="step-title">Escolha seu<br>barbeiro</div>
 <div class="step-sub">Um especialista para cuidar do seu visual.</div>
-<div class="progress-wrap"><div class="progress-top"><span>Passo 1 de 5</span><span>Barbeiro</span></div><div class="progress-bar"><span style="width:20%"></span></div><div class="progress-nums"><b>1</b><span>2</span><span>3</span><span>4</span><span>5</span></div></div>
+<div class="progress-wrap"><div class="progress-top"><span>Passo 1 de 6</span><span>Barbeiro</span></div><div class="progress-bar"><span style="width:16%"></span></div><div class="progress-nums"><b>1</b><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span></div></div>
 <div id="barbeirosContainer"></div>
-<div class="section"><div style="font-size:11px;color:#aaa;line-height:1.6">Atendimento presencial, com hora marcada e sem espera.<br><span style="color:#666">Demonstração - Sem recarregar a página - David Barber Studio</span></div></div>
+<div class="section"><div style="font-size:13px;color:#aaa;line-height:1.7">Atendimento presencial, com hora marcada e sem espera.<br><span style="color:#666">David Barber Studio • Joinville</span></div></div>
 </div>
 
 <!-- PASO 2 -->
 <div class="step" id="step2">
 <div class="step-title">Escolha o<br>serviço</div>
 <div class="step-sub">Toque na foto para escolher</div>
-<div class="progress-wrap"><div class="progress-top"><span>Passo 2 de 5</span><span>Serviço</span></div><div class="progress-bar"><span style="width:40%"></span></div><div class="progress-nums"><span>1</span><b>2</b><span>3</span><span>4</span><span>5</span></div></div>
+<div class="progress-wrap"><div class="progress-top"><span>Passo 2 de 6</span><span>Serviço</span></div><div class="progress-bar"><span style="width:33%"></span></div><div class="progress-nums"><span>1</span><b>2</b><span>3</span><span>4</span><span>5</span><span>6</span></div></div>
 <div id="servicosGrid" class="servicos-grid"></div>
 <select id="servico" style="display:none"><option value="">Selecione</option></select>
 <input type="hidden" id="barbeiro" value="">
@@ -136,17 +137,17 @@ html,body{margin:0;padding:0;background:radial-gradient(ellipse at 50% -20%, rgb
 <div class="step" id="step3">
 <div class="step-title">Escolha a<br>data</div>
 <div class="step-sub">Toque no dia que você quer</div>
-<div class="progress-wrap"><div class="progress-top"><span>Passo 3 de 5</span><span>Data</span></div><div class="progress-bar"><span style="width:60%"></span></div><div class="progress-nums"><span>1</span><span>2</span><b>3</b><span>4</span><span>5</span></div></div>
-<div class="section"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><b id="mesLabel">Novembro</b><span style="font-size:11px;color:#888">Deslize para todo o mês →</span></div><div id="fechaScroll" class="data-scroll"></div><div id="selectedDateBox" class="selected-date-box"></div><div style="font-size:11px;color:#888;margin-top:10px;line-height:1.6"><b style="color:#fff">Horários de atenção</b><br>Segunda a Sexta: 08:30 – 18:00<br>Sábado: 08:00 – 17:00<br>Domingo: 09:00 – 13:00<br><br>Os horários livres aparecem no próximo passo, depois dos seus dados.</div></div>
-<input type="date" id="data" style="background:#1c1c1c;border:1px solid #262626;color:#fff;border-radius:8px;padding:10px;font-size:12px;margin-top:10px;width:100%">
+<div class="progress-wrap"><div class="progress-top"><span>Passo 3 de 6</span><span>Data</span></div><div class="progress-bar"><span style="width:50%"></span></div><div class="progress-nums"><span>1</span><span>2</span><b>3</b><span>4</span><span>5</span><span>6</span></div></div>
+<div class="section"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><b id="mesLabel" style="font-size:15px">Novembro</b><span style="font-size:12px;color:#888">Deslize para todo o mês →</span></div><div id="fechaScroll" class="data-scroll"></div><div id="selectedDateBox" class="selected-date-box"></div><div style="font-size:13px;color:#aaa;margin-top:12px;line-height:1.7"><b style="color:#fff">Horários de atenção</b><br>Segunda a Sexta: 08:30 – 18:00<br>Sábado: 08:00 – 17:00<br>Domingo: 09:00 – 13:00<br><br>Os horários livres aparecem depois dos seus dados.</div></div>
+<input type="date" id="data" style="background:#1c1c1c;border:1px solid #262626;color:#fff;border-radius:8px;padding:10px;font-size:13px;margin-top:10px;width:100%">
 </div>
 
 <!-- PASO 4 -->
 <div class="step" id="step4">
 <div class="step-title">Seus dados</div>
 <div class="step-sub">Só para confirmar seu horário</div>
-<div class="progress-wrap"><div class="progress-top"><span>Passo 4 de 5</span><span>Seus dados</span></div><div class="progress-bar"><span style="width:80%"></span></div><div class="progress-nums"><span>1</span><span>2</span><span>3</span><b>4</b><span>5</span></div></div>
-<div id="preloadBox" class="section" style="display:none"><div id="preloadText" style="font-size:12px;color:#fde9b3">Carregando horários livres, já estamos buscando...</div></div>
+<div class="progress-wrap"><div class="progress-top"><span>Passo 4 de 6</span><span>Seus dados</span></div><div class="progress-bar"><span style="width:66%"></span></div><div class="progress-nums"><span>1</span><span>2</span><span>3</span><b>4</b><span>5</span><span>6</span></div></div>
+<div id="preloadBox" class="section" style="display:none"><div id="preloadText" style="font-size:13px;color:#fde9b3">Carregando horários livres, já estamos buscando...</div></div>
 <div class="section">
 <div class="input-group"><label>NOME DO CLIENTE</label><input id="cliente" placeholder="Ex. João Silva"></div>
 <div class="input-group"><label>TELEFONE / WHATSAPP</label><input id="telefone" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="(47) 9 9999-9999" autocomplete="tel"></div>
@@ -159,40 +160,47 @@ html,body{margin:0;padding:0;background:radial-gradient(ellipse at 50% -20%, rgb
 <div class="step" id="step5">
 <div class="step-title">Escolha o<br>horário</div>
 <div class="step-sub">Você pode escolher vários horários - multi-horário</div>
-<div class="progress-wrap"><div class="progress-top"><span>Passo 5 de 5</span><span>Horário</span></div><div class="progress-bar"><span style="width:100%"></span></div><div class="progress-nums"><span>1</span><span>2</span><span>3</span><span>4</span><b>5</b></div></div>
+<div class="progress-wrap"><div class="progress-top"><span>Passo 5 de 6</span><span>Horário</span></div><div class="progress-bar"><span style="width:83%"></span></div><div class="progress-nums"><span>1</span><span>2</span><span>3</span><span>4</span><b>5</b><span>6</span></div></div>
 <div id="netWarn" class="net-warn">Internet lenta detectada — reintentando automáticamente...</div>
-<div id="loading" style="display:none;color:#c5a059;font-size:11px;text-align:center;padding:8px">Carregando horários...</div>
-<div id="step5Info" style="font-size:12px;color:#aaa;margin-bottom:10px"></div>
+<div id="loading" style="display:none;color:#c5a059;font-size:12px;text-align:center;padding:8px">Carregando horários...</div>
+<div id="step5Info" style="font-size:13px;color:#aaa;margin-bottom:10px"></div>
 <div id="gridHorarios"></div>
 <div id="resumoHorariosBox" style="display:none"></div>
-<div class="resumo-box" id="resumoMulti">
-<div style="font-size:14px;font-weight:800">Resumo</div>
-<div style="font-size:10px;color:#888">DAVID BARBER STUDIO • JOINVILLE - SC</div>
+<div style="font-size:12px;color:#888;margin-top:12px">Depois de escolher, toque em Siguiente para ver o resumo e confirmar.</div>
+</div>
+
+<!-- PASO 6 RESUMEN -->
+<div class="step" id="step6">
+<div class="step-title">Confira sua<br>reserva</div>
+<div class="step-sub">Revise tudo antes de confirmar, está tudo certo?</div>
+<div class="progress-wrap"><div class="progress-top"><span>Passo 6 de 6</span><span>Resumo</span></div><div class="progress-bar"><span style="width:100%"></span></div><div class="progress-nums"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><b>6</b></div></div>
+<div class="resumo-premium">
+<div class="rp-title">Resumo da Reserva</div>
+<div class="r-row"><span>Barbeiro</span><span>David</span></div>
 <div class="r-row"><span>Cliente</span><span id="resumoNome">—</span></div>
 <div class="r-row"><span>Serviço</span><span id="resumoServico">—</span></div>
 <div class="r-row"><span>Data</span><span id="resumoData">—</span></div>
-<div class="r-row"><span>Horário</span><span id="resumoHoras">— Selecione horários</span></div>
-<div class="r-row"><span>Telefone</span><span id="resumoFone">—</span></div>
+<div class="r-row"><span>Horário</span><span id="resumoHoras">—</span></div>
+<div class="r-row"><span>WhatsApp</span><span id="resumoFone">—</span></div>
 <div id="resumoBarbeiroBox" style="display:none"></div>
-<div style="font-size:11px;color:#aaa;margin-top:10px;line-height:1.6">• Pagamento no local<br>• <span id="resumoDetalheHoras">— horários</span><br>• Promo: Traga um amigo - R$5 OFF cada corte</div>
+<div style="font-size:13px;color:#aaa;margin-top:14px;line-height:1.7;text-align:center">• Pagamento no local<br>• <span id="resumoDetalheHoras">—</span><br>• Promo: Traga um amigo - R$5 OFF cada corte</div>
 <button id="btnAgendar" class="btn-confirm" onclick="solicitarAgendamento()" disabled>CONFIRMAR RESERVA</button>
-<div style="font-size:10px;color:#666;text-align:center;margin-top:6px">RESPOSTA EM ATÉ 5 MIN • JOINVILLE - SC</div>
+<div style="font-size:11px;color:#666;text-align:center;margin-top:8px">RESPOSTA EM ATÉ 5 MIN • JOINVILLE - SC</div>
 <div id="confirmacao" style="display:none;margin-top:10px;color:#c5a059;font-weight:700;text-align:center"></div>
-<button class="btn-sec" onclick="abrirCancelar()">CANCELAR MEU AGENDAMENTO</button>
-<button id="btnInstalar" class="btn-sec" style="color:#c5a059;border-color:#c5a059">BAIXAR APP OFICIAL</button>
 </div>
+<button id="btnInstalar" style="display:none">BAIXAR APP OFICIAL</button>
 </div>
 
 <!-- EXITO -->
 <div class="step" id="stepOk">
 <div class="success-box">
-<div style="font-size:11px;letter-spacing:3px;color:#c5a059">DAVID BARBER STUDIO</div>
+<div style="font-size:12px;letter-spacing:3px;color:#c5a059">DAVID BARBER STUDIO</div>
 <h1>Reserva feita!</h1>
-<div id="okMsg" style="color:#aaa;font-size:13px;line-height:1.6">Obrigado! Seu horário está reservado.</div>
-<div class="resumo-box" style="text-align:left"><div style="font-weight:800;color:#c5a059;margin-bottom:8px">Resumo da reserva</div><div id="okResumo" style="font-size:12px;color:#ddd;line-height:1.9"></div></div>
-<div style="background:#1e3a2a;border-radius:12px;padding:12px;margin-top:12px;color:#8fe0a8;font-weight:700;font-size:13px">Pagamento no local</div>
+<div id="okMsg" style="color:#aaa;font-size:14px;line-height:1.6">Obrigado! Seu horário está reservado.</div>
+<div class="resumo-premium" style="text-align:left"><div style="font-weight:800;color:#c5a059;margin-bottom:8px;font-size:15px">Resumo da reserva</div><div id="okResumo" style="font-size:14px;color:#ddd;line-height:1.9"></div></div>
+<div style="background:#1e3a2a;border-radius:12px;padding:13px;margin-top:12px;color:#8fe0a8;font-weight:700;font-size:14px">Pagamento no local</div>
 <button class="btn-confirm" onclick="fazerOutra()">Fazer outra reserva</button>
-<div style="color:#666;font-size:11px;margin-top:10px">Te esperamos na David Barber Studio.</div>
+<div style="color:#666;font-size:12px;margin-top:10px">Te esperamos na David Barber Studio.</div>
 </div>
 </div>
 
@@ -201,17 +209,17 @@ html,body{margin:0;padding:0;background:radial-gradient(ellipse at 50% -20%, rgb
 <div class="bottom-nav" id="bottomNav">
 <div class="bottom-nav-inner">
 <button class="btn-voltar" id="btnVoltar" onclick="voltarPasso()">← Volver</button>
-<div class="paso-label" id="pasoLabel">Paso 1 de 5 - Faltan 4</div>
+<div class="paso-label" id="pasoLabel">Paso 1 de 6 - Faltan 5</div>
 <button class="btn-proximo" id="btnProximo" onclick="avancarPasso()">Próximo →</button>
 </div>
 </div>
 
-<div id="modalProcess" class="modal"><div class="modal-box"><div class="spinner"></div><div style="color:#c5a059;font-weight:800">Aguarde...</div><div style="color:#fff;font-size:11px;margin-top:6px">Verificando horário e garantindo reserva</div></div></div>
+<div id="modalProcess" class="modal"><div class="modal-box"><div class="spinner"></div><div style="color:#c5a059;font-weight:800">Aguarde...</div><div style="color:#fff;font-size:12px;margin-top:6px">Verificando horário e garantindo reserva</div></div></div>
 <div id="modalErro" class="modal"><div class="modal-box"><div style="color:#fff;margin-bottom:12px">Preencha todos os campos</div><button class="btn-confirm" onclick="this.closest('.modal').style.display='none'">OK</button></div></div>
 <div id="modalCancelar" class="modal"><div class="modal-box"><div style="color:#c5a059;font-weight:700;margin-bottom:10px">Cancelar Agendamento</div><input id="cancelData" type="date" style="width:100%;background:#111;color:#fff;border:1px solid #333;border-radius:8px;padding:10px;margin-bottom:8px"><input id="cancelTelefone" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="WhatsApp" style="width:100%;background:#111;color:#fff;border:1px solid #333;border-radius:8px;padding:10px;margin-bottom:10px"><button onclick="confirmarCancelar()" class="btn-confirm" style="padding:10px">Confirmar</button><button onclick="fecharCancelar()" class="btn-sec">Voltar</button></div></div>
 <div id="modalCancelando" class="modal"><div class="modal-box"><div class="spinner"></div><div style="color:#c5a059">Cancelando...</div></div></div>
 <div id="modalOcupado" class="modal"><div class="modal-box" style="border-color:#ff4444"><div style="font-size:28px">⚠️</div><h3 style="color:#ff6b6b">Horário já agendado!</h3><button onclick="this.closest('.modal').style.display='none'" class="btn-confirm">Escolher outro</button></div></div>
-<div id="modalInstalar" class="modal"><div class="modal-box"><h3 style="color:#c5a059">Instalar App</h3><p style="color:#fff;font-size:12px">iPhone: Compartilhar > Adicionar à tela inicial<br>Android: ⋮ > Instalar app</p><button onclick="this.closest('.modal').style.display='none'" class="btn-confirm">Fechar</button></div></div>
+<div id="modalInstalar" class="modal"><div class="modal-box"><h3 style="color:#c5a059">Instalar App</h3><p style="color:#fff;font-size:13px">iPhone: Compartilhar > Adicionar à tela inicial<br>Android: ⋮ > Instalar app</p><button onclick="this.closest('.modal').style.display='none'" class="btn-confirm">Fechar</button></div></div>
 
 <script>
 const SCRIPT_URL='https://script.google.com/macros/s/AKfycbzcQMOm11ba3BRV0pRKlVplcGx0goPhtHIHurr-jm0sa0rzs9ujvdeTH4xFEyPIhMKjlQ/exec';
@@ -240,24 +248,24 @@ const li=setInterval(()=>{pct+=Math.random()*14+3; if(pct>=100){pct=100;clearInt
 setTimeout(()=>{document.getElementById('loader').classList.add('hidden'); clearInterval(li);},2500);
 const mapaServicos={
   'Corte Social':{preco:'R$35',bloques:1,desc:'Máquina e tesoura • finalização',foto:'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&q=80'},
-  'Corte Degradé':{preco:'R$40',bloques:1,desc:'Degradê moderno',foto:'https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=600&q=80'},
+  'Corte Degradé':{preco:'R$40',bloques:1,desc:'Degradê moderno • fade limpo',foto:'https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=600&q=80'},
   'Corte e Barba':{preco:'R$60',bloques:2,desc:'Ritual completo • mais pedido',foto:'https://images.unsplash.com/photo-1621605815971-fbc98d2e5b63?w=600&q=80'},
-  'Barba':{preco:'R$30',bloques:1,desc:'Toalha quente e acabamento',foto:'https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=600&q=80'},
-  'Sobrancelha':{preco:'R$10',bloques:1,desc:'Design e navalha',foto:'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=600&q=80'},
-  'Limpieza Facial':{preco:'R$20',bloques:1,desc:'Cuidados',foto:'https://images.unsplash.com/photo-1570172619644-dfd03c5d8814?w=600&q=80'},
-  'Corte + Limpieza Facial':{preco:'R$50',bloques:2,desc:'Estilo',foto:'https://images.unsplash.com/photo-1512690459411-b9245aed614b?w=600&q=80'},
-  'Corte e Barba + Limpieza Facial':{preco:'R$70',bloques:2,desc:'Premium',foto:'https://images.unsplash.com/photo-1517832606299-7ae9b720a186?w=600&q=80'},
+  'Barba':{preco:'R$30',bloques:1,desc:'Navalha, toalha quente e acabamento',foto:'https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=600&q=80'},
+  'Sobrancelha':{preco:'R$10',bloques:1,desc:'Design de sobrancelha • alinhamento',foto:'https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=600&q=80'},
+  'Limpieza Facial':{preco:'R$20',bloques:1,desc:'Limpeza de rosto • cuidados da pele',foto:'https://images.unsplash.com/photo-1570172619644-dfd03c5d8814?w=600&q=80'},
+  'Corte + Limpieza Facial':{preco:'R$50',bloques:2,desc:'Corte + rosto limpo • estilo completo',foto:'https://images.unsplash.com/photo-1512690459411-b9245aed614b?w=600&q=80'},
+  'Corte e Barba + Limpieza Facial':{preco:'R$70',bloques:2,desc:'Premium • corte, barba e rosto',foto:'https://images.unsplash.com/photo-1517832606299-7ae9b720a186?w=600&q=80'},
   'Promoção Dupla':{preco:'R$70',bloques:2,desc:'Traga um amigo • 2 pessoas',promo:true,foto:'https://images.unsplash.com/photo-1534297635766-a262cdcb8ee4?w=600&q=80'}
 };
 function showStep(n){
   currentStep=n;
   document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
-  if(n===6){ document.getElementById('stepOk').classList.add('active'); document.getElementById('bottomNav').style.display='none'; window.scrollTo(0,0); return; }
+  if(n===7){ document.getElementById('stepOk').classList.add('active'); document.getElementById('bottomNav').style.display='none'; window.scrollTo(0,0); return; }
   document.getElementById('bottomNav').style.display='block';
   document.getElementById('step'+n).classList.add('active');
-  document.getElementById('pasoLabel').textContent='Paso '+n+' de 5 - Faltan '+(5-n);
+  document.getElementById('pasoLabel').textContent='Paso '+n+' de 6 - Faltan '+(6-n);
   document.getElementById('btnVoltar').style.visibility = n===1 ? 'hidden' : 'visible';
-  document.getElementById('btnProximo').textContent = n===5 ? 'Finalizar →' : 'Próximo →';
+  if(n===6){ document.getElementById('btnProximo').style.display='none'; } else { document.getElementById('btnProximo').style.display='block'; document.getElementById('btnProximo').textContent='Próximo →'; }
   if(n===4){
     document.getElementById('preloadBox').style.display='block';
     document.getElementById('preloadText').textContent='Carregando horários livres, já estamos buscando...';
@@ -269,8 +277,8 @@ function showStep(n){
     document.getElementById('step5Info').textContent = d ? d.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'short'})+' • '+(selectedServico||'') : '';
     carregarHorarios();
   }
+  if(n===6){ atualizarResumo(); }
   window.scrollTo(0,0);
-  atualizarResumo();
 }
 function validarPasso(n){
   if(n===1 && selectedBarbeiros.length===0){ alert('Escolha David para continuar'); return false; }
@@ -282,11 +290,14 @@ function validarPasso(n){
     if(!nome){ alert('Escreva seu nome'); return false; }
     if(!tel || tel.replace(/\D/g,'').length<10){ alert('Escreva seu WhatsApp completo'); return false; }
   }
+  if(n===5){
+    const total=Object.values(selectedSlots).reduce((a,b)=>a+b.length,0);
+    if(total===0){ alert('Escolha pelo menos 1 horário'); return false; }
+  }
   return true;
 }
 function avancarPasso(){
   if(!validarPasso(currentStep)) return;
-  if(currentStep===5){ document.getElementById('btnAgendar').click(); return; }
   showStep(currentStep+1);
 }
 function voltarPasso(){ if(currentStep>1) showStep(currentStep-1); }
@@ -295,11 +306,11 @@ function renderBarbeiros(){
   BARBEIROS.forEach(b=>{
     if(b.hidden) return;
     const d=document.createElement('div');
-    d.className='barbeiro-hero'+(selectedBarbeiros.includes(b.id)?'':'');
-    const imgHtml = b.foto ? `<img src="${b.foto}" onerror="this.src='https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&q=80'">` : `<div style="height:340px;background:#222;display:flex;align-items:center;justify-content:center;font-size:60px;font-weight:800;color:#c5a059">${b.inicial}</div>`;
-    d.innerHTML=`<div style="position:relative">${imgHtml}<div style="position:absolute;top:12px;left:12px;background:#1a1a1a;border:1px solid #333;border-radius:20px;padding:5px 10px;font-size:10px;color:#fde9b3">● DISPONÍVEL</div><div style="position:absolute;top:12px;right:12px;background:#1a1a1a;border:1px solid #333;border-radius:10px;padding:5px 8px;font-size:11px;color:#fff">★ ${b.nota}</div></div><div class="bh-body"><div class="bh-name">${b.nome}</div><div class="bh-spec">${b.spec}</div><div class="bh-desc">SEG a SÁB: 08:30 - 19:00<br>Atendimento presencial, com hora marcada e sem espera.</div><div class="pill-row"><span>Degradê</span><span>Tesoura</span><span>Barba</span></div></div>`;
+    d.className='barbeiro-hero';
+    const imgHtml = b.foto ? `<img src="${b.foto}" onerror="this.src='https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&q=80'">` : `<div style="height:360px;background:#222;display:flex;align-items:center;justify-content:center;font-size:60px;font-weight:800;color:#c5a059">${b.inicial}</div>`;
+    d.innerHTML=`<div style="position:relative">${imgHtml}<div style="position:absolute;top:12px;left:12px;background:#1a1a1a;border:1px solid #333;border-radius:20px;padding:6px 11px;font-size:11px;color:#fde9b3">● DISPONÍVEL</div><div style="position:absolute;top:12px;right:12px;background:#1a1a1a;border:1px solid #333;border-radius:10px;padding:6px 9px;font-size:12px;color:#fff">★ ${b.nota}</div></div><div class="bh-body"><div class="bh-name">${b.nome}</div><div class="bh-spec">${b.spec}</div><div class="bh-desc">SEG a SÁB: 08:30 - 19:00<br>Atendimento presencial, com hora marcada e sem espera.</div><div class="pill-row"><span>Degradê</span><span>Tesoura</span><span>Barba</span></div></div>`;
     const btn=document.createElement('button'); btn.className='btn-gold'; btn.textContent = selectedBarbeiros.includes(b.id) ? '✓ Elegido - David' : 'Elegir a David →';
-    btn.onclick=()=>{ selectedBarbeiros=[b.id]; document.getElementById('barbeiro').value=b.id; renderBarbeiros(); atualizarResumo(); };
+    btn.onclick=()=>{ selectedBarbeiros=[b.id]; document.getElementById('barbeiro').value=b.id; renderBarbeiros(); };
     d.appendChild(btn);
     cont.appendChild(d);
   });
@@ -311,7 +322,7 @@ function renderServicos(){
     const card=document.createElement('div'); card.className='servico-card'+(selectedServico===s?' active':'');
     const badge = s==='Corte Degradé' ? '<div style="position:absolute;top:8px;left:8px"><span class="badge-mais">Mais pedido</span></div>' : (info.promo ? '<div style="position:absolute;top:8px;left:8px"><span class="badge-mais">2 pessoas</span></div>' : '');
     card.innerHTML=`${badge}${info.foto?`<img class="s-foto" src="${info.foto}" alt="${s}" loading="lazy" onerror="this.style.display='none'">`:''}<div class="s-body"><div class="s-top"><div class="s-name">${s.toUpperCase()}</div><div class="s-price">${info.preco}</div></div><div class="s-desc">${info.desc}</div>${info.promo?'<div class="promo-pill">RETO AMIGO</div>':''}</div>${selectedServico===s?'<div class="s-check">✓</div>':''}`;
-    card.onclick=()=>{ selectedServico=s; sel.value=s; document.querySelectorAll('.servico-card').forEach(c=>c.classList.remove('active')); card.classList.add('active'); const check=document.createElement('div'); check.className='s-check'; check.textContent='✓'; card.appendChild(check); const selTxt=document.createElement('div'); selTxt.textContent='✓ Selecionado'; selTxt.style.cssText='font-size:10px;color:#c5a059;font-weight:700;margin-top:4px'; const body=card.querySelector('.s-body'); if(body && !body.querySelector('.sel-txt')){ selTxt.className='sel-txt'; body.appendChild(selTxt); } atualizarResumo(); };
+    card.onclick=()=>{ selectedServico=s; sel.value=s; document.querySelectorAll('.servico-card').forEach(c=>c.classList.remove('active')); card.classList.add('active'); const check=document.createElement('div'); check.className='s-check'; check.textContent='✓'; card.appendChild(check); atualizarResumo(); };
     grid.appendChild(card); sel.innerHTML+=`<option value="${s}">${s}</option>`;
   }
 }
@@ -340,7 +351,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     atualizarResumo();
     const nome=document.getElementById('cliente').value.trim();
     const mini=document.getElementById('miniResumo');
-    if(nome){ mini.style.display='block'; mini.innerHTML=`<div style="font-size:12px">Olá, ${nome} 👋<br><span style="color:#aaa">${selectedServico||''} • ${selectedDateStr?new Date(selectedDateStr+'T12:00:00').toLocaleDateString('pt-BR',{weekday:'short',day:'numeric',month:'short'}):''}</span></div>`; }
+    if(nome){ mini.style.display='block'; mini.innerHTML=`<div style="font-size:13px">Olá, ${nome} 👋<br><span style="color:#aaa">${selectedServico||''} • ${selectedDateStr?new Date(selectedDateStr+'T12:00:00').toLocaleDateString('pt-BR',{weekday:'short',day:'numeric',month:'short'}):''}</span></div>`; }
   });
   showStep(1);
   window.addEventListener('offline',()=>{document.getElementById('netWarn').style.display='block'; document.getElementById('netWarn').textContent='Sin internet — conecta WiFi o datos para ver horarios reales';});
@@ -367,9 +378,9 @@ async function carregarHorarios(forcar=false){
   const data=document.getElementById('data').value||selectedDateStr; const servico=selectedServico||document.getElementById('servico').value;
   const loading=document.getElementById('loading'); const grid=document.getElementById('gridHorarios'); const resumoBox=document.getElementById('resumoHorariosBox');
   const netWarn=document.getElementById('netWarn');
-  if(selectedBarbeiros.length===0){ if(grid) grid.innerHTML='<div style="color:#c5a059;font-size:11px;text-align:center;padding:12px">Escolha David para liberar os horários reais.</div>'; return; }
-  if(!data||!servico){ if(grid) grid.innerHTML='<div style="color:#666;font-size:11px;text-align:center;padding:10px">Selecione serviço e data</div>'; return; }
-  if(new Date(data+'T12:00:00').getDay()===0){ if(grid) grid.innerHTML='<div style="color:#ff6b6b;text-align:center;font-size:12px">DOMINGO FECHADO</div>'; return; }
+  if(selectedBarbeiros.length===0){ if(grid) grid.innerHTML='<div style="color:#c5a059;font-size:12px;text-align:center;padding:12px">Escolha David para liberar os horários reais.</div>'; return; }
+  if(!data||!servico){ if(grid) grid.innerHTML='<div style="color:#666;font-size:12px;text-align:center;padding:10px">Selecione serviço e data</div>'; return; }
+  if(new Date(data+'T12:00:00').getDay()===0){ if(grid) grid.innerHTML='<div style="color:#ff6b6b;text-align:center;font-size:13px">DOMINGO FECHADO</div>'; return; }
   const cacheKey = data+'|'+selectedBarbeiros.join(',')+'|'+servico;
   if(!forcar && cacheReservas.has(cacheKey)){
     const cached = cacheReservas.get(cacheKey);
@@ -392,7 +403,7 @@ async function carregarHorarios(forcar=false){
     if(netWarn) netWarn.style.display='none';
   }catch(e){
     if(currentId !== lastFetchId) return;
-    if(grid) grid.innerHTML=`<div style="color:#fde9b3;background:#2a1f0a;border:1px solid #c5a059;border-radius:12px;padding:14px;text-align:center"><div style="font-size:22px">📶</div><div style="font-weight:700;margin-top:6px">Internet lenta</div><div style="font-size:11px;color:#aaa;margin-top:4px">No pudimos cargar los horarios reales. Verifica tu WiFi o datos y toca reintentar.</div><button onclick="carregarHorarios(true)" style="margin-top:10px;background:#c5a059;color:#000;border:none;border-radius:8px;padding:8px 14px;font-weight:700">Reintentar ahora</button></div>`;
+    if(grid) grid.innerHTML=`<div style="color:#fde9b3;background:#2a1f0a;border:1px solid #c5a059;border-radius:12px;padding:14px;text-align:center"><div style="font-size:22px">📶</div><div style="font-weight:700;margin-top:6px">Internet lenta</div><div style="font-size:12px;color:#aaa;margin-top:4px">No pudimos cargar los horarios reales. Verifica tu WiFi o datos y toca reintentar.</div><button onclick="carregarHorarios(true)" style="margin-top:10px;background:#c5a059;color:#000;border:none;border-radius:8px;padding:8px 14px;font-weight:700">Reintentar ahora</button></div>`;
   } finally{
     if(currentId === lastFetchId){
       if(loading) loading.style.display='none';
@@ -408,11 +419,11 @@ function renderGridHorarios(reservas, bloqueios, data, servico){
   grid.innerHTML='';
   const totalSel = Object.values(selectedSlots).reduce((a,b)=>a+b.length,0);
   if(totalSel>0){
-    const top=document.createElement('div'); top.style.cssText='background:#1c1c1c;border:1px solid #262626;border-radius:12px;padding:10px;font-size:12px;margin-bottom:12px';
+    const top=document.createElement('div'); top.style.cssText='background:#1c1c1c;border:1px solid #262626;border-radius:12px;padding:11px;font-size:13px;margin-bottom:12px';
     top.innerHTML = totalSel+' horário(s) selecionado(s) • '+Object.entries(selectedSlots).filter(([_,h])=>h.length>0).map(([b,hs])=>hs.join(', ')).join(' | ');
     grid.appendChild(top);
   } else {
-    const hint=document.createElement('div'); hint.style.cssText='font-size:11px;color:#888;text-align:center;margin-bottom:10px'; hint.textContent='Toque para escolher — toque de novo para quitar.';
+    const hint=document.createElement('div'); hint.style.cssText='font-size:12px;color:#888;text-align:center;margin-bottom:10px'; hint.textContent='Toque para escolher — toque de novo para quitar.';
     grid.appendChild(hint);
   }
   selectedBarbeiros.forEach(barbId=>{
@@ -422,28 +433,28 @@ function renderGridHorarios(reservas, bloqueios, data, servico){
       const wrap=document.createElement('div'); const lbl=document.createElement('div'); lbl.className='horario-label'; lbl.textContent=label; wrap.appendChild(lbl);
       const g=document.createElement('div'); g.className='horario-grid';
       const normHora = (h)=>{ if(!h) return ''; let s=String(h).trim(); let p=s.split(':'); let hh=(p[0]||'0').padStart(2,'0'); let mm=(p[1]||'00').padStart(2,'0'); return `${hh}:${mm}`; };
-      lista.forEach(hora=>{ if(hora==='12:00') return; if(hora==='11:30' && !esSab) return; let dis=false; if(esHoyDia && hora < hActual) dis=true; if(!dis){ const hNorm = normHora(hora); for(let b of bloqueios){ const bBarb = (b.barbeiro||'').trim(); if(bBarb && bBarb.toUpperCase()!=='TODOS' && bBarb.toLowerCase()!==barbId.toLowerCase()) continue; const ini = normHora(b.inicio||b.horaInicio||b.HoraInicio); const fim = normHora(b.fim||b.horaFim||b.HoraFim); if(!ini || !fim) continue; if(hNorm>=ini && hNorm<=fim){ dis=true; break; } } } if(!dis){ const idxHora=todos.indexOf(hora); for(let i=0;i<bloquesNec;i++){ const s=todos[idxHora+i]; if(!s){ if(i===0){dis=true;break;} continue;} if(reservasPorBarbeiro[barbId] && reservasPorBarbeiro[barbId].has(s)){dis=true;break;} } } const btn=document.createElement('button'); btn.type='button'; btn.className='horario-btn'+(selectedSlots[barbId]&&selectedSlots[barbId].includes(hora)?' selected':''); btn.textContent=hora; if(selectedSlots[barbId]&&selectedSlots[barbId].includes(hora)){ btn.innerHTML=hora+'<div style="font-size:10px">✓ Selecionado</div>'; } if(dis){ btn.textContent=hora; btn.innerHTML=hora+'<div style="font-size:10px;color:#555">Ocupado</div>'; } btn.disabled=dis; if(!dis){ btn.onclick=()=>{ if(!selectedSlots[barbId]) selectedSlots[barbId]=[]; if(selectedSlots[barbId].includes(hora)){ selectedSlots[barbId]=selectedSlots[barbId].filter(h=>h!==hora);} else { if(selectedSlots[barbId].length>=4){ alert('Max 4 horários por barbeiro'); return;} selectedSlots[barbId].push(hora); selectedSlots[barbId].sort();} atualizarResumo(); renderGridHorarios(reservas,bloqueios,data,servico); }; } g.appendChild(btn); }); wrap.appendChild(g); return wrap;
+      lista.forEach(hora=>{ if(hora==='12:00') return; if(hora==='11:30' && !esSab) return; let dis=false; if(esHoyDia && hora < hActual) dis=true; if(!dis){ const hNorm = normHora(hora); for(let b of bloqueios){ const bBarb = (b.barbeiro||'').trim(); if(bBarb && bBarb.toUpperCase()!=='TODOS' && bBarb.toLowerCase()!==barbId.toLowerCase()) continue; const ini = normHora(b.inicio||b.horaInicio||b.HoraInicio); const fim = normHora(b.fim||b.horaFim||b.HoraFim); if(!ini || !fim) continue; if(hNorm>=ini && hNorm<=fim){ dis=true; break; } } } if(!dis){ const idxHora=todos.indexOf(hora); for(let i=0;i<bloquesNec;i++){ const s=todos[idxHora+i]; if(!s){ if(i===0){dis=true;break;} continue;} if(reservasPorBarbeiro[barbId] && reservasPorBarbeiro[barbId].has(s)){dis=true;break;} } } const btn=document.createElement('button'); btn.type='button'; btn.className='horario-btn'+(selectedSlots[barbId]&&selectedSlots[barbId].includes(hora)?' selected':''); btn.textContent=hora; if(selectedSlots[barbId]&&selectedSlots[barbId].includes(hora)){ btn.innerHTML=hora+'<div style="font-size:11px">✓ Selecionado</div>'; } if(dis){ btn.innerHTML=hora+'<div style="font-size:11px;color:#555">Ocupado</div>'; } btn.disabled=dis; if(!dis){ btn.onclick=()=>{ if(!selectedSlots[barbId]) selectedSlots[barbId]=[]; if(selectedSlots[barbId].includes(hora)){ selectedSlots[barbId]=selectedSlots[barbId].filter(h=>h!==hora);} else { if(selectedSlots[barbId].length>=4){ alert('Max 4 horários por barbeiro'); return;} selectedSlots[barbId].push(hora); selectedSlots[barbId].sort();} atualizarResumo(); renderGridHorarios(reservas,bloqueios,data,servico); }; } g.appendChild(btn); }); wrap.appendChild(g); return wrap;
     };
     if(manha.length) grupo.appendChild(renderTurno('MANHÃ',manha)); if(tarde.length) grupo.appendChild(renderTurno('TARDE',tarde)); grid.appendChild(grupo);
   });
   const total=Object.values(selectedSlots).reduce((a,b)=>a+b.length,0);
   if(total>0){
     resumoBox.style.display='block'; let hHtml=''; for(let barb in selectedSlots){ if(selectedSlots[barb].length>0){ hHtml+=`<div style="margin-bottom:6px"><b>${total} HORÁRIO(S) • ${barb.toUpperCase()}</b><br>`+selectedSlots[barb].map(h=>`<span class="chip-hora">${h}</span>`).join('')+`</div>`; } }
-    resumoBox.innerHTML=`<div style="background:#1c1c1c;border:1px solid #262626;border-radius:12px;padding:10px;font-size:11px;margin-top:12px">${hHtml}</div>`;
+    resumoBox.innerHTML=`<div style="background:#1c1c1c;border:1px solid #262626;border-radius:12px;padding:11px;font-size:12px;margin-top:12px">${hHtml}</div>`;
   } else { resumoBox.style.display='none'; }
   atualizarResumo();
 }
 function atualizarResumo(){
   const elNome=document.getElementById('resumoNome'); if(!elNome) return;
   const elFone=document.getElementById('resumoFone'); const elServ=document.getElementById('resumoServico'); const elData=document.getElementById('resumoData'); const elHoras=document.getElementById('resumoHoras');
-  const elBarbBox=document.getElementById('resumoBarbeiroBox'); const btn=document.getElementById('btnAgendar'); const elDetalhe=document.getElementById('resumoDetalheHoras');
+  const btn=document.getElementById('btnAgendar'); const elDetalhe=document.getElementById('resumoDetalheHoras');
   const nome=document.getElementById('cliente').value||'—'; const fone=document.getElementById('telefone').value||'—';
   elNome.textContent=nome; elFone.textContent=fone;
   if(selectedServico){ const info=mapaServicos[selectedServico]; elServ.textContent=selectedServico+' • '+(info?info.preco:''); } else { elServ.textContent='—'; }
   const dataVal=document.getElementById('data').value||selectedDateStr;
-  if(dataVal){ const d=new Date(dataVal+'T12:00:00'); elData.textContent=d.toLocaleDateString('pt-BR',{weekday:'short',day:'numeric',month:'short'}); } else { elData.textContent='—'; }
+  if(dataVal){ const d=new Date(dataVal+'T12:00:00'); elData.textContent=d.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'short'}); } else { elData.textContent='—'; }
   const total=Object.values(selectedSlots).reduce((a,b)=>a+b.length,0);
-  if(total>0){ let horasTxt=''; let precoTotal=0; let bloquesTotal=0; for(let barb in selectedSlots){ if(selectedSlots[barb].length>0){ const horas=selectedSlots[barb].join(', '); horasTxt+= (horasTxt?' | ':'')+horas; const svc=mapaServicos[selectedServico]; if(svc){ precoTotal+= parseInt(svc.preco.replace(/\D/g,''))*selectedSlots[barb].length; bloquesTotal+= svc.bloques*selectedSlots[barb].length; } } } elHoras.innerHTML = Object.entries(selectedSlots).filter(([_,h])=>h.length>0).map(([_,hs])=>hs.map(h=>`<span class="chip-hora">${h}</span>`).join('')).join(''); elDetalhe.textContent=`${total} horário(s) • ${bloquesTotal*30} min • R$${precoTotal}`; btn.disabled=false; btn.textContent=`CONFIRMAR RESERVA`; } else { elHoras.textContent='— Selecione horários'; elDetalhe.textContent='— horários'; btn.disabled=true; btn.textContent='CONFIRMAR RESERVA'; }
+  if(total>0){ let precoTotal=0; let bloquesTotal=0; for(let barb in selectedSlots){ if(selectedSlots[barb].length>0){ const svc=mapaServicos[selectedServico]; if(svc){ precoTotal+= parseInt(svc.preco.replace(/\D/g,''))*selectedSlots[barb].length; bloquesTotal+= svc.bloques*selectedSlots[barb].length; } } } elHoras.innerHTML = Object.entries(selectedSlots).filter(([_,h])=>h.length>0).map(([_,hs])=>hs.map(h=>`<span class="chip-hora">${h}</span>`).join('')).join(''); elDetalhe.textContent=`${total} horário(s) • ${bloquesTotal*30} min • R$${precoTotal}`; btn.disabled=false; btn.textContent=`CONFIRMAR RESERVA`; } else { elHoras.textContent='— Selecione horários'; elDetalhe.textContent='— horários'; btn.disabled=true; btn.textContent='CONFIRMAR RESERVA'; }
 }
 function limparCampos(){ document.getElementById('cliente').value=''; document.getElementById('telefone').value=''; document.getElementById('data').value=''; selectedDateStr=''; selectedServico=''; selectedSlots={}; document.getElementById('servico').selectedIndex=0; document.querySelectorAll('.servico-card').forEach(c=>c.classList.remove('active')); document.getElementById('gridHorarios').innerHTML=''; document.getElementById('resumoHorariosBox').style.display='none'; document.getElementById('btnAgendar').disabled=true; document.getElementById('confirmacao').style.display='none'; cacheReservas.clear(); renderFecha(); atualizarResumo(); }
 function fazerOutra(){ limparCampos(); showStep(1); }
@@ -462,9 +473,8 @@ async function solicitarAgendamento(){
       const d=new Date(data+'T12:00:00');
       document.getElementById('okMsg').innerHTML=`Obrigado, ${cliente}.<br>Seu horário está reservado.`;
       document.getElementById('okResumo').innerHTML=`Barbeiro: David<br>Serviço: ${servico} • ${mapaServicos[servico]?.preco||''}<br>Data: ${d.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'short'})}<br>Horário: ${Object.values(selectedSlots).flat().join(', ')}<br>Cliente: ${cliente}<br>WhatsApp: ${telefone}`;
-      const nomeGuardado=cliente; const telGuardado=telefone;
       limparCampos();
-      showStep(6);
+      showStep(7);
       if(result.whatsapp){ setTimeout(()=>{ abrirWhatsAppDirecto(result.whatsapp); }, 800); }
       btn.textContent='CONFIRMAR RESERVA';
     } else { document.getElementById('modalProcess').style.display='none'; document.getElementById('modalOcupado').style.display='flex'; btn.disabled=false; btn.textContent='CONFIRMAR RESERVA'; carregarHorarios(true); }
