@@ -1,4 +1,4 @@
-<!-- DAVID BARBER STUDIO - HTML 1.2 - 19/11/2026 - Solo 3 cambios sobre 1.1 -->
+<!-- DAVID BARBER STUDIO - HTML 1.2 FIX LOADER - 19/11/2026 -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -108,6 +108,10 @@ html,body{margin:0;padding:0;background:radial-gradient(ellipse at 50% -20%, rgb
 .success-box{text-align:center;padding:20px 0}
 .success-box h1{font-family:'Cinzel',serif;font-size:38px;color:#fff;margin:8px 0}
 </style>
+<script>
+// SEGURO DEL LOADER - si algo falla, igual se quita a los 2.8s
+setTimeout(function(){var l=document.getElementById('loader'); if(l){l.classList.add('hidden');}},2800);
+</script>
 </head>
 <body>
 <div id="loader"><div id="loader-logo">DAVID BARBER</div><div id="loader-sub">Studio DB</div><div class="loader-bar"><span id="loader-bar-inner"></span></div><div id="loader-pct">0%</div></div>
@@ -203,35 +207,24 @@ html,body{margin:0;padding:0;background:radial-gradient(ellipse at 50% -20%, rgb
 <div id="modalCancelando" class="modal"><div class="modal-box"><div class="spinner"></div><div style="color:#c5a059">Cancelando...</div></div></div>
 <div id="modalOcupado" class="modal"><div class="modal-box" style="border-color:#ff4444"><div style="font-size:28px">⚠️</div><h3 style="color:#ff6b6b">Horário já agendado!</h3><button onclick="this.closest('.modal').style.display='none'" class="btn-confirm">Escolher outro</button></div></div>
 <script>
-const SCRIPT_URL='https://script.google.com/macros/s/AKfycbzcQMOm11ba3BRV0pRKlVplcGx0goPhtHIHurr-jm0sa0rzs9ujvdeTH4xFEyPIhMKjlQ/exec';
-const BARBEIROS=[
-{id:'David',nome:'David',inicial:'D',spec:'BARBEIRO • DEGRADÊ E TESOURA',desc:'Degradê e Tesoura • 10 anos, especialista em cortes clássicos',nota:'4.9',hidden:false,foto:'./david.jpg'},
-{id:'Barbeiro2',nome:'Barbeiro 2',inicial:'2',spec:'BARBEIRO',desc:'Barbeiro',nota:'4.9',hidden:true},
-{id:'Barbeiro3',nome:'Barbeiro 3',inicial:'3',spec:'BARBEIRO',desc:'Barbeiro',nota:'4.9',hidden:true},
-{id:'Barbeiro4',nome:'Barbeiro 4',inicial:'4',spec:'BARBEIRO',desc:'Barbeiro',nota:'4.9',hidden:true},
-{id:'Barbeiro5',nome:'Barbeiro 5',inicial:'5',spec:'BARBEIRO',desc:'Barbeiro',nota:'4.9',hidden:true},
-{id:'Barbeiro6',nome:'Barbeiro 6',inicial:'6',spec:'BARBEIRO',desc:'Barbeiro',nota:'4.9',hidden:true},
-{id:'Barbeiro7',nome:'Barbeiro 7',inicial:'7',spec:'BARBEIRO',desc:'Barbeiro',nota:'4.9',hidden:true},
-{id:'Barbeiro8',nome:'Barbeiro 8',inicial:'8',spec:'BARBEIRO',desc:'Barbeiro',nota:'4.9',hidden:true},
-{id:'Barbeiro9',nome:'Barbeiro 9',inicial:'9',spec:'BARBEIRO',desc:'Barbeiro',nota:'4.9',hidden:true},
-{id:'Barbeiro10',nome:'Barbeiro 10',inicial:'10',spec:'BARBEIRO',desc:'Barbeiro',nota:'4.9',hidden:true}
-];
-let currentStep=1;
-let selectedBarbeiros=['David']; let selectedSlots={}; let selectedServico=''; let selectedDateStr=''; let deferredPrompt=null;
+var SCRIPT_URL='https://script.google.com/macros/s/AKfycbzcQMOm11ba3BRV0pRKlVplcGx0goPhtHIHurr-jm0sa0rzs9ujvdeTH4xFEyPIhMKjlQ/exec';
+var BARBEIROS=[{id:'David',nome:'David',inicial:'D',spec:'BARBEIRO • DEGRADÊ E TESOURA',desc:'Degradê e Tesoura • 10 anos',nota:'4.9',hidden:false,foto:'./david.jpg'}];
+var currentStep=1;
+var selectedBarbeiros=['David']; var selectedSlots={}; var selectedServico=''; var selectedDateStr=''; var deferredPrompt=null;
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js').catch(function(){}); }
-let cacheReservas = new Map();
-let isLoadingHorarios = false;
-let lastFetchId = 0;
+var cacheReservas = new Map();
+var isLoadingHorarios = false;
+var lastFetchId = 0;
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;});
 document.getElementById('btnInstalar').addEventListener('click',function(){
 if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(function(){deferredPrompt=null;});return;}
 if(window.matchMedia('(display-mode: standalone)').matches){alert('O app já está instalado!');return;}
 location.reload();
 });
-let pct=0; const bar=document.getElementById('loader-bar-inner'); const pctEl=document.getElementById('loader-pct');
-const li=setInterval(function(){pct+=Math.random()*14+3; if(pct>=100){pct=100;clearInterval(li);setTimeout(function(){document.getElementById('loader').classList.add('hidden')},300)} bar.style.width=pct+'%'; pctEl.textContent=Math.floor(pct)+'%';},90);
+var pct=0; var bar=document.getElementById('loader-bar-inner'); var pctEl=document.getElementById('loader-pct');
+var li=setInterval(function(){pct+=Math.random()*14+3; if(pct>=100){pct=100;clearInterval(li);setTimeout(function(){document.getElementById('loader').classList.add('hidden')},300)} bar.style.width=pct+'%'; pctEl.textContent=Math.floor(pct)+'%';},90);
 setTimeout(function(){document.getElementById('loader').classList.add('hidden'); clearInterval(li);},2500);
-const mapaServicos={
+var mapaServicos={
 'Corte Social':{preco:'R$35',bloques:1,desc:'Máquina e tesoura • finalização',foto:'./corte-social.jpg'},
 'Corte Degradé':{preco:'R$40',bloques:1,desc:'Degradê moderno • fade limpo',foto:'./degrade.jpg'},
 'Corte e Barba':{preco:'R$60',bloques:2,desc:'Ritual completo • mais pedido',foto:'./corte-barba.jpg'},
@@ -257,8 +250,8 @@ document.getElementById('preloadText').textContent='Carregando horários livres,
 carregarHorarios().then(function(){ document.getElementById('preloadText').textContent='Horários livres prontos para o próximo passo ✓'; }).catch(function(){ document.getElementById('preloadText').textContent='Horários livres prontos para o próximo passo ✓'; });
 }
 if(n===5){
-const dStr=document.getElementById('data').value||selectedDateStr;
-const d=dStr?new Date(dStr+'T12:00:00'):null;
+var dStr=document.getElementById('data').value||selectedDateStr;
+var d=dStr?new Date(dStr+'T12:00:00'):null;
 document.getElementById('step5Info').textContent = d ? d.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'short'})+' • '+(selectedServico||'') : '';
 carregarHorarios();
 }
@@ -270,13 +263,13 @@ if(n===1 && selectedBarbeiros.length===0){ alert('Escolha David para continuar')
 if(n===2 && !selectedServico){ alert('Toque na foto do serviço para escolher'); return false; }
 if(n===3 && !selectedDateStr && !document.getElementById('data').value){ alert('Toque no dia que você quer'); return false; }
 if(n===4){
-const nome=document.getElementById('cliente').value.trim();
-const tel=document.getElementById('telefone').value.trim();
+var nome=document.getElementById('cliente').value.trim();
+var tel=document.getElementById('telefone').value.trim();
 if(!nome){ alert('Escreva seu nome'); return false; }
 if(!tel || tel.replace(/\D/g,'').length<10){ alert('Escreva seu WhatsApp completo'); return false; }
 }
 if(n===5){
-const total=Object.values(selectedSlots).reduce(function(a,b){return a+b.length;},0);
+var total=Object.values(selectedSlots).reduce(function(a,b){return a+b.length;},0);
 if(total===0){ alert('Escolha pelo menos 1 horário'); return false; }
 }
 return true;
@@ -284,50 +277,52 @@ return true;
 function avancarPasso(){ if(!validarPasso(currentStep)) return; showStep(currentStep+1); }
 function voltarPasso(){ if(currentStep>1) showStep(currentStep-1); }
 function renderBarbeiros(){
-const cont=document.getElementById('barbeirosContainer'); cont.innerHTML='';
+var cont=document.getElementById('barbeirosContainer'); cont.innerHTML='';
 BARBEIROS.forEach(function(b){
 if(b.hidden) return;
-const d=document.createElement('div');
+var d=document.createElement('div');
 d.className='barbeiro-hero';
-const imgHtml = b.foto ? '<img src="'+b.foto+'" onerror="this.src=\'./corte-social.jpg\'">' : '<div style="height:300px;background:#222;display:flex;align-items:center;justify-content:center;font-size:60px;font-weight:800;color:#c5a059">'+b.inicial+'</div>';
+var imgHtml = b.foto ? '<img src="'+b.foto+'" onerror="this.src=\'./corte-social.jpg\'">' : '<div style="height:300px;background:#222;display:flex;align-items:center;justify-content:center;font-size:60px;font-weight:800;color:#c5a059">'+b.inicial+'</div>';
 d.innerHTML='<div style="position:relative">'+imgHtml+'<div style="position:absolute;top:12px;left:12px;background:#1a1a1a;border:1px solid #333;border-radius:20px;padding:6px 11px;font-size:11px;color:#fde9b3">● DISPONÍVEL</div><div style="position:absolute;top:12px;right:12px;background:#1a1a1a;border:1px solid #333;border-radius:10px;padding:6px 9px;font-size:12px;color:#fff">★ '+b.nota+'</div></div><div class="bh-body"><div class="bh-name">'+b.nome+'</div><div class="bh-spec">'+b.spec+'</div><div class="bh-desc">SEG a SÁB: 08:30 - 19:00<br>Atendimento presencial, com hora marcada e sem espera.</div><div class="pill-row"><span>Degradê</span><span>Tesoura</span><span>Barba</span></div></div>';
-const btn=document.createElement('button'); btn.className='btn-gold'; btn.textContent = selectedBarbeiros.includes(b.id) ? '✓ Elegido - David' : 'Elegir a David →';
+var btn=document.createElement('button'); btn.className='btn-gold'; btn.textContent = selectedBarbeiros.includes(b.id) ? '✓ Elegido - David' : 'Elegir a David →';
 btn.onclick=function(){ selectedBarbeiros=[b.id]; document.getElementById('barbeiro').value=b.id; renderBarbeiros(); };
 d.appendChild(btn);
 cont.appendChild(d);
 });
 }
 function renderServicos(){
-const grid=document.getElementById('servicosGrid'); const sel=document.getElementById('servico'); grid.innerHTML=''; sel.innerHTML='<option value="">Selecione</option>';
-for(const s in mapaServicos){
-const info=mapaServicos[s];
-const card=document.createElement('div'); card.className='servico-card'+(selectedServico===s?' active':'');
-const badge = s==='Corte Degradé' ? '<div style="position:absolute;top:8px;left:8px"><span class="badge-mais">Mais pedido</span></div>' : (info.promo ? '<div style="position:absolute;top:8px;left:8px"><span class="badge-mais">2 pessoas</span></div>' : '');
+var grid=document.getElementById('servicosGrid'); var sel=document.getElementById('servico'); grid.innerHTML=''; sel.innerHTML='<option value="">Selecione</option>';
+for(var s in mapaServicos){
+var info=mapaServicos[s];
+var card=document.createElement('div'); card.className='servico-card'+(selectedServico===s?' active':'');
+var badge = s==='Corte Degradé' ? '<div style="position:absolute;top:8px;left:8px"><span class="badge-mais">Mais pedido</span></div>' : (info.promo ? '<div style="position:absolute;top:8px;left:8px"><span class="badge-mais">2 pessoas</span></div>' : '');
 card.innerHTML=badge+(info.foto?'<img class="s-foto" src="'+info.foto+'" alt="'+s+'" loading="lazy" onerror="this.style.display=\'none\'">':'')+'<div class="s-body"><div class="s-top"><div class="s-name">'+s.toUpperCase()+'</div><div class="s-price">'+info.preco+'</div></div><div class="s-desc">'+info.desc+'</div>'+(info.promo?'<div class="promo-pill">RETO AMIGO</div>':'')+'</div>'+(selectedServico===s?'<div class="s-check">✓</div>':'');
-card.onclick=function(){ selectedServico=s; sel.value=s; document.querySelectorAll('.servico-card').forEach(function(c){c.classList.remove('active');}); card.classList.add('active'); const check=document.createElement('div'); check.className='s-check'; check.textContent='✓'; card.appendChild(check); atualizarResumo(); };
+(function(servName,cardEl){
+cardEl.onclick=function(){ selectedServico=servName; sel.value=servName; document.querySelectorAll('.servico-card').forEach(function(c){c.classList.remove('active');}); cardEl.classList.add('active'); var check=document.createElement('div'); check.className='s-check'; check.textContent='✓'; cardEl.appendChild(check); atualizarResumo(); };
+})(s,card);
 grid.appendChild(card); sel.innerHTML+='<option value="'+s+'">'+s+'</option>';
 }
 }
-function getHorariosPorDia(dStr){ const d=new Date(dStr+'T12:00:00'); const dia=d.getDay(); if(dia===0) return []; if(dia===1) return ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30']; if(dia===6) return ['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30']; return ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30']; }
-function esHoy(dStr){ const hoy=new Date(); const sel=new Date(dStr+'T12:00:00'); return hoy.toDateString()===sel.toDateString(); }
-function getHoraActual(){ const a=new Date(); return String(a.getHours()).padStart(2,'0')+':'+String(a.getMinutes()).padStart(2,'0'); }
+function getHorariosPorDia(dStr){ var d=new Date(dStr+'T12:00:00'); var dia=d.getDay(); if(dia===0) return []; if(dia===6) return ['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30']; return ['08:30','09:00','09:30','10:00','10:30','11:00','11:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30']; }
+function esHoy(dStr){ var hoy=new Date(); var sel=new Date(dStr+'T12:00:00'); return hoy.toDateString()===sel.toDateString(); }
+function getHoraActual(){ var a=new Date(); return String(a.getHours()).padStart(2,'0')+':'+String(a.getMinutes()).padStart(2,'0'); }
 function renderFecha(){
-const grid=document.getElementById('calGrid'); if(!grid) return;
-const hoje=new Date();
-const ano=hoje.getFullYear(); const mes=hoje.getMonth();
-const mesNome = hoje.toLocaleDateString('pt-BR',{month:'long'}); document.getElementById('mesLabel').textContent = mesNome.charAt(0).toUpperCase()+mesNome.slice(1);
-const primeiro=new Date(ano,mes,1);
-const diasNoMes=new Date(ano,mes+1,0).getDate();
-let html='';
-for(let i=0;i<primeiro.getDay();i++){ html+='<div class="cal-empty"></div>'; }
-for(let d=1; d<=diasNoMes; d++){
-const dt=new Date(ano,mes,d);
-const iso=ano+'-'+String(mes+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
-const diaSem=['DOM','SEG','TER','QUA','QUI','SEX','SÁB'][dt.getDay()];
-const pasado=dt < new Date(hoje.getFullYear(),hoje.getMonth(),hoje.getDate());
-const isDom=dt.getDay()===0;
+var grid=document.getElementById('calGrid'); if(!grid) return;
+var hoje=new Date();
+var ano=hoje.getFullYear(); var mes=hoje.getMonth();
+var mesNome = hoje.toLocaleDateString('pt-BR',{month:'long'}); document.getElementById('mesLabel').textContent = mesNome.charAt(0).toUpperCase()+mesNome.slice(1);
+var primeiro=new Date(ano,mes,1);
+var diasNoMes=new Date(ano,mes+1,0).getDate();
+var html='';
+for(var i=0;i<primeiro.getDay();i++){ html+='<div class="cal-empty"></div>'; }
+for(var d=1; d<=diasNoMes; d++){
+var dt=new Date(ano,mes,d);
+var iso=ano+'-'+String(mes+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+var diaSem=['DOM','SEG','TER','QUA','QUI','SEX','SÁB'][dt.getDay()];
+var pasado=dt < new Date(hoje.getFullYear(),hoje.getMonth(),hoje.getDate());
+var isDom=dt.getDay()===0;
 if(pasado||isDom){ html+='<div class="cal-day off"><span class="d-sem">'+diaSem+'</span><span class="d-num">'+d+'</span></div>'; continue; }
-const sel = selectedDateStr===iso ? ' active' : '';
+var sel = selectedDateStr===iso ? ' active' : '';
 html+='<div class="cal-day'+sel+'" onclick="selectDiaCalendario(\''+iso+'\',this)"><span class="d-sem">'+diaSem+'</span><span class="d-num">'+d+'</span></div>';
 }
 grid.innerHTML=html;
@@ -336,140 +331,147 @@ function selectDiaCalendario(iso,el){
 selectedDateStr=iso; document.getElementById('data').value=iso;
 document.querySelectorAll('.cal-day').forEach(function(c){c.classList.remove('active');});
 el.classList.add('active');
-const d=new Date(iso+'T12:00:00');
-const box=document.getElementById('selectedDateBox'); box.style.display='block'; box.textContent='✓ '+d.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'short'});
+var d=new Date(iso+'T12:00:00');
+var box=document.getElementById('selectedDateBox'); box.style.display='block'; box.textContent='✓ '+d.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'short'});
 atualizarResumo();
 }
 document.addEventListener('DOMContentLoaded',function(){
 renderBarbeiros(); renderServicos(); renderFecha();
-const dataInput=document.getElementById('data'); const hoje=new Date(); dataInput.min=hoje.toISOString().split('T')[0]; const max=new Date(); max.setDate(hoje.getDate()+30); dataInput.max=max.toISOString().split('T')[0];
+var dataInput=document.getElementById('data'); var hoje=new Date(); dataInput.min=hoje.toISOString().split('T')[0]; var max=new Date(); max.setDate(hoje.getDate()+30); dataInput.max=max.toISOString().split('T')[0];
 dataInput.addEventListener('change',function(){ selectedDateStr=dataInput.value; renderFecha(); atualizarResumo(); });
-const tel=document.getElementById('telefone'); tel.addEventListener('input',function(e){let v=e.target.value.replace(/\D/g,''); if(v.length>11) v=v.slice(0,11); if(v.length>6) e.target.value='('+v.slice(0,2)+') '+v.slice(2,7)+'-'+v.slice(7); else if(v.length>2) e.target.value='('+v.slice(0,2)+') '+v.slice(2); else e.target.value=v; atualizarResumo();});
+var tel=document.getElementById('telefone'); tel.addEventListener('input',function(e){var v=e.target.value.replace(/\D/g,''); if(v.length>11) v=v.slice(0,11); if(v.length>6) e.target.value='('+v.slice(0,2)+') '+v.slice(2,7)+'-'+v.slice(7); else if(v.length>2) e.target.value='('+v.slice(0,2)+') '+v.slice(2); else e.target.value=v; atualizarResumo();});
 document.getElementById('cliente').addEventListener('input',function(){
 atualizarResumo();
-const nome=document.getElementById('cliente').value.trim();
-const mini=document.getElementById('miniResumo');
-if(nome){ mini.style.display='block'; mini.innerHTML='<div style="font-size:13px">Olá, '+nome+' 👋<br><span style="color:#aaa">'+(selectedServico||'')+' • '+(selectedDateStr?new Date(selectedDateStr+'T12:00:00').toLocaleDateString('pt-BR',{weekday:'short',day:'numeric',month:'short'}):'')+'</span></div>'; }
+var nome=document.getElementById('cliente').value.trim();
+var mini=document.getElementById('miniResumo');
+if(nome){ mini.style.display='block'; mini.innerHTML='<div style="font-size:13px">Olá, '+nome+'<br><span style="color:#aaa">'+(selectedServico||'')+' • '+(selectedDateStr?new Date(selectedDateStr+'T12:00:00').toLocaleDateString('pt-BR',{weekday:'short',day:'numeric',month:'short'}):'')+'</span></div>'; }
 });
 showStep(1);
 window.addEventListener('offline',function(){document.getElementById('netWarn').style.display='block'; document.getElementById('netWarn').textContent='Sin internet — conecta WiFi o datos para ver horarios reales';});
 window.addEventListener('online',function(){document.getElementById('netWarn').style.display='none'; carregarHorarios(true);});
 });
-async function fetchComRetry(url, tentativas){
+function fetchComRetry(url, tentativas){
 tentativas=tentativas||3;
-for(let i=1;i<=tentativas;i++){
-try{
-const controller = new AbortController();
-const timeout = setTimeout(function(){controller.abort();}, 12000);
-const res = await fetch(url,{cache:'no-store', signal: controller.signal});
+return new Promise(function(resolve,reject){
+var intento=1;
+function intentar(){
+var controller = new AbortController();
+var timeout = setTimeout(function(){controller.abort();}, 12000);
+fetch(url,{cache:'no-store', signal: controller.signal}).then(function(res){
 clearTimeout(timeout);
 if(!res.ok) throw new Error('HTTP '+res.status);
-const json = await res.json();
-return json;
-}catch(e){
-if(i===tentativas) throw e;
-const w=document.getElementById('netWarn'); if(w){ w.style.display='block'; w.textContent='Conexión lenta — reintentando ('+i+'/'+tentativas+')...'; }
-await new Promise(function(r){setTimeout(r, i*1500);});
+return res.json();
+}).then(function(json){ resolve(json); }).catch(function(e){
+if(intento>=tentativas){ reject(e); return; }
+intento++;
+var w=document.getElementById('netWarn'); if(w){ w.style.display='block'; w.textContent='Conexión lenta — reintentando ('+intento+'/'+tentativas+')...'; }
+setTimeout(intentar, intento*1500);
+});
 }
+intentar();
+});
 }
-}
-async function carregarHorarios(forcar){
-const data=document.getElementById('data').value||selectedDateStr; const servico=selectedServico||document.getElementById('servico').value;
-const loading=document.getElementById('loading'); const grid=document.getElementById('gridHorarios'); const resumoBox=document.getElementById('resumoHorariosBox');
-const netWarn=document.getElementById('netWarn');
-if(selectedBarbeiros.length===0){ if(grid) grid.innerHTML='<div style="color:#c5a059;font-size:12px;text-align:center;padding:12px">Escolha David para liberar os horários reais.</div>'; return; }
-if(!data||!servico){ if(grid) grid.innerHTML='<div style="color:#666;font-size:12px;text-align:center;padding:10px">Selecione serviço e data</div>'; return; }
-if(new Date(data+'T12:00:00').getDay()===0){ if(grid) grid.innerHTML='<div style="color:#ff6b6b;text-align:center;font-size:13px">DOMINGO FECHADO</div>'; return; }
-const cacheKey = data+'|'+selectedBarbeiros.join(',')+'|'+servico;
+function carregarHorarios(forcar){
+var data=document.getElementById('data').value||selectedDateStr; var servico=selectedServico||document.getElementById('servico').value;
+var loading=document.getElementById('loading'); var grid=document.getElementById('gridHorarios'); var resumoBox=document.getElementById('resumoHorariosBox');
+var netWarn=document.getElementById('netWarn');
+if(selectedBarbeiros.length===0){ if(grid) grid.innerHTML='<div style="color:#c5a059;font-size:12px;text-align:center;padding:12px">Escolha David para liberar os horários reais.</div>'; return Promise.resolve(); }
+if(!data||!servico){ if(grid) grid.innerHTML='<div style="color:#666;font-size:12px;text-align:center;padding:10px">Selecione serviço e data</div>'; return Promise.resolve(); }
+if(new Date(data+'T12:00:00').getDay()===0){ if(grid) grid.innerHTML='<div style="color:#ff6b6b;text-align:center;font-size:13px">DOMINGO FECHADO</div>'; return Promise.resolve(); }
+var cacheKey = data+'|'+selectedBarbeiros.join(',')+'|'+servico;
 if(!forcar && cacheReservas.has(cacheKey)){
-const cached = cacheReservas.get(cacheKey);
+var cached = cacheReservas.get(cacheKey);
 renderGridHorarios(cached.reservas, cached.bloqueios, data, servico);
-return;
+return Promise.resolve();
 }
-if(isLoadingHorarios) return;
+if(isLoadingHorarios) return Promise.resolve();
 isLoadingHorarios=true;
 lastFetchId++;
-const currentId = lastFetchId;
+var currentId = lastFetchId;
 if(loading) loading.style.display='block'; if(grid) grid.innerHTML=''; if(netWarn) netWarn.style.display='none';
-try{
-const param=selectedBarbeiros.join(','); const url=SCRIPT_URL+'?data='+data+'&barbeiro='+encodeURIComponent(param)+'&_='+Date.now();
-const json = await fetchComRetry(url, 3);
+var param=selectedBarbeiros.join(','); var url=SCRIPT_URL+'?data='+data+'&barbeiro='+encodeURIComponent(param)+'&_='+Date.now();
+return fetchComRetry(url, 3).then(function(json){
 if(currentId !== lastFetchId) return;
-const reservas=Array.isArray(json)?json:(json.reservas||[]); const bloqueios=json.bloqueios||[];
+var reservas=Array.isArray(json)?json:(json.reservas||[]); var bloqueios=json.bloqueios||[];
 cacheReservas.set(cacheKey, {reservas:reservas, bloqueios:bloqueios});
-if(cacheReservas.size>30){ const firstKey = cacheReservas.keys().next().value; cacheReservas.delete(firstKey); }
 renderGridHorarios(reservas, bloqueios, data, servico);
 if(netWarn) netWarn.style.display='none';
-}catch(e){
+}).catch(function(e){
 if(currentId !== lastFetchId) return;
 if(grid) grid.innerHTML='<div style="color:#fde9b3;background:#2a1f0a;border:1px solid #c5a059;border-radius:12px;padding:14px;text-align:center"><div style="font-size:22px">📶</div><div style="font-weight:700;margin-top:6px">Internet lenta</div><div style="font-size:12px;color:#aaa;margin-top:4px">No pudimos cargar los horarios reales. Verifica tu WiFi o datos y toca reintentar.</div><button onclick="carregarHorarios(true)" style="margin-top:10px;background:#c5a059;color:#000;border:none;border-radius:8px;padding:8px 14px;font-weight:700">Reintentar ahora</button></div>';
-} finally{
+}).finally(function(){
 if(currentId === lastFetchId){
 if(loading) loading.style.display='none';
 isLoadingHorarios=false;
 }
-}
+});
 }
 function renderGridHorarios(reservas, bloqueios, data, servico){
-const grid=document.getElementById('gridHorarios'); const resumoBox=document.getElementById('resumoHorariosBox');
-const todos=getHorariosPorDia(data); const hActual=getHoraActual(); const esHoyDia=esHoy(data); const bloquesNec=(mapaServicos[servico] && mapaServicos[servico].bloques) || 1; const esSab=new Date(data+'T12:00:00').getDay()===6;
-const reservasPorBarbeiro={}; selectedBarbeiros.forEach(function(b){reservasPorBarbeiro[b]=new Set();});
-reservas.forEach(function(r){ const bNome=(r.barbeiro||'David').trim(); const match=selectedBarbeiros.find(function(sb){return sb.toLowerCase()===bNome.toLowerCase();})||bNome; if(!reservasPorBarbeiro[match]) reservasPorBarbeiro[match]=new Set(); const idx=todos.indexOf(r.hora); if(idx!==-1){ for(let i=0;i<(r.bloques||r.blocos||1);i++){ if(todos[idx+i]) reservasPorBarbeiro[match].add(todos[idx+i]); } } });
+var grid=document.getElementById('gridHorarios'); var resumoBox=document.getElementById('resumoHorariosBox');
+var todos=getHorariosPorDia(data); var hActual=getHoraActual(); var esHoyDia=esHoy(data); var bloquesNec=(mapaServicos[servico] && mapaServicos[servico].bloques) || 1; var esSab=new Date(data+'T12:00:00').getDay()===6;
+var reservasPorBarbeiro={}; selectedBarbeiros.forEach(function(b){reservasPorBarbeiro[b]=new Set();});
+reservas.forEach(function(r){ var bNome=(r.barbeiro||'David').trim(); var match=selectedBarbeiros.find(function(sb){return sb.toLowerCase()===bNome.toLowerCase();})||bNome; if(!reservasPorBarbeiro[match]) reservasPorBarbeiro[match]=new Set(); var idx=todos.indexOf(r.hora); if(idx!==-1){ for(var i=0;i<(r.bloques||r.blocos||1);i++){ if(todos[idx+i]) reservasPorBarbeiro[match].add(todos[idx+i]); } } });
 grid.innerHTML='';
-const totalSel = Object.values(selectedSlots).reduce(function(a,b){return a+b.length;},0);
+var totalSel = Object.values(selectedSlots).reduce(function(a,b){return a+b.length;},0);
 if(totalSel>0){
-const top=document.createElement('div'); top.style.cssText='background:#1c1c1c;border:1px solid #262626;border-radius:12px;padding:11px;font-size:13px;margin-bottom:12px';
-top.innerHTML = totalSel+' horário(s) selecionado(s) • '+Object.entries(selectedSlots).filter(function(e){return e[1].length>0;}).map(function(e){return e[1].join(', ');}).join(' | ');
+var top=document.createElement('div'); top.style.cssText='background:#1c1c1c;border:1px solid #262626;border-radius:12px;padding:11px;font-size:13px;margin-bottom:12px';
+top.innerHTML = totalSel+' horário(s) selecionado(s)';
 grid.appendChild(top);
 } else {
-const hint=document.createElement('div'); hint.style.cssText='font-size:12px;color:#888;text-align:center;margin-bottom:10px'; hint.textContent='Toque para escolher — toque de novo para quitar.';
+var hint=document.createElement('div'); hint.style.cssText='font-size:12px;color:#888;text-align:center;margin-bottom:10px'; hint.textContent='Toque para escolher — toque de novo para quitar.';
 grid.appendChild(hint);
 }
 selectedBarbeiros.forEach(function(barbId){
-const grupo=document.createElement('div');
-const manha=todos.filter(function(h){return h<'12:00';}); const tarde=todos.filter(function(h){return h>='13:00';});
-const renderTurno=function(label,lista){
-const wrap=document.createElement('div'); const lbl=document.createElement('div'); lbl.className='horario-label'; lbl.textContent=label; wrap.appendChild(lbl);
-const g=document.createElement('div'); g.className='horario-grid';
-const normHora = function(h){ if(!h) return ''; let s=String(h).trim(); let p=s.split(':'); let hh=(p[0]||'0').padStart(2,'0'); let mm=(p[1]||'00').padStart(2,'0'); return hh+':'+mm; };
-lista.forEach(function(hora){ if(hora==='12:00') return; if(hora==='11:30' && !esSab) return; let dis=false; if(esHoyDia && hora < hActual) dis=true; if(!dis){ const hNorm = normHora(hora); for(let b of bloqueios){ const bBarb = (b.barbeiro||'').trim(); if(bBarb && bBarb.toUpperCase()!=='TODOS' && bBarb.toLowerCase()!==barbId.toLowerCase()) continue; const ini = normHora(b.inicio||b.horaInicio||b.HoraInicio); const fim = normHora(b.fim||b.horaFim||b.HoraFim); if(!ini || !fim) continue; if(hNorm>=ini && hNorm<=fim){ dis=true; break; } } } if(!dis){ const idxHora=todos.indexOf(hora); for(let i=0;i<bloquesNec;i++){ const s=todos[idxHora+i]; if(!s){ if(i===0){dis=true;break;} continue;} if(reservasPorBarbeiro[barbId] && reservasPorBarbeiro[barbId].has(s)){dis=true;break;} } } const btn=document.createElement('button'); btn.type='button'; btn.className='horario-btn'+(selectedSlots[barbId]&&selectedSlots[barbId].includes(hora)?' selected':''); btn.textContent=hora; if(selectedSlots[barbId]&&selectedSlots[barbId].includes(hora)){ btn.innerHTML=hora+'<div style="font-size:11px">✓ Selecionado</div>'; } if(dis){ btn.innerHTML=hora+'<div style="font-size:11px;color:#555">Ocupado</div>'; } btn.disabled=dis; if(!dis){ btn.onclick=function(){ if(!selectedSlots[barbId]) selectedSlots[barbId]=[]; if(selectedSlots[barbId].includes(hora)){ selectedSlots[barbId]=selectedSlots[barbId].filter(function(h){return h!==hora;});} else { if(selectedSlots[barbId].length>=4){ alert('Max 4 horários por barbeiro'); return;} selectedSlots[barbId].push(hora); selectedSlots[barbId].sort();} atualizarResumo(); renderGridHorarios(reservas,bloqueios,data,servico); }; } g.appendChild(btn); }); wrap.appendChild(g); return wrap;
+var grupo=document.createElement('div');
+var manha=todos.filter(function(h){return h<'12:00';}); var tarde=todos.filter(function(h){return h>='13:00';});
+var renderTurno=function(label,lista){
+var wrap=document.createElement('div'); var lbl=document.createElement('div'); lbl.className='horario-label'; lbl.textContent=label; wrap.appendChild(lbl);
+var g=document.createElement('div'); g.className='horario-grid';
+var normHora = function(h){ if(!h) return ''; var s=String(h).trim(); var p=s.split(':'); var hh=(p[0]||'0').padStart(2,'0'); var mm=(p[1]||'00').padStart(2,'0'); return hh+':'+mm; };
+lista.forEach(function(hora){ if(hora==='12:00') return; if(hora==='11:30' && !esSab) return; var dis=false; if(esHoyDia && hora < hActual) dis=true; if(!dis){ var hNorm = normHora(hora); for(var bi=0;bi<bloqueios.length;bi++){ var b=bloqueios[bi]; var bBarb = (b.barbeiro||'').trim(); if(bBarb && bBarb.toUpperCase()!=='TODOS' && bBarb.toLowerCase()!==barbId.toLowerCase()) continue; var ini = normHora(b.inicio||b.horaInicio||b.HoraInicio); var fim = normHora(b.fim||b.horaFim||b.HoraFim); if(!ini || !fim) continue; if(hNorm>=ini && hNorm<=fim){ dis=true; break; } } } if(!dis){ var idxHora=todos.indexOf(hora); for(var i2=0;i2<bloquesNec;i2++){ var s2=todos[idxHora+i2]; if(!s2){ if(i2===0){dis=true;break;} continue;} if(reservasPorBarbeiro[barbId] && reservasPorBarbeiro[barbId].has(s2)){dis=true;break;} } } var btn=document.createElement('button'); btn.type='button'; btn.className='horario-btn'+(selectedSlots[barbId]&&selectedSlots[barbId].includes(hora)?' selected':''); btn.textContent=hora; if(selectedSlots[barbId]&&selectedSlots[barbId].includes(hora)){ btn.innerHTML=hora+'<div style="font-size:11px">✓ Selecionado</div>'; } if(dis){ btn.innerHTML=hora+'<div style="font-size:11px;color:#555">Ocupado</div>'; } btn.disabled=dis; if(!dis){ (function(horaC){ btn.onclick=function(){ if(!selectedSlots[barbId]) selectedSlots[barbId]=[]; if(selectedSlots[barbId].includes(horaC)){ selectedSlots[barbId]=selectedSlots[barbId].filter(function(h){return h!==horaC;});} else { if(selectedSlots[barbId].length>=4){ alert('Max 4 horários por barbeiro'); return;} selectedSlots[barbId].push(horaC); selectedSlots[barbId].sort();} atualizarResumo(); renderGridHorarios(reservas,bloqueios,data,servico); }; })(hora); } g.appendChild(btn); }); wrap.appendChild(g); return wrap;
 };
 if(manha.length) grupo.appendChild(renderTurno('MANHÃ',manha)); if(tarde.length) grupo.appendChild(renderTurno('TARDE',tarde)); grid.appendChild(grupo);
 });
-const total=Object.values(selectedSlots).reduce(function(a,b){return a+b.length;},0);
+var total=Object.values(selectedSlots).reduce(function(a,b){return a+b.length;},0);
 if(total>0){
-resumoBox.style.display='block'; let hHtml=''; for(let barb in selectedSlots){ if(selectedSlots[barb].length>0){ hHtml+='<div style="margin-bottom:6px"><b>'+total+' HORÁRIO(S) • '+barb.toUpperCase()+'</b><br>'+selectedSlots[barb].map(function(h){return '<span class="chip-hora">'+h+'</span>';}).join('')+'</div>'; } }
+resumoBox.style.display='block'; var hHtml=''; for(var barb in selectedSlots){ if(selectedSlots[barb].length>0){ hHtml+='<div style="margin-bottom:6px"><b>'+total+' HORÁRIO(S) • '+barb.toUpperCase()+'</b><br>'+selectedSlots[barb].map(function(h){return '<span class="chip-hora">'+h+'</span>';}).join('')+'</div>'; } }
 resumoBox.innerHTML='<div style="background:#1c1c1c;border:1px solid #262626;border-radius:12px;padding:11px;font-size:12px;margin-top:12px">'+hHtml+'</div>';
 } else { resumoBox.style.display='none'; }
 atualizarResumo();
 }
 function atualizarResumo(){
-const elNome=document.getElementById('resumoNome'); if(!elNome) return;
-const elFone=document.getElementById('resumoFone'); const elServ=document.getElementById('resumoServico'); const elData=document.getElementById('resumoData'); const elHoras=document.getElementById('resumoHoras');
-const btn=document.getElementById('btnAgendar'); const elDetalhe=document.getElementById('resumoDetalheHoras');
-const nome=document.getElementById('cliente').value||'—'; const fone=document.getElementById('telefone').value||'—';
+var elNome=document.getElementById('resumoNome'); if(!elNome) return;
+var elFone=document.getElementById('resumoFone'); var elServ=document.getElementById('resumoServico'); var elData=document.getElementById('resumoData'); var elHoras=document.getElementById('resumoHoras');
+var btn=document.getElementById('btnAgendar'); var elDetalhe=document.getElementById('resumoDetalheHoras');
+var nome=document.getElementById('cliente').value||'—'; var fone=document.getElementById('telefone').value||'—';
 elNome.textContent=nome; elFone.textContent=fone;
-if(selectedServico){ const info=mapaServicos[selectedServico]; elServ.textContent=selectedServico+' • '+(info?info.preco:''); } else { elServ.textContent='—'; }
-const dataVal=document.getElementById('data').value||selectedDateStr;
-if(dataVal){ const d=new Date(dataVal+'T12:00:00'); elData.textContent=d.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'short'}); } else { elData.textContent='—'; }
-const total=Object.values(selectedSlots).reduce(function(a,b){return a+b.length;},0);
-if(total>0){ let precoTotal=0; let bloquesTotal=0; for(let barb in selectedSlots){ if(selectedSlots[barb].length>0){ const svc=mapaServicos[selectedServico]; if(svc){ precoTotal+= parseInt(svc.preco.replace(/\D/g,''))*selectedSlots[barb].length; bloquesTotal+= svc.bloques*selectedSlots[barb].length; } } } elHoras.innerHTML = Object.entries(selectedSlots).filter(function(e){return e[1].length>0;}).map(function(e){return e[1].map(function(h){return '<span class="chip-hora">'+h+'</span>';}).join('');}).join(''); elDetalhe.textContent=total+' horário(s) • '+bloquesTotal*30+' min • R$'+precoTotal; btn.disabled=false; btn.textContent='CONFIRMAR RESERVA'; } else { elHoras.textContent='— Selecione horários'; elDetalhe.textContent='— horários'; btn.disabled=true; btn.textContent='CONFIRMAR RESERVA'; }
+if(selectedServico){ var info=mapaServicos[selectedServico]; elServ.textContent=selectedServico+' • '+(info?info.preco:''); } else { elServ.textContent='—'; }
+var dataVal=document.getElementById('data').value||selectedDateStr;
+if(dataVal){ var d=new Date(dataVal+'T12:00:00'); elData.textContent=d.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'short'}); } else { elData.textContent='—'; }
+var total=Object.values(selectedSlots).reduce(function(a,b){return a+b.length;},0);
+if(total>0){ var precoTotal=0; var bloquesTotal=0; for(var barb in selectedSlots){ if(selectedSlots[barb].length>0){ var svc=mapaServicos[selectedServico]; if(svc){ precoTotal+= parseInt(svc.preco.replace(/\D/g,''))*selectedSlots[barb].length; bloquesTotal+= svc.bloques*selectedSlots[barb].length; } } } elHoras.innerHTML = Object.entries(selectedSlots).filter(function(e){return e[1].length>0;}).map(function(e){return e[1].map(function(h){return '<span class="chip-hora">'+h+'</span>';}).join('');}).join(''); elDetalhe.textContent=total+' horário(s) • '+bloquesTotal*30+' min • R$'+precoTotal; btn.disabled=false; btn.textContent='CONFIRMAR RESERVA'; } else { elHoras.textContent='— Selecione horários'; elDetalhe.textContent='— horários'; btn.disabled=true; btn.textContent='CONFIRMAR RESERVA'; }
 }
 function limparCampos(){ document.getElementById('cliente').value=''; document.getElementById('telefone').value=''; document.getElementById('data').value=''; selectedDateStr=''; selectedServico=''; selectedSlots={}; document.getElementById('servico').selectedIndex=0; document.querySelectorAll('.servico-card').forEach(function(c){c.classList.remove('active');}); document.getElementById('gridHorarios').innerHTML=''; document.getElementById('resumoHorariosBox').style.display='none'; document.getElementById('btnAgendar').disabled=true; document.getElementById('confirmacao').style.display='none'; cacheReservas.clear(); renderFecha(); atualizarResumo(); }
 function fazerOutra(){ limparCampos(); showStep(1); }
-async function solicitarAgendamento(){
-const data=document.getElementById('data').value||selectedDateStr; const cliente=document.getElementById('cliente').value.trim(); const telefone=document.getElementById('telefone').value.trim(); const servico=selectedServico;
-const total=Object.values(selectedSlots).reduce(function(a,b){return a+b.length;},0);
+function solicitarAgendamento(){
+var data=document.getElementById('data').value||selectedDateStr; var cliente=document.getElementById('cliente').value.trim(); var telefone=document.getElementById('telefone').value.trim(); var servico=selectedServico;
+var total=Object.values(selectedSlots).reduce(function(a,b){return a+b.length;},0);
 if(!data||total===0||!cliente||!telefone||!servico){document.getElementById('modalErro').style.display='flex';return;}
-const reservasStr=Object.entries(selectedSlots).filter(function(e){return e[1].length>0;}).map(function(e){return e[0]+':'+e[1].join(',');}).join('|');
-const primeiraBarb=Object.keys(selectedSlots).find(function(b){return selectedSlots[b].length>0;}); const primeiraHora=selectedSlots[primeiraBarb][0];
-document.getElementById('modalProcess').style.display='flex'; const btn=document.getElementById('btnAgendar'); btn.disabled=true; btn.textContent='VERIFICANDO...';
-try{
-const fd=new URLSearchParams({data:data,[STRIPPED]
-const r=await fetch(SCRIPT_URL,{method:'POST',body:fd}); const result=await r.json();
+var primeiraBarb=Object.keys(selectedSlots).find(function(b){return selectedSlots[b].length>0;}); var primeiraHora=selectedSlots[primeiraBarb][0];
+document.getElementById('modalProcess').style.display='flex'; var btn=document.getElementById('btnAgendar'); btn.disabled=true; btn.textContent='VERIFICANDO...';
+var fd=new URLSearchParams();
+fd.append('data',data);
+fd.append('cliente',cliente);
+fd.append('telefone',telefone);
+fd.append('servico',servico);
+fd.append('barbeiro',primeiraBarb);
+fd.append('hora',primeiraHora);
+fd.append('horas',Object.values(selectedSlots).flat().join(','));
+fd.append('reservas',Object.entries(selectedSlots).filter(function(e){return e[1].length>0;}).map(function(e){return e[0]+':'+e[1].join(',');}).join('|'));
+fetch(SCRIPT_URL,{method:'POST',body:fd}).then(function(r){return r.json();}).then(function(result){
 if(result.success){
 document.getElementById('modalProcess').style.display='none';
-const d=new Date(data+'T12:00:00');
+var d=new Date(data+'T12:00:00');
 document.getElementById('okMsg').innerHTML='Obrigado, '+cliente+'.<br>Seu horário está reservado.';
 document.getElementById('okResumo').innerHTML='Barbeiro: David<br>Serviço: '+servico+' • '+(mapaServicos[servico] ? mapaServicos[servico].preco : '')+'<br>Data: '+d.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'short'})+'<br>Horário: '+Object.values(selectedSlots).flat().join(', ')+'<br>Cliente: '+cliente+'<br>WhatsApp: '+telefone;
 limparCampos();
@@ -477,25 +479,24 @@ showStep(7);
 if(result.whatsapp){ setTimeout(function(){ abrirWhatsAppDirecto(result.whatsapp); }, 800); }
 btn.textContent='CONFIRMAR RESERVA';
 } else { document.getElementById('modalProcess').style.display='none'; document.getElementById('modalOcupado').style.display='flex'; btn.disabled=false; btn.textContent='CONFIRMAR RESERVA'; carregarHorarios(true); }
-}catch(err){ document.getElementById('modalProcess').style.display='none'; document.getElementById('modalOcupado').style.display='flex'; btn.disabled=false; btn.textContent='CONFIRMAR RESERVA'; carregarHorarios(true); }
+}).catch(function(err){ document.getElementById('modalProcess').style.display='none'; document.getElementById('modalOcupado').style.display='flex'; btn.disabled=false; btn.textContent='CONFIRMAR RESERVA'; carregarHorarios(true); });
 }
 function abrirCancelar(){document.getElementById('modalCancelar').style.display='flex'}
 function fecharCancelar(){document.getElementById('modalCancelar').style.display='none'}
-function abrirWhatsAppDirecto(waUrl){ try{ let m=waUrl.match(/wa\.me\/(\d+)/); let phone=m?m[1]:"5595991554792"; let text=waUrl.split('text=')[1]||""; let appUrl="whatsapp://send?phone="+phone+"&text="+text; window.location.href=appUrl; }catch(e){ window.open(waUrl,'_blank'); } }
-async function confirmarCancelar(){
-const dataInput=document.getElementById('cancelData').value; const tel=document.getElementById('cancelTelefone').value.replace(/\D/g,'');
+function abrirWhatsAppDirecto(waUrl){ try{ var m=waUrl.match(/wa\.me\/(\d+)/); var phone=m?m[1]:"5595991554792"; var text=waUrl.split('text=')[1]||""; var appUrl="whatsapp://send?phone="+phone+"&text="+text; window.location.href=appUrl; }catch(e){ window.open(waUrl,'_blank'); } }
+function confirmarCancelar(){
+var dataInput=document.getElementById('cancelData').value; var tel=document.getElementById('cancelTelefone').value.replace(/\D/g,'');
 if(!dataInput||!tel){alert('Preencha data e WhatsApp');return}
 document.getElementById('modalCancelar').style.display='none'; document.getElementById('modalCancelando').style.display='flex';
-let dataEnvio=dataInput; if(dataInput.includes('/')){const p=dataInput.split('/'); dataEnvio=p[2]+'-'+p[1].padStart(2,'0')+'-'+p[0].padStart(2,'0');}
-try{
-const formData=new URLSearchParams();
+var dataEnvio=dataInput; if(dataInput.includes('/')){var p=dataInput.split('/'); dataEnvio=p[2]+'-'+p[1].padStart(2,'0')+'-'+p[0].padStart(2,'0');}
+var formData=new URLSearchParams();
 formData.append('acao','cancelar');
 formData.append('data',dataEnvio);
 formData.append('telefone',tel);
-const res=await fetch(SCRIPT_URL,{method:'POST',body:formData}); const r=await res.json();
+fetch(SCRIPT_URL,{method:'POST',body:formData}).then(function(res){return res.json();}).then(function(r){
 document.getElementById('modalCancelando').style.display='none';
 if(r.success && r.whatsapp){abrirWhatsAppDirecto(r.whatsapp);} else if(r.success){alert('Cancelado: '+r.hora); carregarHorarios(true);} else {alert(r.error||'Erro');}
-}catch(e){ document.getElementById('modalCancelando').style.display='none'; alert('Erro conexão'); }
+}).catch(function(e){ document.getElementById('modalCancelando').style.display='none'; alert('Erro conexão'); });
 }
 </script>
 </body>
