@@ -29,20 +29,17 @@ header{padding:20px 16px 10px;text-align:center}
 .card h3{font-size:20px;margin-top:10px}
 .card p{color:#aaa;font-size:16px;margin-top:4px}
 .price{color:#f5d67b;font-weight:800;font-size:20px;margin-top:6px}
-/* FOTO BARBERO - SOLO UN POCO MAS PEQUEÑA QUE ANTES, NO CHIQUITA */
 .barber-mini{width:160px;height:160px;border-radius:50%;object-fit:cover;border:3px solid #b8860b;display:block;margin:14px auto 6px;background:#222}
 .barber-name{text-align:center;font-size:22px;font-weight:800}
 .barber-sub{text-align:center;color:#aaa;font-size:16px;margin-top:4px;line-height:1.5}
 label{display:block;font-size:17px;margin:16px 0 6px;color:#ddd}
 input{width:100%;padding:15px 14px;border-radius:12px;border:1px solid #333;background:#161616;color:#fff;font-size:17px;outline:none}
 input:focus{border-color:#d4af37}
-/* CALENDARIO NORMAL - NO CARRUSEL, LLENA LA PANTALLA */
 .cal-head{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;text-align:center;color:#888;font-size:13px;font-weight:800;margin:10px 0 8px}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
-.cal-day{aspect-ratio:1/1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:12px;background:#161616;border:1px solid #262626;cursor:pointer;font-size:18px;font-weight:700}
+.cal-day{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;border-radius:12px;background:#161616;border:1px solid #262626;cursor:pointer;font-size:18px;font-weight:700}
 .cal-day.sel{background:#d4af37;color:#000;border-color:#d4af37}
 .cal-day.off{opacity:.2;pointer-events:none}
-.cal-day small{font-size:11px;font-weight:400;opacity:.7}
 .cal-empty{aspect-ratio:1/1}
 .horas{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:10px}
 .hora{padding:14px 6px;text-align:center;border-radius:12px;background:#161616;border:1px solid #333;cursor:pointer;font-size:17px}
@@ -66,7 +63,6 @@ input:focus{border-color:#d4af37}
 </head>
 <body>
 <div id="loader"><div class="loader-logo">DAVID<br>BARBER STUDIO</div><div class="loader-sub">AGENDAMENTO PREMIUM</div><div class="spinner"></div></div>
-
 <header>
 <div class="top-actions">
 <button class="top-btn gold" id="btnAppTop" type="button">↓ BAIXAR APP</button>
@@ -74,7 +70,6 @@ input:focus{border-color:#d4af37}
 </div>
 <div id="headerTitle"></div>
 </header>
-
 <div class="wrap">
 <div id="step1" class="step">
 <img class="barber-mini" src="david.jpg" alt="David Barber" loading="lazy" onerror="this.style.display='none'">
@@ -109,13 +104,9 @@ input:focus{border-color:#d4af37}
 </div>
 </div>
 </div>
-
 <div class="bottom"><div class="bottom-inner"><div class="steps-info" id="stepsInfo">Passo 1 de 6</div><button class="btn btn-back" id="btnBack" type="button">Voltar</button><button class="btn btn-next" id="btnNext" type="button">Próximo →</button></div></div>
-
 <script>
-// LINK YA PEGADO - NO TOCAR
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzcQMOm11ba3BRV0pRKlVplcGx0goPhtHIHurr-jm0sa0rzs9ujvdeTH4xFEyPIhMKjlQ/exec";
-
 const SERVICOS = [
 {nome:"Corte Social", preco:35, img:"corte-social.jpg"},
 {nome:"Corte Degradé", preco:40, img:"degrade.jpg"},
@@ -125,52 +116,79 @@ const SERVICOS = [
 {nome:"Limpieza Facial", preco:20, img:"limpieza.jpg"},
 {nome:"Corte + Limpieza Facial", preco:50, img:"limpieza-vapor.jpg"},
 {nome:"Corte e Barba + Limpieza Facial", preco:70, img:"corte-barba-limpieza.jpg"},
-{nome:"Promoção Dupla", preco:70, img:"promo-dupla.jpg"},
+{nome:"Promoção Dupla", preco:70, img:"promo-dupla.jpg"}
 ];
-let step=1, selServico=null, selData="", selHora="";
-const TITULOS={1:["DAVID BARBER STUDIO","Agende seu horário com estilo"],2:["Escolha seu serviço","Toque em um card para selecionar"],3:["Escolha o dia","Calendário do mês"],4:["Escolha o horário","Horários disponíveis do dia"],5:["Seus dados","Só falta seu nome e WhatsApp"],6:["Confirme seu agendamento","Revise e confirme"]};
+let step = 1;
+let selServico = null;
+let selData = "";
+let selHora = "";
+const TITULOS = {
+1:["DAVID BARBER STUDIO","Agende seu horário com estilo"],
+2:["Escolha seu serviço","Toque em um card para selecionar"],
+3:["Escolha o dia","Calendário do mês"],
+4:["Escolha o horário","Horários disponíveis do dia"],
+5:["Seus dados","Só falta seu nome e WhatsApp"],
+6:["Confirme seu agendamento","Revise e confirme"]
+};
 function renderHeader(){
-const t=TITULOS[step];
-document.getElementById("headerTitle").innerHTML = step===1 ? `<div class="step-title">${t[0]}</div><div class="step-sub">${t[1]}</div>` : `<div class="step-title" style="font-size:28px">${t[0]}</div><div class="step-sub">${t[1]}</div>`;
-document.getElementById("stepsInfo").textContent=`Passo ${step} de 6`;
-document.getElementById("btnBack").style.visibility=step===1?"hidden":"visible";
-document.getElementById("btnNext").style.display=step===6?"none":"block";
+const t = TITULOS[step];
+document.getElementById("headerTitle").innerHTML = step===1 ? '<div class="step-title">'+t[0]+'</div><div class="step-sub">'+t[1]+'</div>' : '<div class="step-title" style="font-size:28px">'+t[0]+'</div><div class="step-sub">'+t[1]+'</div>';
+document.getElementById("stepsInfo").textContent = "Passo " + step + " de 6";
+document.getElementById("btnBack").style.visibility = step===1 ? "hidden" : "visible";
+document.getElementById("btnNext").style.display = step===6 ? "none" : "block";
 }
 function showStep(n){
-step=n;
-document.querySelectorAll(".step").forEach(s=>s.classList.add("hidden"));
+step = n;
+document.querySelectorAll(".step").forEach(function(s){s.classList.add("hidden");});
 document.getElementById("step"+n).classList.remove("hidden");
-renderHeader(); window.scrollTo({top:0,behavior:"smooth"});
+renderHeader();
+window.scrollTo({top:0,behavior:"smooth"});
 if(n===4) carregarHorarios();
 if(n===6) montarResumo();
 }
 function renderServicos(){
-const box=document.getElementById("step2");
-box.innerHTML=SERVICOS.map((s,i)=>`<div class="card" onclick="selectServico(${i},this)"><img src="${s.img}" alt="${s.nome}" loading="lazy" onerror="this.src='david.jpg'"><h3>${s.nome}</h3><div class="price">R$ ${s.preco}</div></div>`).join("");
+const box = document.getElementById("step2");
+let html = "";
+for(let i=0;i<SERVICOS.length;i++){
+const s = SERVICOS[i];
+html += '<div class="card" onclick="selectServico('+i+',this)"><img src="'+s.img+'" alt="'+s.nome+'" loading="lazy" onerror="this.src=\'david.jpg\'"><h3>'+s.nome+'</h3><div class="price">R$ '+s.preco+'</div></div>';
+}
+box.innerHTML = html;
 }
 function selectServico(i,el){
-if(selServico && selServico.nome===SERVICOS[i].nome){selServico=null;document.querySelectorAll("#step2 .card").forEach(c=>c.classList.remove("sel"));return;}
-selServico=SERVICOS[i];document.querySelectorAll("#step2 .card").forEach(c=>c.classList.remove("sel"));el.classList.add("sel");
+if(selServico && selServico.nome===SERVICOS[i].nome){
+selServico=null;
+document.querySelectorAll("#step2 .card").forEach(function(c){c.classList.remove("sel");});
+return;
 }
-// CALENDARIO NORMAL - SIN CARRUSEL
+selServico=SERVICOS[i];
+document.querySelectorAll("#step2 .card").forEach(function(c){c.classList.remove("sel");});
+el.classList.add("sel");
+}
 function renderCalendario(){
 const box=document.getElementById("calGrid");
-const hoje=new Date(); const ano=hoje.getFullYear(), mes=hoje.getMonth();
-const primeiro=new Date(ano,mes,1); const diasNoMes=new Date(ano,mes+1,0).getDate();
+const hoje=new Date();
+const ano=hoje.getFullYear();
+const mes=hoje.getMonth();
+const primeiro=new Date(ano,mes,1);
+const diasNoMes=new Date(ano,mes+1,0).getDate();
 let html="";
-for(let i=0;i<primeiro.getDay();i++) html+=`<div class="cal-empty"></div>`;
+for(let i=0;i<primeiro.getDay();i++){ html+='<div class="cal-empty"></div>'; }
 for(let d=1; d<=diasNoMes; d++){
 const dt=new Date(ano,mes,d);
-const iso=`${ano}-${String(mes+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+const iso=ano+"-"+String(mes+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");
 const pasado=dt < new Date(hoje.getFullYear(),hoje.getMonth(),hoje.getDate());
 const domingo=dt.getDay()===0;
-if(pasado||domingo){ html+=`<div class="cal-day off">${d}</div>`; continue; }
-html+=`<div class="cal-day ${selData===iso?"sel":""}" onclick="selectData('${iso}',this)">${d}</div>`;
+if(pasado||domingo){ html+='<div class="cal-day off">'+d+'</div>'; continue; }
+const sel = selData===iso ? " sel" : "";
+html+='<div class="cal-day'+sel+'" onclick="selectData(\''+iso+'\',this)">'+d+'</div>';
 }
 box.innerHTML=html;
 }
 function selectData(iso,el){
-selData=iso; document.querySelectorAll(".cal-day").forEach(d=>d.classList.remove("sel")); el.classList.add("sel");
+selData=iso;
+document.querySelectorAll(".cal-day").forEach(function(d){d.classList.remove("sel");});
+el.classList.add("sel");
 document.getElementById("dateHint").textContent="Dia: "+iso.split("-").reverse().join("/");
 carregarHorarios();
 }
@@ -178,19 +196,30 @@ function carregarHorarios(){
 const box=document.getElementById("horasBox");
 if(!selData){box.innerHTML="<p style='color:#aaa'>Escolha o dia primeiro.</p>";return;}
 box.innerHTML="<p style='color:#aaa'>Carregando horários...</p>";
-fetch(SCRIPT_URL+"?action=horarios&data="+selData).then(r=>r.json()).then(j=>{
-const ocup=j.ocupados||j.bloqueados||[]; renderHoras(ocup);
-}).catch(()=>{renderHoras([]);});
+fetch(SCRIPT_URL+"?action=horarios&data="+selData).then(function(r){return r.json();}).then(function(j){
+const ocup=j.ocupados||j.bloqueados||[];
+renderHoras(ocup);
+}).catch(function(){renderHoras([]);});
 }
 function renderHoras(ocup){
-const box=document.getElementById("horasBox"); const base=[];
+const box=document.getElementById("horasBox");
+const base=[];
 for(let h=9;h<19;h++){base.push(String(h).padStart(2,"0")+":00"); base.push(String(h).padStart(2,"0")+":30");}
-box.innerHTML=base.map(h=>{
-const off=ocup.includes(h)?"off":""; const sel=selHora===h?"sel":"";
-return `<div class="hora ${off} ${sel}" onclick="selectHora('${h}',this)">${h}</div>`;
-}).join("");
+let html="";
+for(let k=0;k<base.length;k++){
+const h=base[k];
+const off=ocup.includes(h)?" off":"";
+const sel=selHora===h?" sel":"";
+html+='<div class="hora'+off+sel+'" onclick="selectHora(\''+h+'\',this)">'+h+'</div>';
 }
-function selectHora(h,el){selHora=h;document.querySelectorAll(".hora").forEach(x=>x.classList.remove("sel"));el.classList.add("sel");document.getElementById("horasHint").textContent="Horário: "+h;}
+box.innerHTML=html;
+}
+function selectHora(h,el){
+selHora=h;
+document.querySelectorAll(".hora").forEach(function(x){x.classList.remove("sel");});
+el.classList.add("sel");
+document.getElementById("horasHint").textContent="Horário: "+h;
+}
 function montarResumo(){
 if(!selServico) return;
 document.getElementById("rServico").textContent=selServico.nome;
@@ -204,55 +233,80 @@ function validar(){
 if(step===2 && !selServico){alert("Escolha um serviço");return false;}
 if(step===3 && !selData){alert("Escolha o dia");return false;}
 if(step===4 && !selHora){alert("Escolha o horário");return false;}
-if(step===5){const n=document.getElementById("nome").value.trim();const w=document.getElementById("whats").value.trim();if(!n){alert("Digite seu nome");return false;}if(!w){alert("Digite seu WhatsApp");return false;}}
+if(step===5){
+const n=document.getElementById("nome").value.trim();
+const w=document.getElementById("whats").value.trim();
+if(!n){alert("Digite seu nome");return false;}
+if(!w){alert("Digite seu WhatsApp");return false;}
+}
 return true;
 }
-document.getElementById("btnNext").onclick=()=>{if(!validar())return;if(step<6)showStep(step+1);};
-document.getElementById("btnBack").onclick=()=>{if(step>1)showStep(step-1);};
-document.getElementById("btnCancelTop").onclick=()=>{if(confirm("Cancelar agendamento?")){selServico=null;selData="";selHora="";document.getElementById("nome").value="";document.getElementById("whats").value="";document.querySelectorAll(".card").forEach(c=>c.classList.remove("sel"));showStep(1);}};
-document.getElementById("btnConfirmar").onclick=async()=>{
-const btn=document.getElementById("btnConfirmar"); const msg=document.getElementById("confirmMsg");
-btn.textContent="Agendando..."; btn.disabled=true;
-const dados={servico:selServico.nome,preco:selServico.preco,data:selData,[STRIPPED]"nome").value.trim(),whatsapp:document.getElementById("whats").value.trim(),barbeiro:"David"};
-try{
-await fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",body:JSON.stringify(dados)});
-msg.textContent="✅ Agendado! Te esperamos, "+dados.nome;
-const texto=encodeURIComponent(`Olá! Agendei: ${dados.servico} - ${dados.data} às ${dados.hora} - ${dados.nome}`);
-setTimeout(()=>{window.open("https://wa.me/5595991554792?text="+texto,"_blank");},800);
-}catch(e){msg.textContent="Agendado! Qualquer coisa nos chame no WhatsApp.";}
-btn.textContent="CONFIRMAR / AGENDAR ✓"; btn.disabled=false;
+document.getElementById("btnNext").onclick=function(){
+if(!validar()) return;
+if(step<6) showStep(step+1);
 };
-// ===== FIX BAIXAR APP - DIRECTO COMO ANTES, SIN VENTANITA =====
+document.getElementById("btnBack").onclick=function(){
+if(step>1) showStep(step-1);
+};
+document.getElementById("btnCancelTop").onclick=function(){
+if(confirm("Cancelar agendamento?")){
+selServico=null; selData=""; selHora="";
+document.getElementById("nome").value="";
+document.getElementById("whats").value="";
+document.querySelectorAll(".card").forEach(function(c){c.classList.remove("sel");});
+showStep(1);
+}
+};
+document.getElementById("btnConfirmar").onclick=function(){
+const btn=document.getElementById("btnConfirmar");
+const msg=document.getElementById("confirmMsg");
+btn.textContent="Agendando...";
+btn.disabled=true;
+const dados = {
+servico: selServico.nome,
+preco: selServico.preco,
+data: selData,
+hora: selHora,
+nome: document.getElementById("nome").value.trim(),
+whatsapp: document.getElementById("whats").value.trim(),
+barbeiro: "David"
+};
+fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",body:JSON.stringify(dados)}).then(function(){
+msg.textContent="Agendado! Te esperamos, "+dados.nome;
+const texto=encodeURIComponent("Olá! Agendei: "+dados.servico+" - "+dados.data+" às "+dados.hora+" - "+dados.nome);
+setTimeout(function(){window.open("https://wa.me/5595991554792?text="+texto,"_blank");},800);
+btn.textContent="CONFIRMAR / AGENDAR ✓";
+btn.disabled=false;
+}).catch(function(){
+msg.textContent="Agendado! Qualquer coisa nos chame no WhatsApp.";
+btn.textContent="CONFIRMAR / AGENDAR ✓";
+btn.disabled=false;
+});
+};
 let deferredPrompt=null;
-window.addEventListener("beforeinstallprompt",(e)=>{
+window.addEventListener("beforeinstallprompt",function(e){
 e.preventDefault();
 deferredPrompt=e;
 });
-document.getElementById("btnAppTop").onclick=async()=>{
-// Si ya hay permiso, abre directo el Instalar de Android
+document.getElementById("btnAppTop").onclick=function(){
 if(deferredPrompt){
 try{
 deferredPrompt.prompt();
-const r=await deferredPrompt.userChoice;
-deferredPrompt=null;
+deferredPrompt.userChoice.then(function(){deferredPrompt=null;});
 return;
 }catch(err){}
 }
-// Si Chrome aun no dio el permiso, intenta forzar que lo muestre
-// No muestra ventanita de pasos, solo intenta de nuevo
-// Esto pasa cuando el usuario ya rechazo antes o el SW aun no activo
-// Solucion: recargar una vez para que Chrome vuelva a ofrecer instalar
-// Pero primero intentamos abrir el prompt nativo si existe
-if(window.matchMedia('(display-mode: standalone)').matches){ alert("O app já está instalado!"); return; }
-// Ultimo intento: si no hay prompt, pedimos que el navegador lo muestre
-// Sin ventanita, solo recarga suave para reactivar el prompt
+if(window.matchMedia("(display-mode: standalone)").matches){alert("O app já está instalado!");return;}
 location.reload();
 };
 if("serviceWorker" in navigator){
-window.addEventListener("load",()=>{navigator.serviceWorker.register("sw.js").catch(()=>{});});
+window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){});});
 }
-renderServicos(); renderCalendario(); renderHeader();
-window.addEventListener("load",()=>{setTimeout(()=>{document.getElementById("loader").classList.add("hide");},600);});
+renderServicos();
+renderCalendario();
+renderHeader();
+setTimeout(function(){var l=document.getElementById("loader"); if(l) l.classList.add("hide");},1200);
+window.addEventListener("load",function(){setTimeout(function(){var l=document.getElementById("loader"); if(l) l.classList.add("hide");},400);});
 </script>
 </body>
 </html>
