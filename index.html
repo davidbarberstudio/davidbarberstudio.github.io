@@ -1,4 +1,4 @@
-<!-- DAVID BARBER STUDIO - HTML 1.2 - SOLO FIX BOTON BAIXAR APP -->
+<!-- DAVID BARBER STUDIO - HTML 1.2 - FIX BOTON + CALENDARIO -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -43,6 +43,7 @@ html,body{margin:0;padding:0;background:radial-gradient(ellipse at 50% -20%, rgb
 .progress-nums{display:flex;justify-content:space-between;font-size:11px;color:#666;margin-top:6px}
 .progress-nums b{color:#c5a059}
 .section{background:#141414;border:1px solid #1f1f1f;border-radius:18px;padding:14px;margin-top:12px}
+.cal-section{padding:10px !important;overflow:hidden;width:100%}
 .barbeiro-hero{border-radius:18px;overflow:hidden;border:1px solid #262626;background:#1c1c1c}
 .barbeiro-hero img{width:100%;height:300px;object-fit:cover;display:block}
 .barbeiro-hero .bh-body{padding:16px}
@@ -64,15 +65,14 @@ html,body{margin:0;padding:0;background:radial-gradient(ellipse at 50% -20%, rgb
 .servico-card.active .s-check{position:absolute;top:8px;right:8px;width:24px;height:24px;background:#c5a059;color:#000;border-radius:50%;font-size:13px;display:flex;align-items:center;justify-content:center;font-weight:800;z-index:2}
 .promo-pill{font-size:10px;background:#c5a059;color:#000;border-radius:8px;padding:3px 7px;margin-top:6px;display:inline-block;font-weight:700}
 .badge-mais{font-size:10px;background:#c5a059;color:#000;border-radius:8px;padding:3px 7px;display:inline-block;font-weight:700}
-.cal-head{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;text-align:center;font-size:11px;color:#888;font-weight:700;margin-bottom:8px}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
-.cal-day{background:#1c1c1c;border:1px solid #262626;border-radius:12px;padding:10px 2px;text-align:center;cursor:pointer;aspect-ratio:1/1;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.cal-head{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;text-align:center;font-size:10px;color:#888;font-weight:700;margin-bottom:6px;width:100%}
+.cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;width:100%;max-width:100%}
+.cal-day{background:#1c1c1c;border:1px solid #262626;border-radius:10px;padding:0;text-align:center;cursor:pointer;min-width:0;width:100%;height:46px;display:flex;align-items:center;justify-content:center}
 .cal-day.active{background:#c5a059;border-color:#c5a059}
 .cal-day.active *{color:#000 !important}
-.cal-day .d-num{font-size:17px;font-weight:800;color:#fff}
-.cal-day .d-sem{font-size:9px;color:#888}
+.cal-day .d-num{font-size:15px;font-weight:800;color:#fff;line-height:1}
 .cal-day.off{opacity:.25;pointer-events:none}
-.cal-empty{aspect-ratio:1/1}
+.cal-empty{height:46px;min-width:0}
 .selected-date-box{background:#c5a059;color:#000;border-radius:12px;padding:13px;font-weight:700;font-size:14px;text-align:center;margin-top:10px;display:none}
 .horario-label{font-size:11px;color:#888;letter-spacing:2px;margin:16px 0 10px}
 .horario-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -107,6 +107,7 @@ html,body{margin:0;padding:0;background:radial-gradient(ellipse at 50% -20%, rgb
 .net-warn{background:#2a1f0a;border:1px solid #c5a059;color:#fde9b3;border-radius:10px;padding:10px;font-size:12px;text-align:center;margin:10px 0;display:none}
 .success-box{text-align:center;padding:20px 0}
 .success-box h1{font-family:'Cinzel',serif;font-size:38px;color:#fff;margin:8px 0}
+#toastInstall{display:none;position:fixed;left:12px;right:12px;bottom:84px;background:#1c1c1c;border:1px solid #c5a059;border-radius:12px;padding:12px;font-size:12px;line-height:1.5;z-index:99999;color:#fde9b3;text-align:center}
 </style>
 <script>
 setTimeout(function(){var l=document.getElementById('loader'); if(l){l.classList.add('hidden');}},2800);
@@ -114,8 +115,9 @@ setTimeout(function(){var l=document.getElementById('loader'); if(l){l.classList
 </head>
 <body>
 <div id="loader"><div id="loader-logo">DAVID BARBER</div><div id="loader-sub">Studio DB</div><div class="loader-bar"><span id="loader-bar-inner"></span></div><div id="loader-pct">0%</div></div>
+<div id="toastInstall"></div>
 <div class="page">
-<div class="top-mini"><div><div class="db">DB DAVID BARBER STUDIO</div><div class="loc">JOINVILLE - SC</div></div><div class="top-actions"><button class="btn-top-mini gold" onclick="document.getElementById('btnInstalar').click()">BAIXAR APP</button><button class="btn-top-mini" onclick="abrirCancelar()">CANCELAR</button></div></div>
+<div class="top-mini"><div><div class="db">DB DAVID BARBER STUDIO</div><div class="loc">JOINVILLE - SC</div></div><div class="top-actions"><button class="btn-top-mini gold" id="btnTopInstalar">BAIXAR APP</button><button class="btn-top-mini" onclick="abrirCancelar()">CANCELAR</button></div></div>
 <div class="step active" id="step1">
 <div class="step-title">Escolha seu<br>barbeiro</div>
 <div class="step-sub">Um especialista para cuidar do seu visual.</div>
@@ -135,7 +137,7 @@ setTimeout(function(){var l=document.getElementById('loader'); if(l){l.classList
 <div class="step-title">Escolha a<br>data</div>
 <div class="step-sub">Toque no dia que você quer</div>
 <div class="progress-wrap"><div class="progress-top"><span>Passo 3 de 6</span><span>Data</span></div><div class="progress-bar"><span style="width:50%"></span></div><div class="progress-nums"><span>1</span><span>2</span><b>3</b><span>4</span><span>5</span><span>6</span></div></div>
-<div class="section"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><b id="mesLabel" style="font-size:15px">Novembro</b><span style="font-size:12px;color:#888">Calendário do mês</span></div><div class="cal-head"><span>DOM</span><span>SEG</span><span>TER</span><span>QUA</span><span>QUI</span><span>SEX</span><span>SÁB</span></div><div id="calGrid" class="cal-grid"></div><div id="selectedDateBox" class="selected-date-box"></div><div style="font-size:13px;color:#aaa;margin-top:12px;line-height:1.7"><b style="color:#fff">Horários de atenção</b><br>Segunda a Sexta: 08:30 – 18:00<br>Sábado: 08:00 – 17:00<br>Domingo: 09:00 – 13:00<br><br>Os horários livres aparecem depois dos seus dados.</div></div>
+<div class="section cal-section"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><b id="mesLabel" style="font-size:15px">Novembro</b><span style="font-size:12px;color:#888">Calendário do mês</span></div><div class="cal-head"><span>DOM</span><span>SEG</span><span>TER</span><span>QUA</span><span>QUI</span><span>SEX</span><span>SÁB</span></div><div id="calGrid" class="cal-grid"></div><div id="selectedDateBox" class="selected-date-box"></div><div style="font-size:13px;color:#aaa;margin-top:12px;line-height:1.7"><b style="color:#fff">Horários de atenção</b><br>Segunda a Sexta: 08:30 – 18:00<br>Sábado: 08:00 – 17:00<br>Domingo: 09:00 – 13:00<br><br>Os horários livres aparecem depois dos seus dados.</div></div>
 <input type="date" id="data" style="background:#1c1c1c;border:1px solid #262626;color:#fff;border-radius:8px;padding:10px;font-size:13px;margin-top:10px;width:100%">
 </div>
 <div class="step" id="step4">
@@ -215,11 +217,20 @@ var cacheReservas = new Map();
 var isLoadingHorarios = false;
 var lastFetchId = 0;
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;});
-document.getElementById('btnInstalar').addEventListener('click',function(){
-if(window.matchMedia('(display-mode: standalone)').matches){alert('O app já está instalado!');return;}
-if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(function(){deferredPrompt=null;});return;}
-alert('Espera 10 segundos sin tocar nada y vuelve a tocar BAIXAR APP.');
-});
+function showToastInstall(msg){var t=document.getElementById('toastInstall');t.textContent=msg;t.style.display='block';setTimeout(function(){t.style.display='none';},4000);}
+function tentarInstalar(){
+if(window.matchMedia('(display-mode: standalone)').matches){showToastInstall('O app já está instalado! Abre ele desde tu pantalla de inicio.');return;}
+if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(function(r){if(r && r.outcome==='accepted'){showToastInstall('Listo! Instalando...');} deferredPrompt=null;});return;}
+var isBrave = (navigator.brave && navigator.brave.isBrave) || /Brave/i.test(navigator.userAgent);
+if(isBrave){
+window.location.href='intent://davidbarberstudio.github.io/#Intent;scheme=https;package=com.android.chrome;end';
+setTimeout(function(){showToastInstall('Se abre Chrome, toca de nuevo BAIXAR APP allí y sale directo. En Brave el botón lo bloquea el navegador.');},600);
+return;
+}
+showToastInstall('Abre en Chrome y toca de nuevo BAIXAR APP, allí sale directo.');
+}
+document.getElementById('btnInstalar').addEventListener('click',tentarInstalar);
+document.getElementById('btnTopInstalar').addEventListener('click',tentarInstalar);
 var pct=0; var bar=document.getElementById('loader-bar-inner'); var pctEl=document.getElementById('loader-pct');
 var li=setInterval(function(){pct+=Math.random()*14+3; if(pct>=100){pct=100;clearInterval(li);setTimeout(function(){document.getElementById('loader').classList.add('hidden')},300)} bar.style.width=pct+'%'; pctEl.textContent=Math.floor(pct)+'%';},90);
 setTimeout(function(){document.getElementById('loader').classList.add('hidden'); clearInterval(li);},2500);
@@ -317,12 +328,11 @@ for(var i=0;i<primeiro.getDay();i++){ html+='<div class="cal-empty"></div>'; }
 for(var d=1; d<=diasNoMes; d++){
 var dt=new Date(ano,mes,d);
 var iso=ano+'-'+String(mes+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
-var diaSem=['DOM','SEG','TER','QUA','QUI','SEX','SÁB'][dt.getDay()];
 var pasado=dt < new Date(hoje.getFullYear(),hoje.getMonth(),hoje.getDate());
 var isDom=dt.getDay()===0;
-if(pasado||isDom){ html+='<div class="cal-day off"><span class="d-sem">'+diaSem+'</span><span class="d-num">'+d+'</span></div>'; continue; }
+if(pasado||isDom){ html+='<div class="cal-day off"><span class="d-num">'+d+'</span></div>'; continue; }
 var sel = selectedDateStr===iso ? ' active' : '';
-html+='<div class="cal-day'+sel+'" onclick="selectDiaCalendario(\''+iso+'\',this)"><span class="d-sem">'+diaSem+'</span><span class="d-num">'+d+'</span></div>';
+html+='<div class="cal-day'+sel+'" onclick="selectDiaCalendario(\''+iso+'\',this)"><span class="d-num">'+d+'</span></div>';
 }
 grid.innerHTML=html;
 }
