@@ -1,4 +1,4 @@
-<!-- DAVID BARBER STUDIO - HTML 1.2 - BOTON COMO ARMANDO -->
+<!-- DAVID BARBER STUDIO - HTML 1.2 - FIX ARMANDO -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -12,18 +12,6 @@
 <link rel="preconnect" href="https://images.unsplash.com">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Cinzel:wght@700;800&display=swap" rel="stylesheet">
-<script>
-// IGUAL QUE ARMANDO: se escucha desde el principio, antes de que cargue la página
-var deferredPrompt = null;
-window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); deferredPrompt = e; });
-function instalarApp(){
-  if(window.matchMedia('(display-mode: standalone)').matches){ return; }
-  if(deferredPrompt){
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(function(){ deferredPrompt = null; });
-  }
-}
-</script>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0;background:radial-gradient(ellipse at 50% -20%, rgba(197,160,89,0.18) 0%, rgba(197,160,89,0.08) 25%, rgba(0,0,0,0) 55%), linear-gradient(180deg, #11100d 0%, #0a0a0a 35%, #000000 100%);color:#e5e5e5;background-attachment:fixed;font-family:'Montserrat',Segoe UI,Arial,sans-serif;overflow-x:hidden}
@@ -127,7 +115,7 @@ setTimeout(function(){var l=document.getElementById('loader'); if(l){l.classList
 <body>
 <div id="loader"><div id="loader-logo">DAVID BARBER</div><div id="loader-sub">Studio DB</div><div class="loader-bar"><span id="loader-bar-inner"></span></div><div id="loader-pct">0%</div></div>
 <div class="page">
-<div class="top-mini"><div><div class="db">DB DAVID BARBER STUDIO</div><div class="loc">JOINVILLE - SC</div></div><div class="top-actions"><button class="btn-top-mini gold" onclick="instalarApp()">BAIXAR APP</button><button class="btn-top-mini" onclick="abrirCancelar()">CANCELAR</button></div></div>
+<div class="top-mini"><div><div class="db">DB DAVID BARBER STUDIO</div><div class="loc">JOINVILLE - SC</div></div><div class="top-actions"><button class="btn-top-mini gold" id="btnInstalar" style="display:none">BAIXAR APP</button><button class="btn-top-mini" onclick="abrirCancelar()">CANCELAR</button></div></div>
 <div class="step active" id="step1">
 <div class="step-title">Escolha seu<br>barbeiro</div>
 <div class="step-sub">Um especialista para cuidar do seu visual.</div>
@@ -221,7 +209,6 @@ var SCRIPT_URL='https://script.google.com/macros/s/AKfycbzcQMOm11ba3BRV0pRKlVplc
 var BARBEIROS=[{id:'David',nome:'David',inicial:'D',spec:'BARBEIRO • DEGRADÊ E TESOURA',desc:'Degradê e Tesoura • 10 anos',nota:'4.9',hidden:false,foto:'./david.jpg'}];
 var currentStep=1;
 var selectedBarbeiros=['David']; var selectedSlots={}; var selectedServico=''; var selectedDateStr='';
-if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js').catch(function(){}); }
 var cacheReservas = new Map();
 var isLoadingHorarios = false;
 var lastFetchId = 0;
@@ -501,6 +488,14 @@ document.getElementById('modalCancelando').style.display='none';
 if(r.success && r.whatsapp){abrirWhatsAppDirecto(r.whatsapp);} else if(r.success){alert('Cancelado: '+r.hora); carregarHorarios(true);} else {alert(r.error||'Erro');}
 }).catch(function(e){ document.getElementById('modalCancelando').style.display='none'; alert('Erro conexão'); });
 }
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e)=>{
+  e.preventDefault(); deferredPrompt=e;
+  document.getElementById('btnInstalar').style.display='block';
+});
+document.getElementById('btnInstalar').addEventListener('click', async()=>{
+  if(deferredPrompt){ deferredPrompt.prompt(); const {outcome}=await deferredPrompt.userChoice; if(outcome==='accepted') document.getElementById('btnInstalar').style.display='none'; deferredPrompt=null; }
+});
 </script>
 </body>
 </html>
