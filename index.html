@@ -1,4 +1,4 @@
-<!-- DAVID BARBER STUDIO - HTML 1.2 - FIX BOTON SIN INTENT -->
+<!-- DAVID BARBER STUDIO - HTML 1.2 - BOTON COMO ARMANDO -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -12,6 +12,18 @@
 <link rel="preconnect" href="https://images.unsplash.com">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Cinzel:wght@700;800&display=swap" rel="stylesheet">
+<script>
+// IGUAL QUE ARMANDO: se escucha desde el principio, antes de que cargue la página
+var deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); deferredPrompt = e; });
+function instalarApp(){
+  if(window.matchMedia('(display-mode: standalone)').matches){ return; }
+  if(deferredPrompt){
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(function(){ deferredPrompt = null; });
+  }
+}
+</script>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0;background:radial-gradient(ellipse at 50% -20%, rgba(197,160,89,0.18) 0%, rgba(197,160,89,0.08) 25%, rgba(0,0,0,0) 55%), linear-gradient(180deg, #11100d 0%, #0a0a0a 35%, #000000 100%);color:#e5e5e5;background-attachment:fixed;font-family:'Montserrat',Segoe UI,Arial,sans-serif;overflow-x:hidden}
@@ -115,7 +127,7 @@ setTimeout(function(){var l=document.getElementById('loader'); if(l){l.classList
 <body>
 <div id="loader"><div id="loader-logo">DAVID BARBER</div><div id="loader-sub">Studio DB</div><div class="loader-bar"><span id="loader-bar-inner"></span></div><div id="loader-pct">0%</div></div>
 <div class="page">
-<div class="top-mini"><div><div class="db">DB DAVID BARBER STUDIO</div><div class="loc">JOINVILLE - SC</div></div><div class="top-actions"><button class="btn-top-mini gold" onclick="document.getElementById('btnInstalar').click()">BAIXAR APP</button><button class="btn-top-mini" onclick="abrirCancelar()">CANCELAR</button></div></div>
+<div class="top-mini"><div><div class="db">DB DAVID BARBER STUDIO</div><div class="loc">JOINVILLE - SC</div></div><div class="top-actions"><button class="btn-top-mini gold" onclick="instalarApp()">BAIXAR APP</button><button class="btn-top-mini" onclick="abrirCancelar()">CANCELAR</button></div></div>
 <div class="step active" id="step1">
 <div class="step-title">Escolha seu<br>barbeiro</div>
 <div class="step-sub">Um especialista para cuidar do seu visual.</div>
@@ -179,7 +191,6 @@ setTimeout(function(){var l=document.getElementById('loader'); if(l){l.classList
 <div style="font-size:11px;color:#666;text-align:center;margin-top:8px">RESPOSTA EM ATÉ 5 MIN • JOINVILLE - SC</div>
 <div id="confirmacao" style="display:none;margin-top:10px;color:#c5a059;font-weight:700;text-align:center"></div>
 </div>
-<button id="btnInstalar" style="display:none">BAIXAR APP OFICIAL</button>
 </div>
 <div class="step" id="stepOk">
 <div class="success-box">
@@ -209,16 +220,11 @@ setTimeout(function(){var l=document.getElementById('loader'); if(l){l.classList
 var SCRIPT_URL='https://script.google.com/macros/s/AKfycbzcQMOm11ba3BRV0pRKlVplcGx0goPhtHIHurr-jm0sa0rzs9ujvdeTH4xFEyPIhMKjlQ/exec';
 var BARBEIROS=[{id:'David',nome:'David',inicial:'D',spec:'BARBEIRO • DEGRADÊ E TESOURA',desc:'Degradê e Tesoura • 10 anos',nota:'4.9',hidden:false,foto:'./david.jpg'}];
 var currentStep=1;
-var selectedBarbeiros=['David']; var selectedSlots={}; var selectedServico=''; var selectedDateStr=''; var deferredPrompt=null;
+var selectedBarbeiros=['David']; var selectedSlots={}; var selectedServico=''; var selectedDateStr='';
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js').catch(function(){}); }
 var cacheReservas = new Map();
 var isLoadingHorarios = false;
 var lastFetchId = 0;
-window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;});
-document.getElementById('btnInstalar').addEventListener('click',function(){
-if(window.matchMedia('(display-mode: standalone)').matches){return;}
-if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(function(){deferredPrompt=null;});}
-});
 var pct=0; var bar=document.getElementById('loader-bar-inner'); var pctEl=document.getElementById('loader-pct');
 var li=setInterval(function(){pct+=Math.random()*14+3; if(pct>=100){pct=100;clearInterval(li);setTimeout(function(){document.getElementById('loader').classList.add('hidden')},300)} bar.style.width=pct+'%'; pctEl.textContent=Math.floor(pct)+'%';},90);
 setTimeout(function(){document.getElementById('loader').classList.add('hidden'); clearInterval(li);},2500);
