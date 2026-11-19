@@ -1,4 +1,4 @@
-<!-- DAVID BARBER STUDIO - HTML 1.2 - FIX ARMANDO -->
+<!-- DAVID BARBER STUDIO - HTML 1.2 - FIX INSTALAR VIEJO -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -115,7 +115,7 @@ setTimeout(function(){var l=document.getElementById('loader'); if(l){l.classList
 <body>
 <div id="loader"><div id="loader-logo">DAVID BARBER</div><div id="loader-sub">Studio DB</div><div class="loader-bar"><span id="loader-bar-inner"></span></div><div id="loader-pct">0%</div></div>
 <div class="page">
-<div class="top-mini"><div><div class="db">DB DAVID BARBER STUDIO</div><div class="loc">JOINVILLE - SC</div></div><div class="top-actions"><button class="btn-top-mini gold" id="btnInstalar" style="display:none">BAIXAR APP</button><button class="btn-top-mini" onclick="abrirCancelar()">CANCELAR</button></div></div>
+<div class="top-mini"><div><div class="db">DB DAVID BARBER STUDIO</div><div class="loc">JOINVILLE - SC</div></div><div class="top-actions"><button class="btn-top-mini gold" id="btnInstalar">BAIXAR APP</button><button class="btn-top-mini" onclick="abrirCancelar()">CANCELAR</button></div></div>
 <div class="step active" id="step1">
 <div class="step-title">Escolha seu<br>barbeiro</div>
 <div class="step-sub">Um especialista para cuidar do seu visual.</div>
@@ -204,6 +204,7 @@ setTimeout(function(){var l=document.getElementById('loader'); if(l){l.classList
 <div id="modalCancelar" class="modal"><div class="modal-box"><div style="color:#c5a059;font-weight:700;margin-bottom:10px">Cancelar Agendamento</div><input id="cancelData" type="date" style="background:#111;color:#fff;border:1px solid #333;border-radius:8px;padding:10px;margin-bottom:8px"><input id="cancelTelefone" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="WhatsApp" style="background:#111;color:#fff;border:1px solid #333;border-radius:8px;padding:10px;margin-bottom:10px"><button onclick="confirmarCancelar()" class="btn-confirm" style="padding:10px">Confirmar</button><button onclick="fecharCancelar()" class="btn-sec">Voltar</button></div></div>
 <div id="modalCancelando" class="modal"><div class="modal-box"><div class="spinner"></div><div style="color:#c5a059">Cancelando...</div></div></div>
 <div id="modalOcupado" class="modal"><div class="modal-box" style="border-color:#ff4444"><div style="font-size:28px">⚠️</div><h3 style="color:#ff6b6b">Horário já agendado!</h3><button onclick="this.closest('.modal').style.display='none'" class="btn-confirm">Escolher outro</button></div></div>
+<div id="modalInstalar" class="modal"><div class="modal-box"><h3 style="color:#c5a059">Instalar App</h3><p style="color:#fff;font-size:12px;line-height:1.7">Android Brave / Chrome:<br>⋮ > Instalar app / Adicionar à tela inicial<br><br>iPhone:<br>Compartilhar > Adicionar à tela inicial</p><button onclick="this.closest('.modal').style.display='none'" class="btn-confirm">Fechar</button></div></div>
 <script>
 var SCRIPT_URL='https://script.google.com/macros/s/AKfycbzcQMOm11ba3BRV0pRKlVplcGx0goPhtHIHurr-jm0sa0rzs9ujvdeTH4xFEyPIhMKjlQ/exec';
 var BARBEIROS=[{id:'David',nome:'David',inicial:'D',spec:'BARBEIRO • DEGRADÊ E TESOURA',desc:'Degradê e Tesoura • 10 anos',nota:'4.9',hidden:false,foto:'./david.jpg'}];
@@ -212,6 +213,10 @@ var selectedBarbeiros=['David']; var selectedSlots={}; var selectedServico=''; v
 var cacheReservas = new Map();
 var isLoadingHorarios = false;
 var lastFetchId = 0;
+var deferredPrompt=null;
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js').catch(function(){}); }
+window.addEventListener('beforeinstallprompt',function(e){ e.preventDefault(); deferredPrompt=e; });
+document.getElementById('btnInstalar').addEventListener('click',function(){ if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt=null; return; } document.getElementById('modalInstalar').style.display='flex'; });
 var pct=0; var bar=document.getElementById('loader-bar-inner'); var pctEl=document.getElementById('loader-pct');
 var li=setInterval(function(){pct+=Math.random()*14+3; if(pct>=100){pct=100;clearInterval(li);setTimeout(function(){document.getElementById('loader').classList.add('hidden')},300)} bar.style.width=pct+'%'; pctEl.textContent=Math.floor(pct)+'%';},90);
 setTimeout(function(){document.getElementById('loader').classList.add('hidden'); clearInterval(li);},2500);
@@ -488,14 +493,6 @@ document.getElementById('modalCancelando').style.display='none';
 if(r.success && r.whatsapp){abrirWhatsAppDirecto(r.whatsapp);} else if(r.success){alert('Cancelado: '+r.hora); carregarHorarios(true);} else {alert(r.error||'Erro');}
 }).catch(function(e){ document.getElementById('modalCancelando').style.display='none'; alert('Erro conexão'); });
 }
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', (e)=>{
-  e.preventDefault(); deferredPrompt=e;
-  document.getElementById('btnInstalar').style.display='block';
-});
-document.getElementById('btnInstalar').addEventListener('click', async()=>{
-  if(deferredPrompt){ deferredPrompt.prompt(); const {outcome}=await deferredPrompt.userChoice; if(outcome==='accepted') document.getElementById('btnInstalar').style.display='none'; deferredPrompt=null; }
-});
 </script>
 </body>
 </html>
