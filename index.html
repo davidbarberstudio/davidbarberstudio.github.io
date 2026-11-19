@@ -1,4 +1,4 @@
-<!-- DAVID BARBER STUDIO - HTML 1.2 - FIX BOTON + CALENDARIO -->
+<!-- DAVID BARBER STUDIO - HTML 1.2 - FIX BOTON SIN INTENT -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -93,7 +93,7 @@ html,body{margin:0;padding:0;background:radial-gradient(ellipse at 50% -20%, rgb
 .chip-hora{background:#c5a059;color:#000;border-radius:12px;padding:4px 10px;margin:2px;display:inline-block;font-size:12px;font-weight:700}
 .btn-confirm{width:100%;background:#c5a059;color:#000;border:none;border-radius:14px;padding:18px;font-weight:800;font-size:15px;letter-spacing:1px;margin-top:16px;cursor:pointer}
 .btn-confirm:disabled{background:#222;color:#555}
-.btn-sec{width:100%;background:transparent;border:1px solid #333;color:#ff7a7a;border-radius:12px;padding:13px;margin-top:10px;font-size:13px;cursor:pointer}
+.btn-sec{width:100%;background:transparent;border:1px solid #333;color:#ff7a7a;border-radius:13px;padding:13px;margin-top:10px;font-size:13px;cursor:pointer}
 .bottom-nav{position:fixed;left:0;right:0;bottom:0;background:#0a0a0a;border-top:1px solid #222;padding:10px 12px 14px;z-index:1000}
 .bottom-nav-inner{max-width:480px;margin:0 auto;display:flex;gap:10px;align-items:center}
 .btn-voltar{background:#1c1c1c;color:#fff;border:1px solid #333;border-radius:22px;padding:13px 17px;font-size:13px;cursor:pointer}
@@ -107,7 +107,6 @@ html,body{margin:0;padding:0;background:radial-gradient(ellipse at 50% -20%, rgb
 .net-warn{background:#2a1f0a;border:1px solid #c5a059;color:#fde9b3;border-radius:10px;padding:10px;font-size:12px;text-align:center;margin:10px 0;display:none}
 .success-box{text-align:center;padding:20px 0}
 .success-box h1{font-family:'Cinzel',serif;font-size:38px;color:#fff;margin:8px 0}
-#toastInstall{display:none;position:fixed;left:12px;right:12px;bottom:84px;background:#1c1c1c;border:1px solid #c5a059;border-radius:12px;padding:12px;font-size:12px;line-height:1.5;z-index:99999;color:#fde9b3;text-align:center}
 </style>
 <script>
 setTimeout(function(){var l=document.getElementById('loader'); if(l){l.classList.add('hidden');}},2800);
@@ -115,9 +114,8 @@ setTimeout(function(){var l=document.getElementById('loader'); if(l){l.classList
 </head>
 <body>
 <div id="loader"><div id="loader-logo">DAVID BARBER</div><div id="loader-sub">Studio DB</div><div class="loader-bar"><span id="loader-bar-inner"></span></div><div id="loader-pct">0%</div></div>
-<div id="toastInstall"></div>
 <div class="page">
-<div class="top-mini"><div><div class="db">DB DAVID BARBER STUDIO</div><div class="loc">JOINVILLE - SC</div></div><div class="top-actions"><button class="btn-top-mini gold" id="btnTopInstalar">BAIXAR APP</button><button class="btn-top-mini" onclick="abrirCancelar()">CANCELAR</button></div></div>
+<div class="top-mini"><div><div class="db">DB DAVID BARBER STUDIO</div><div class="loc">JOINVILLE - SC</div></div><div class="top-actions"><button class="btn-top-mini gold" onclick="document.getElementById('btnInstalar').click()">BAIXAR APP</button><button class="btn-top-mini" onclick="abrirCancelar()">CANCELAR</button></div></div>
 <div class="step active" id="step1">
 <div class="step-title">Escolha seu<br>barbeiro</div>
 <div class="step-sub">Um especialista para cuidar do seu visual.</div>
@@ -217,20 +215,10 @@ var cacheReservas = new Map();
 var isLoadingHorarios = false;
 var lastFetchId = 0;
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;});
-function showToastInstall(msg){var t=document.getElementById('toastInstall');t.textContent=msg;t.style.display='block';setTimeout(function(){t.style.display='none';},4000);}
-function tentarInstalar(){
-if(window.matchMedia('(display-mode: standalone)').matches){showToastInstall('O app já está instalado! Abre ele desde tu pantalla de inicio.');return;}
-if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(function(r){if(r && r.outcome==='accepted'){showToastInstall('Listo! Instalando...');} deferredPrompt=null;});return;}
-var isBrave = (navigator.brave && navigator.brave.isBrave) || /Brave/i.test(navigator.userAgent);
-if(isBrave){
-window.location.href='intent://davidbarberstudio.github.io/#Intent;scheme=https;package=com.android.chrome;end';
-setTimeout(function(){showToastInstall('Se abre Chrome, toca de nuevo BAIXAR APP allí y sale directo. En Brave el botón lo bloquea el navegador.');},600);
-return;
-}
-showToastInstall('Abre en Chrome y toca de nuevo BAIXAR APP, allí sale directo.');
-}
-document.getElementById('btnInstalar').addEventListener('click',tentarInstalar);
-document.getElementById('btnTopInstalar').addEventListener('click',tentarInstalar);
+document.getElementById('btnInstalar').addEventListener('click',function(){
+if(window.matchMedia('(display-mode: standalone)').matches){return;}
+if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(function(){deferredPrompt=null;});}
+});
 var pct=0; var bar=document.getElementById('loader-bar-inner'); var pctEl=document.getElementById('loader-pct');
 var li=setInterval(function(){pct+=Math.random()*14+3; if(pct>=100){pct=100;clearInterval(li);setTimeout(function(){document.getElementById('loader').classList.add('hidden')},300)} bar.style.width=pct+'%'; pctEl.textContent=Math.floor(pct)+'%';},90);
 setTimeout(function(){document.getElementById('loader').classList.add('hidden'); clearInterval(li);},2500);
