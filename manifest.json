@@ -1,9 +1,32 @@
 {
   "name": "David Barber Studio",
   "short_name": "DBStudio",
+  "id": "./index.html",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#000000",
   "theme_color": "#000000",
-  "start_url": ".",
-  "icons": [{"src": "./1781700842770.png","sizes": "512x512","type": "image/png"}]
+  "description": "David Barber Studio - Joinville",
+  "icons": [
+    {
+      "src": "./dbm-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./dbm-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./dbm-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
 }
