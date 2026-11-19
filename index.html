@@ -9,22 +9,19 @@
 <link rel="apple-touch-icon" href="dbm-icon-192.png">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif}
-body{background:#0a0a0a;color:#fff;min-height:100vh;padding-bottom:120px}
-a{color:inherit;text-decoration:none}
-/* LOADER igual al viejo */
+body{background:#000;color:#fff;min-height:100vh;padding-bottom:120px}
 #loader{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .4s}
 #loader.hide{opacity:0;pointer-events:none}
 .loader-logo{font-size:42px;font-weight:900;letter-spacing:1px;background:linear-gradient(90deg,#f5d67b,#b8860b,#fff3a6,#c9a227);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center;line-height:1.1}
 .loader-sub{margin-top:8px;color:#aaa;font-size:15px;letter-spacing:2px}
 .spinner{width:46px;height:46px;border:4px solid #222;border-top-color:#d4af37;border-radius:50%;animation:spin 1s linear infinite;margin-top:22px}
 @keyframes spin{to{transform:rotate(360deg)}}
-/* HEADER NO FIJO - se va con el scroll */
-header{padding:22px 18px 10px;text-align:center}
-.top-actions{display:flex;justify-content:center;gap:10px;margin-bottom:12px}
-.top-btn{font-size:13px;padding:8px 14px;border-radius:999px;border:1px solid #333;background:#161616;color:#ddd;cursor:pointer}
-.top-btn.gold{border-color:#d4af37;color:#f5d67b}
-.step-title{font-size:26px;font-weight:900;line-height:1.15;background:linear-gradient(90deg,#f5d67b,#fff3a6,#b8860b);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.step-sub{color:#aaa;font-size:16px;margin-top:6px}
+header{padding:20px 16px 10px;text-align:center}
+.top-actions{display:flex;justify-content:center;gap:10px;margin-bottom:14px}
+.top-btn{font-size:14px;padding:9px 16px;border-radius:999px;border:1px solid #333;background:#111;color:#ddd;cursor:pointer}
+.top-btn.gold{border-color:#8a6d1a;color:#d4af37}
+.step-title{font-size:38px;font-weight:900;line-height:1.05;letter-spacing:1px;background:linear-gradient(90deg,#a8842a,#d4af37,#f5d67b);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.step-sub{color:#888;font-size:18px;margin-top:8px}
 .wrap{max-width:520px;margin:0 auto;padding:0 16px 20px}
 .card{background:#141414;border:1px solid #262626;border-radius:18px;padding:14px;margin-top:14px;cursor:pointer}
 .card.sel{border-color:#d4af37;box-shadow:0 0 0 2px #d4af37 inset;background:#1a170e}
@@ -32,22 +29,21 @@ header{padding:22px 18px 10px;text-align:center}
 .card h3{font-size:20px;margin-top:10px}
 .card p{color:#aaa;font-size:16px;margin-top:4px}
 .price{color:#f5d67b;font-weight:800;font-size:20px;margin-top:6px}
-.row{display:flex;gap:10px}
-.row .card{flex:1}
-/* Foto barbero pequeña */
-.barber-mini{width:110px;height:110px;border-radius:50%;object-fit:cover;border:3px solid #d4af37;display:block;margin:14px auto 6px;background:#222}
+/* FOTO BARBERO - SOLO UN POCO MAS PEQUEÑA QUE ANTES, NO CHIQUITA */
+.barber-mini{width:160px;height:160px;border-radius:50%;object-fit:cover;border:3px solid #b8860b;display:block;margin:14px auto 6px;background:#222}
 .barber-name{text-align:center;font-size:22px;font-weight:800}
-.barber-sub{text-align:center;color:#aaa;font-size:16px;margin-top:4px}
+.barber-sub{text-align:center;color:#aaa;font-size:16px;margin-top:4px;line-height:1.5}
 label{display:block;font-size:17px;margin:16px 0 6px;color:#ddd}
-input,select{width:100%;padding:15px 14px;border-radius:12px;border:1px solid #333;background:#161616;color:#fff;font-size:17px;outline:none}
+input{width:100%;padding:15px 14px;border-radius:12px;border:1px solid #333;background:#161616;color:#fff;font-size:17px;outline:none}
 input:focus{border-color:#d4af37}
-.dates{display:flex;gap:10px;overflow-x:auto;padding:8px 2px 14px;scrollbar-width:none}
-.dates::-webkit-scrollbar{display:none}
-.day{min-width:62px;text-align:center;padding:12px 6px;border-radius:14px;background:#161616;border:1px solid #262626;cursor:pointer;flex-shrink:0}
-.day.sel{background:#d4af37;color:#000;border-color:#d4af37}
-.day b{font-size:18px;display:block}
-.day span{font-size:14px;color:#aaa}
-.day.sel span{color:#000}
+/* CALENDARIO NORMAL - NO CARRUSEL, LLENA LA PANTALLA */
+.cal-head{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;text-align:center;color:#888;font-size:13px;font-weight:800;margin:10px 0 8px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.cal-day{aspect-ratio:1/1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:12px;background:#161616;border:1px solid #262626;cursor:pointer;font-size:18px;font-weight:700}
+.cal-day.sel{background:#d4af37;color:#000;border-color:#d4af37}
+.cal-day.off{opacity:.2;pointer-events:none}
+.cal-day small{font-size:11px;font-weight:400;opacity:.7}
+.cal-empty{aspect-ratio:1/1}
 .horas{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:10px}
 .hora{padding:14px 6px;text-align:center;border-radius:12px;background:#161616;border:1px solid #333;cursor:pointer;font-size:17px}
 .hora.sel{background:#d4af37;color:#000;border-color:#d4af37;font-weight:800}
@@ -58,352 +54,205 @@ input:focus{border-color:#d4af37}
 .resumo .line:last-child{border:none}
 .resumo .total{display:flex;justify-content:space-between;padding-top:14px;font-size:22px;font-weight:900}
 .resumo .total b{color:#f5d67b}
-/* BARRA INFERIOR FIJA */
-.bottom{position:fixed;left:0;right:0;bottom:0;background:#0a0a0a;border-top:1px solid #262626;padding:12px 14px 16px;z-index:100}
+.bottom{position:fixed;left:0;right:0;bottom:0;background:#000;border-top:1px solid #222;padding:12px 14px 18px;z-index:100}
 .bottom-inner{max-width:520px;margin:0 auto;display:flex;gap:10px;align-items:center}
-.steps-info{font-size:14px;color:#aaa;white-space:nowrap}
+.steps-info{font-size:14px;color:#777;white-space:nowrap}
 .btn{flex:1;padding:16px;border-radius:14px;border:none;font-size:18px;font-weight:800;cursor:pointer}
 .btn-back{background:#222;color:#fff}
 .btn-next{background:linear-gradient(90deg,#f5d67b,#c9a227);color:#000}
 .btn-confirm{background:linear-gradient(90deg,#f5d67b,#fff3a6,#c9a227);color:#000;width:100%;padding:18px;border-radius:14px;border:none;font-size:20px;font-weight:900;cursor:pointer;margin-top:16px}
 .hidden{display:none!important}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;z-index:10000;padding:20px}
-.modal-box{background:#171717;border:1px solid #333;border-radius:18px;padding:20px;max-width:420px;width:100%}
-.modal-box h3{font-size:21px;margin-bottom:10px}
-.modal-box p{color:#ccc;font-size:16px;line-height:1.6}
-.modal-box button{margin-top:16px;width:100%;padding:14px;border-radius:12px;background:#d4af37;border:none;font-size:17px;font-weight:800}
 </style>
 </head>
 <body>
-
-<div id="loader">
-  <div class="loader-logo">DAVID<br>BARBER STUDIO</div>
-  <div class="loader-sub">AGENDAMENTO PREMIUM</div>
-  <div class="spinner"></div>
-</div>
+<div id="loader"><div class="loader-logo">DAVID<br>BARBER STUDIO</div><div class="loader-sub">AGENDAMENTO PREMIUM</div><div class="spinner"></div></div>
 
 <header>
-  <div class="top-actions">
-    <button class="top-btn gold" id="btnAppTop" type="button">⬇ BAIXAR APP</button>
-    <button class="top-btn" id="btnCancelTop" type="button">✕ CANCELAR</button>
-  </div>
-  <div id="headerTitle"></div>
+<div class="top-actions">
+<button class="top-btn gold" id="btnAppTop" type="button">↓ BAIXAR APP</button>
+<button class="top-btn" id="btnCancelTop" type="button">✕ CANCELAR</button>
+</div>
+<div id="headerTitle"></div>
 </header>
 
 <div class="wrap">
-  <!-- PASO 1 INTRO - UNICO CON TITULO GRANDE -->
-  <div id="step1" class="step">
-    <div style="text-align:center">
-      <img class="barber-mini" src="david.jpg" alt="David Barber" loading="lazy" onerror="this.style.display='none'">
-      <div class="barber-name">David Barber Studio</div>
-      <div class="barber-sub">Barbearia • Joinville - Aventureiro<br>Corte • Barba • Sobrancelha • Limpieza Facial</div>
-    </div>
-    <div class="card" style="text-align:center;cursor:default">
-      <h3 style="font-size:22px">Bem-vindo 👑</h3>
-      <p style="font-size:17px;line-height:1.6">Escolha seu serviço, escolha o dia e o horário, e confirme seu agendamento em menos de 1 minuto.</p>
-    </div>
-    <div class="card" style="text-align:center;cursor:default">
-      <p style="color:#f5d67b;font-weight:800;font-size:18px">Segunda a Sábado • 09:00 às 19:00</p>
-      <p>Atendimento com hora marcada</p>
-    </div>
-  </div>
-
-  <!-- PASO 2 SERVICOS -->
-  <div id="step2" class="step hidden"></div>
-
-  <!-- PASO 3 DATA -->
-  <div id="step3" class="step hidden">
-    <div id="datesBox" class="dates"></div>
-    <p id="dateHint" style="color:#aaa;font-size:15px">Selecione um dia do mês</p>
-  </div>
-
-  <!-- PASO 4 HORARIOS - PRE-CARREGA ENQUANTO USUARIO PREENCHE DADOS -->
-  <div id="step4" class="step hidden">
-    <div id="horasBox" class="horas"></div>
-    <p id="horasHint" style="color:#aaa;font-size:15px;margin-top:10px">Selecione um horário</p>
-  </div>
-
-  <!-- PASO 5 DADOS -->
-  <div id="step5" class="step hidden">
-    <label>Seu nome</label>
-    <input id="nome" placeholder="Ex: João Silva" autocomplete="name">
-    <label>WhatsApp</label>
-    <input id="whats" placeholder="(47) 99999-9999" inputmode="tel" autocomplete="tel">
-    <p style="color:#777;font-size:14px;margin-top:10px">Usamos só para confirmar seu horário.</p>
-  </div>
-
-  <!-- PASO 6 RESUMO PREMIUM -->
-  <div id="step6" class="step hidden">
-    <div class="resumo">
-      <h2>Resumo do seu agendamento</h2>
-      <div class="line"><span>Serviço</span><b id="rServico">-</b></div>
-      <div class="line"><span>Barbeiro</span><b>David</b></div>
-      <div class="line"><span>Data</span><b id="rData">-</b></div>
-      <div class="line"><span>Horário</span><b id="rHora">-</b></div>
-      <div class="line"><span>Cliente</span><b id="rNome">-</b></div>
-      <div class="line"><span>WhatsApp</span><b id="rWhats">-</b></div>
-      <div class="total"><span>Total</span><b id="rTotal">R$ 0</b></div>
-      <button class="btn-confirm" id="btnConfirmar" type="button">CONFIRMAR / AGENDAR ✓</button>
-      <p id="confirmMsg" style="text-align:center;color:#8f8;font-size:15px;margin-top:10px"></p>
-    </div>
-  </div>
+<div id="step1" class="step">
+<img class="barber-mini" src="david.jpg" alt="David Barber" loading="lazy" onerror="this.style.display='none'">
+<div class="barber-name">David Barber Studio</div>
+<div class="barber-sub">Barbearia • Joinville - Aventureiro<br>Corte • Barba • Sobrancelha • Limpieza Facial</div>
+<div class="card" style="text-align:center;cursor:default"><h3 style="font-size:22px">Bem-vindo 👑</h3><p style="font-size:17px;line-height:1.6">Escolha seu serviço, escolha o dia e o horário, e confirme seu agendamento em menos de 1 minuto.</p></div>
+<div class="card" style="text-align:center;cursor:default"><p style="color:#f5d67b;font-weight:800;font-size:18px">Segunda a Sábado • 09:00 às 19:00</p><p>Atendimento com hora marcada</p></div>
+</div>
+<div id="step2" class="step hidden"></div>
+<div id="step3" class="step hidden">
+<div class="cal-head"><span>DOM</span><span>SEG</span><span>TER</span><span>QUA</span><span>QUI</span><span>SEX</span><span>SÁB</span></div>
+<div id="calGrid" class="cal-grid"></div>
+<p id="dateHint" style="color:#aaa;font-size:15px;margin-top:10px">Selecione um dia</p>
+</div>
+<div id="step4" class="step hidden"><div id="horasBox" class="horas"></div><p id="horasHint" style="color:#aaa;font-size:15px;margin-top:10px">Selecione um horário</p></div>
+<div id="step5" class="step hidden">
+<label>Seu nome</label><input id="nome" placeholder="Ex: João Silva" autocomplete="name">
+<label>WhatsApp</label><input id="whats" placeholder="(47) 99999-9999" inputmode="tel" autocomplete="tel">
+<p style="color:#777;font-size:14px;margin-top:10px">Usamos só para confirmar seu horário.</p>
+</div>
+<div id="step6" class="step hidden">
+<div class="resumo"><h2>Resumo do seu agendamento</h2>
+<div class="line"><span>Serviço</span><b id="rServico">-</b></div>
+<div class="line"><span>Barbeiro</span><b>David</b></div>
+<div class="line"><span>Data</span><b id="rData">-</b></div>
+<div class="line"><span>Horário</span><b id="rHora">-</b></div>
+<div class="line"><span>Cliente</span><b id="rNome">-</b></div>
+<div class="line"><span>WhatsApp</span><b id="rWhats">-</b></div>
+<div class="total"><span>Total</span><b id="rTotal">R$ 0</b></div>
+<button class="btn-confirm" id="btnConfirmar" type="button">CONFIRMAR / AGENDAR ✓</button>
+<p id="confirmMsg" style="text-align:center;color:#8f8;font-size:15px;margin-top:10px"></p>
+</div>
+</div>
 </div>
 
-<div class="bottom">
-  <div class="bottom-inner">
-    <div class="steps-info" id="stepsInfo">Passo 1 de 6</div>
-    <button class="btn btn-back" id="btnBack" type="button">Voltar</button>
-    <button class="btn btn-next" id="btnNext" type="button">Próximo →</button>
-  </div>
-</div>
-
-<div id="installModal" class="modal hidden">
-  <div class="modal-box">
-    <h3>Baixar App - David Barber Studio</h3>
-    <p>1. Toque nos <b>3 pontinhos ⋮</b> do navegador<br>2. Toque em <b>Adicionar à tela inicial</b><br>3. Toque em <b>Instalar / Adicionar</b><br><br>Pronto, o app vai ficar na sua tela inicial como um app normal.</p>
-    <button id="btnCloseInstall" type="button">Entendi</button>
-  </div>
-</div>
+<div class="bottom"><div class="bottom-inner"><div class="steps-info" id="stepsInfo">Passo 1 de 6</div><button class="btn btn-back" id="btnBack" type="button">Voltar</button><button class="btn btn-next" id="btnNext" type="button">Próximo →</button></div></div>
 
 <script>
-// ==== MANTENHA SEU SCRIPT_URL AQUI - NAO MUDE NADA DA LOGICA ====
-const SCRIPT_URL = "COLE_AQUI_SEU_SCRIPT_URL_DO_GOOGLE_SHEETS";
-// ================================================================
+// LINK YA PEGADO - NO TOCAR
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzcQMOm11ba3BRV0pRKlVplcGx0goPhtHIHurr-jm0sa0rzs9ujvdeTH4xFEyPIhMKjlQ/exec";
 
 const SERVICOS = [
-  {nome:"Corte Social", preco:35, img:"corte-social.jpg"},
-  {nome:"Corte Degradé", preco:40, img:"degrade.jpg"},
-  {nome:"Corte e Barba", preco:60, img:"corte-barba.jpg"},
-  {nome:"Barba", preco:30, img:"barba.jpg"},
-  {nome:"Sobrancelha", preco:10, img:"cejas.jpg"},
-  {nome:"Limpieza Facial", preco:20, img:"limpieza.jpg"},
-  {nome:"Corte + Limpieza Facial", preco:50, img:"limpieza-vapor.jpg"},
-  {nome:"Corte e Barba + Limpieza Facial", preco:70, img:"corte-barba-limpieza.jpg"},
-  {nome:"Promoção Dupla", preco:70, img:"promo-dupla.jpg"},
+{nome:"Corte Social", preco:35, img:"corte-social.jpg"},
+{nome:"Corte Degradé", preco:40, img:"degrade.jpg"},
+{nome:"Corte e Barba", preco:60, img:"corte-barba.jpg"},
+{nome:"Barba", preco:30, img:"barba.jpg"},
+{nome:"Sobrancelha", preco:10, img:"cejas.jpg"},
+{nome:"Limpieza Facial", preco:20, img:"limpieza.jpg"},
+{nome:"Corte + Limpieza Facial", preco:50, img:"limpieza-vapor.jpg"},
+{nome:"Corte e Barba + Limpieza Facial", preco:70, img:"corte-barba-limpieza.jpg"},
+{nome:"Promoção Dupla", preco:70, img:"promo-dupla.jpg"},
 ];
-
-let step = 1;
-let selServico = null;
-let selData = "";
-let selHora = "";
-let horariosCache = [];
-
-const TITULOS = {
-  1: ["DAVID BARBER STUDIO","Agende seu horário com estilo"],
-  2: ["Escolha seu serviço","Toque em um card para selecionar"],
-  3: ["Escolha o dia","Role para ver o mês inteiro"],
-  4: ["Escolha o horário","Horários disponíveis do dia"],
-  5: ["Seus dados","Só falta seu nome e WhatsApp"],
-  6: ["Confirme seu agendamento","Revise e confirme"],
-};
-
+let step=1, selServico=null, selData="", selHora="";
+const TITULOS={1:["DAVID BARBER STUDIO","Agende seu horário com estilo"],2:["Escolha seu serviço","Toque em um card para selecionar"],3:["Escolha o dia","Calendário do mês"],4:["Escolha o horário","Horários disponíveis do dia"],5:["Seus dados","Só falta seu nome e WhatsApp"],6:["Confirme seu agendamento","Revise e confirme"]};
 function renderHeader(){
-  const t = TITULOS[step];
-  document.getElementById("headerTitle").innerHTML = step===1
-    ? `<div class="step-title" style="font-size:34px">${t[0]}</div><div class="step-sub">${t[1]}</div>`
-    : `<div class="step-title">${t[0]}</div><div class="step-sub">${t[1]}</div>`;
-  document.getElementById("stepsInfo").textContent = `Passo ${step} de 6`;
-  document.getElementById("btnBack").style.visibility = step===1 ? "hidden" : "visible";
-  document.getElementById("btnNext").textContent = step===6 ? "Finalizar" : "Próximo →";
-  document.getElementById("btnNext").style.display = step===6 ? "none" : "block";
+const t=TITULOS[step];
+document.getElementById("headerTitle").innerHTML = step===1 ? `<div class="step-title">${t[0]}</div><div class="step-sub">${t[1]}</div>` : `<div class="step-title" style="font-size:28px">${t[0]}</div><div class="step-sub">${t[1]}</div>`;
+document.getElementById("stepsInfo").textContent=`Passo ${step} de 6`;
+document.getElementById("btnBack").style.visibility=step===1?"hidden":"visible";
+document.getElementById("btnNext").style.display=step===6?"none":"block";
 }
-
 function showStep(n){
-  step = n;
-  document.querySelectorAll(".step").forEach(s=>s.classList.add("hidden"));
-  document.getElementById("step"+n).classList.remove("hidden");
-  renderHeader();
-  window.scrollTo({top:0,behavior:"smooth"});
-  if(n===4) carregarHorarios();
-  if(n===6) montarResumo();
+step=n;
+document.querySelectorAll(".step").forEach(s=>s.classList.add("hidden"));
+document.getElementById("step"+n).classList.remove("hidden");
+renderHeader(); window.scrollTo({top:0,behavior:"smooth"});
+if(n===4) carregarHorarios();
+if(n===6) montarResumo();
 }
-
 function renderServicos(){
-  const box = document.getElementById("step2");
-  box.innerHTML = SERVICOS.map((s,i)=>`
-    <div class="card" data-i="${i}" onclick="selectServico(${i},this)">
-      <img src="${s.img}" alt="${s.nome}" loading="lazy" onerror="this.src='david.jpg'">
-      <h3>${s.nome}</h3>
-      <div class="price">R$ ${s.preco}</div>
-    </div>
-  `).join("");
+const box=document.getElementById("step2");
+box.innerHTML=SERVICOS.map((s,i)=>`<div class="card" onclick="selectServico(${i},this)"><img src="${s.img}" alt="${s.nome}" loading="lazy" onerror="this.src='david.jpg'"><h3>${s.nome}</h3><div class="price">R$ ${s.preco}</div></div>`).join("");
 }
 function selectServico(i,el){
-  // segundo clique desseleciona
-  if(selServico && selServico.nome===SERVICOS[i].nome){
-    selServico=null;
-    document.querySelectorAll("#step2 .card").forEach(c=>c.classList.remove("sel"));
-    return;
-  }
-  selServico = SERVICOS[i];
-  document.querySelectorAll("#step2 .card").forEach(c=>c.classList.remove("sel"));
-  el.classList.add("sel");
+if(selServico && selServico.nome===SERVICOS[i].nome){selServico=null;document.querySelectorAll("#step2 .card").forEach(c=>c.classList.remove("sel"));return;}
+selServico=SERVICOS[i];document.querySelectorAll("#step2 .card").forEach(c=>c.classList.remove("sel"));el.classList.add("sel");
 }
-
-function renderDatas(){
-  const box = document.getElementById("datesBox");
-  const hoje = new Date();
-  const ano = hoje.getFullYear(), mes = hoje.getMonth();
-  const diasNoMes = new Date(ano, mes+1, 0).getDate();
-  const nomes = ["DOM","SEG","TER","QUA","QUI","SEX","SÁB"];
-  let html = "";
-  for(let d=1; d<=diasNoMes; d++){
-    const dt = new Date(ano, mes, d);
-    if(dt < new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate())) continue;
-    if(dt.getDay()===0) continue; // domingo fechado
-    const iso = `${ano}-${String(mes+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
-    html += `<div class="day ${selData===iso?"sel":""}" onclick="selectData('${iso}',this)"><span>${nomes[dt.getDay()]}</span><b>${d}</b></div>`;
-  }
-  box.innerHTML = html;
+// CALENDARIO NORMAL - SIN CARRUSEL
+function renderCalendario(){
+const box=document.getElementById("calGrid");
+const hoje=new Date(); const ano=hoje.getFullYear(), mes=hoje.getMonth();
+const primeiro=new Date(ano,mes,1); const diasNoMes=new Date(ano,mes+1,0).getDate();
+let html="";
+for(let i=0;i<primeiro.getDay();i++) html+=`<div class="cal-empty"></div>`;
+for(let d=1; d<=diasNoMes; d++){
+const dt=new Date(ano,mes,d);
+const iso=`${ano}-${String(mes+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+const pasado=dt < new Date(hoje.getFullYear(),hoje.getMonth(),hoje.getDate());
+const domingo=dt.getDay()===0;
+if(pasado||domingo){ html+=`<div class="cal-day off">${d}</div>`; continue; }
+html+=`<div class="cal-day ${selData===iso?"sel":""}" onclick="selectData('${iso}',this)">${d}</div>`;
+}
+box.innerHTML=html;
 }
 function selectData(iso,el){
-  selData = iso;
-  document.querySelectorAll(".day").forEach(d=>d.classList.remove("sel"));
-  el.classList.add("sel");
-  document.getElementById("dateHint").textContent = "Dia: " + iso.split("-").reverse().join("/");
-  // pre-carrega horarios para o passo seguinte
-  carregarHorarios();
+selData=iso; document.querySelectorAll(".cal-day").forEach(d=>d.classList.remove("sel")); el.classList.add("sel");
+document.getElementById("dateHint").textContent="Dia: "+iso.split("-").reverse().join("/");
+carregarHorarios();
 }
-
 function carregarHorarios(){
-  // MANTIDO: busca no Sheets, com fallback para nao travar
-  const box = document.getElementById("horasBox");
-  if(!selData){ box.innerHTML = "<p style='color:#aaa'>Escolha o dia primeiro.</p>"; return; }
-  box.innerHTML = "<p style='color:#aaa'>Carregando horários...</p>";
-  // horarios padrao 09:00 - 19:00 cada 30min
-  const base = [];
-  for(let h=9; h<19; h++){ base.push(String(h).padStart(2,"0")+":00"); base.push(String(h).padStart(2,"0")+":30"); }
-  // tenta buscar ocupados no Sheets
-  if(SCRIPT_URL && SCRIPT_URL.indexOf("http")===0){
-    fetch(SCRIPT_URL + "?action=horarios&data=" + selData).then(r=>r.json()).then(j=>{
-      const ocup = j.ocupados || j.bloqueados || [];
-      horariosCache = base;
-      renderHoras(ocup);
-    }).catch(()=>{ renderHoras([]); });
-  } else {
-    renderHoras([]);
-  }
+const box=document.getElementById("horasBox");
+if(!selData){box.innerHTML="<p style='color:#aaa'>Escolha o dia primeiro.</p>";return;}
+box.innerHTML="<p style='color:#aaa'>Carregando horários...</p>";
+fetch(SCRIPT_URL+"?action=horarios&data="+selData).then(r=>r.json()).then(j=>{
+const ocup=j.ocupados||j.bloqueados||[]; renderHoras(ocup);
+}).catch(()=>{renderHoras([]);});
 }
 function renderHoras(ocup){
-  const box = document.getElementById("horasBox");
-  box.innerHTML = horariosCache.length ? "" : "";
-  const base = [];
-  for(let h=9; h<19; h++){ base.push(String(h).padStart(2,"0")+":00"); base.push(String(h).padStart(2,"0")+":30"); }
-  box.innerHTML = base.map(h=>{
-    const off = ocup.includes(h) ? "off" : "";
-    const sel = selHora===h ? "sel" : "";
-    return `<div class="hora ${off} ${sel}" onclick="selectHora('${h}',this)">${h}</div>`;
-  }).join("");
+const box=document.getElementById("horasBox"); const base=[];
+for(let h=9;h<19;h++){base.push(String(h).padStart(2,"0")+":00"); base.push(String(h).padStart(2,"0")+":30");}
+box.innerHTML=base.map(h=>{
+const off=ocup.includes(h)?"off":""; const sel=selHora===h?"sel":"";
+return `<div class="hora ${off} ${sel}" onclick="selectHora('${h}',this)">${h}</div>`;
+}).join("");
 }
-function selectHora(h,el){
-  selHora = h;
-  document.querySelectorAll(".hora").forEach(x=>x.classList.remove("sel"));
-  el.classList.add("sel");
-  document.getElementById("horasHint").textContent = "Horário: " + h;
-}
-
+function selectHora(h,el){selHora=h;document.querySelectorAll(".hora").forEach(x=>x.classList.remove("sel"));el.classList.add("sel");document.getElementById("horasHint").textContent="Horário: "+h;}
 function montarResumo(){
-  if(!selServico) return;
-  document.getElementById("rServico").textContent = selServico.nome;
-  document.getElementById("rData").textContent = selData ? selData.split("-").reverse().join("/") : "-";
-  document.getElementById("rHora").textContent = selHora || "-";
-  document.getElementById("rNome").textContent = document.getElementById("nome").value || "-";
-  document.getElementById("rWhats").textContent = document.getElementById("whats").value || "-";
-  document.getElementById("rTotal").textContent = "R$ " + selServico.preco;
+if(!selServico) return;
+document.getElementById("rServico").textContent=selServico.nome;
+document.getElementById("rData").textContent=selData?selData.split("-").reverse().join("/"):"-";
+document.getElementById("rHora").textContent=selHora||"-";
+document.getElementById("rNome").textContent=document.getElementById("nome").value||"-";
+document.getElementById("rWhats").textContent=document.getElementById("whats").value||"-";
+document.getElementById("rTotal").textContent="R$ "+selServico.preco;
 }
-
 function validar(){
-  if(step===2 && !selServico){ alert("Escolha um serviço"); return false; }
-  if(step===3 && !selData){ alert("Escolha o dia"); return false; }
-  if(step===4 && !selHora){ alert("Escolha o horário"); return false; }
-  if(step===5){
-    const n = document.getElementById("nome").value.trim();
-    const w = document.getElementById("whats").value.trim();
-    if(!n){ alert("Digite seu nome"); return false; }
-    if(!w){ alert("Digite seu WhatsApp"); return false; }
-  }
-  return true;
+if(step===2 && !selServico){alert("Escolha um serviço");return false;}
+if(step===3 && !selData){alert("Escolha o dia");return false;}
+if(step===4 && !selHora){alert("Escolha o horário");return false;}
+if(step===5){const n=document.getElementById("nome").value.trim();const w=document.getElementById("whats").value.trim();if(!n){alert("Digite seu nome");return false;}if(!w){alert("Digite seu WhatsApp");return false;}}
+return true;
 }
-
-document.getElementById("btnNext").onclick = ()=>{
-  if(!validar()) return;
-  if(step<6) showStep(step+1);
+document.getElementById("btnNext").onclick=()=>{if(!validar())return;if(step<6)showStep(step+1);};
+document.getElementById("btnBack").onclick=()=>{if(step>1)showStep(step-1);};
+document.getElementById("btnCancelTop").onclick=()=>{if(confirm("Cancelar agendamento?")){selServico=null;selData="";selHora="";document.getElementById("nome").value="";document.getElementById("whats").value="";document.querySelectorAll(".card").forEach(c=>c.classList.remove("sel"));showStep(1);}};
+document.getElementById("btnConfirmar").onclick=async()=>{
+const btn=document.getElementById("btnConfirmar"); const msg=document.getElementById("confirmMsg");
+btn.textContent="Agendando..."; btn.disabled=true;
+const dados={servico:selServico.nome,preco:selServico.preco,data:selData,[STRIPPED]"nome").value.trim(),whatsapp:document.getElementById("whats").value.trim(),barbeiro:"David"};
+try{
+await fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",body:JSON.stringify(dados)});
+msg.textContent="✅ Agendado! Te esperamos, "+dados.nome;
+const texto=encodeURIComponent(`Olá! Agendei: ${dados.servico} - ${dados.data} às ${dados.hora} - ${dados.nome}`);
+setTimeout(()=>{window.open("https://wa.me/5595991554792?text="+texto,"_blank");},800);
+}catch(e){msg.textContent="Agendado! Qualquer coisa nos chame no WhatsApp.";}
+btn.textContent="CONFIRMAR / AGENDAR ✓"; btn.disabled=false;
 };
-document.getElementById("btnBack").onclick = ()=>{
-  if(step>1) showStep(step-1);
-};
-document.getElementById("btnCancelTop").onclick = ()=>{
-  if(confirm("Cancelar agendamento?")){
-    selServico=null; selData=""; selHora="";
-    document.getElementById("nome").value=""; document.getElementById("whats").value="";
-    document.querySelectorAll(".card").forEach(c=>c.classList.remove("sel"));
-    showStep(1);
-  }
-};
-
-document.getElementById("btnConfirmar").onclick = async ()=>{
-  const btn = document.getElementById("btnConfirmar");
-  const msg = document.getElementById("confirmMsg");
-  btn.textContent = "Agendando..."; btn.disabled = true;
-  const dados = {
-    servico: selServico.nome,
-    preco: selServico.preco,
-    data: selData,
-    hora: selHora,
-    nome: document.getElementById("nome").value.trim(),
-    whatsapp: document.getElementById("whats").value.trim(),
-    barbeiro: "David"
-  };
-  try{
-    if(SCRIPT_URL && SCRIPT_URL.indexOf("http")===0){
-      await fetch(SCRIPT_URL, {method:"POST", mode:"no-cors", body: JSON.stringify(dados)});
-    }
-    msg.textContent = "✅ Agendado! Te esperamos, " + dados.nome;
-    // WhatsApp gratis wa.me
-    const texto = encodeURIComponent(`Olá! Agendei: ${dados.servico} - ${dados.data} às ${dados.hora} - ${dados.nome}`);
-    setTimeout(()=>{ window.open("https://wa.me/5595991554792?text="+texto, "_blank"); }, 800);
-  }catch(e){
-    msg.textContent = "Agendado! Qualquer coisa nos chame no WhatsApp.";
-  }
-  btn.textContent = "CONFIRMAR / AGENDAR ✓"; btn.disabled = false;
-};
-
-// ===== FIX BAIXAR APP - PWA =====
-let deferredPrompt = null;
-window.addEventListener("beforeinstallprompt", (e)=>{
-  e.preventDefault();
-  deferredPrompt = e;
+// ===== FIX BAIXAR APP - DIRECTO COMO ANTES, SIN VENTANITA =====
+let deferredPrompt=null;
+window.addEventListener("beforeinstallprompt",(e)=>{
+e.preventDefault();
+deferredPrompt=e;
 });
-async function instalarApp(){
-  if(deferredPrompt){
-    try{
-      deferredPrompt.prompt();
-      const r = await deferredPrompt.userChoice;
-      deferredPrompt = null;
-      if(r && r.outcome==="accepted") return;
-    }catch(e){}
-  }
-  // Fallback - sempre mostra como instalar, nao fica morto
-  document.getElementById("installModal").classList.remove("hidden");
+document.getElementById("btnAppTop").onclick=async()=>{
+// Si ya hay permiso, abre directo el Instalar de Android
+if(deferredPrompt){
+try{
+deferredPrompt.prompt();
+const r=await deferredPrompt.userChoice;
+deferredPrompt=null;
+return;
+}catch(err){}
 }
-document.getElementById("btnAppTop").onclick = instalarApp;
-document.getElementById("btnCloseInstall").onclick = ()=>{
-  document.getElementById("installModal").classList.add("hidden");
+// Si Chrome aun no dio el permiso, intenta forzar que lo muestre
+// No muestra ventanita de pasos, solo intenta de nuevo
+// Esto pasa cuando el usuario ya rechazo antes o el SW aun no activo
+// Solucion: recargar una vez para que Chrome vuelva a ofrecer instalar
+// Pero primero intentamos abrir el prompt nativo si existe
+if(window.matchMedia('(display-mode: standalone)').matches){ alert("O app já está instalado!"); return; }
+// Ultimo intento: si no hay prompt, pedimos que el navegador lo muestre
+// Sin ventanita, solo recarga suave para reactivar el prompt
+location.reload();
 };
-
-// Service Worker - mantido
 if("serviceWorker" in navigator){
-  window.addEventListener("load", ()=>{
-    navigator.serviceWorker.register("sw.js").catch(()=>{});
-  });
+window.addEventListener("load",()=>{navigator.serviceWorker.register("sw.js").catch(()=>{});});
 }
-
-renderServicos();
-renderDatas();
-renderHeader();
-window.addEventListener("load", ()=>{
-  setTimeout(()=>{ document.getElementById("loader").classList.add("hide"); }, 600);
-});
+renderServicos(); renderCalendario(); renderHeader();
+window.addEventListener("load",()=>{setTimeout(()=>{document.getElementById("loader").classList.add("hide");},600);});
 </script>
 </body>
 </html>
