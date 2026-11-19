@@ -1,4 +1,4 @@
-<!-- DAVID BARBER STUDIO - HTML 1.2 FIX LOADER - 19/11/2026 -->
+<!-- DAVID BARBER STUDIO - HTML 1.2 - SOLO FIX BOTON BAIXAR APP -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -8,7 +8,7 @@
 <link rel="icon" href="./1781700842770.png">
 <link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#000000">
-<link rel="apple-touch-icon" href="./dbm-icon-192.png">
+<link rel="apple-touch-icon" href="./1781700842770.png">
 <link rel="preconnect" href="https://images.unsplash.com">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Cinzel:wght@700;800&display=swap" rel="stylesheet">
@@ -109,7 +109,6 @@ html,body{margin:0;padding:0;background:radial-gradient(ellipse at 50% -20%, rgb
 .success-box h1{font-family:'Cinzel',serif;font-size:38px;color:#fff;margin:8px 0}
 </style>
 <script>
-// SEGURO DEL LOADER - si algo falla, igual se quita a los 2.8s
 setTimeout(function(){var l=document.getElementById('loader'); if(l){l.classList.add('hidden');}},2800);
 </script>
 </head>
@@ -217,9 +216,9 @@ var isLoadingHorarios = false;
 var lastFetchId = 0;
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferredPrompt=e;});
 document.getElementById('btnInstalar').addEventListener('click',function(){
-if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(function(){deferredPrompt=null;});return;}
 if(window.matchMedia('(display-mode: standalone)').matches){alert('O app já está instalado!');return;}
-location.reload();
+if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(function(){deferredPrompt=null;});return;}
+alert('Espera 10 segundos sin tocar nada y vuelve a tocar BAIXAR APP.');
 });
 var pct=0; var bar=document.getElementById('loader-bar-inner'); var pctEl=document.getElementById('loader-pct');
 var li=setInterval(function(){pct+=Math.random()*14+3; if(pct>=100){pct=100;clearInterval(li);setTimeout(function(){document.getElementById('loader').classList.add('hidden')},300)} bar.style.width=pct+'%'; pctEl.textContent=Math.floor(pct)+'%';},90);
