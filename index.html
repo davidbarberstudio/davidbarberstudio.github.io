@@ -469,10 +469,11 @@ document.getElementById('modalProcess').style.display='none';
 var d=new Date(data+'T12:00:00');
 document.getElementById('okMsg').innerHTML='Obrigado, '+cliente+'.<br>Seu horário está reservado.';
 document.getElementById('okResumo').innerHTML='Barbeiro: David<br>Serviço: '+servico+' • '+(mapaServicos[servico] ? mapaServicos[servico].preco : '')+'<br>Data: '+d.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'short'})+'<br>Horário: '+Object.values(selectedSlots).flat().join(', ')+'<br>Cliente: '+cliente+'<br>WhatsApp: '+telefone;
+var datosParaOk = {cliente: cliente, whatsappUrl: result.whatsapp || ''};
+window._reservaPendiente = datosParaOk;
 limparCampos();
-showStep(7);
-if(result.whatsapp){ setTimeout(function(){ abrirWhatsAppDirecto(result.whatsapp); }, 800); }
 btn.textContent='CONFIRMAR RESERVA';
+if(result.whatsapp){ abrirWhatsAppDirecto(result.whatsapp); }
 } else { document.getElementById('modalProcess').style.display='none'; document.getElementById('modalOcupado').style.display='flex'; btn.disabled=false; btn.textContent='CONFIRMAR RESERVA'; carregarHorarios(true); }
 }).catch(function(err){ document.getElementById('modalProcess').style.display='none'; document.getElementById('modalOcupado').style.display='flex'; btn.disabled=false; btn.textContent='CONFIRMAR RESERVA'; carregarHorarios(true); });
 }
@@ -493,6 +494,18 @@ document.getElementById('modalCancelando').style.display='none';
 if(r.success && r.whatsapp){abrirWhatsAppDirecto(r.whatsapp);} else if(r.success){alert('Cancelado: '+r.hora); carregarHorarios(true);} else {alert(r.error||'Erro');}
 }).catch(function(e){ document.getElementById('modalCancelando').style.display='none'; alert('Erro conexão'); });
 }
+var _yaMostroOk = false;
+function mostrarOkAlVolver(){
+  if(!window._reservaPendiente || _yaMostroOk) return;
+  _yaMostroOk = true;
+  showStep(7);
+  window._reservaPendiente = null;
+}
+document.addEventListener('visibilitychange', function(){
+  if(!document.hidden){ setTimeout(mostrarOkAlVolver, 600); }
+});
+window.addEventListener('focus', function(){ setTimeout(mostrarOkAlVolver, 600); });
+window.addEventListener('pageshow', function(){ setTimeout(mostrarOkAlVolver, 600); });
 </script>
 </body>
 </html>
