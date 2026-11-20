@@ -10,23 +10,8 @@
   "theme_color": "#000000",
   "description": "David Barber Studio - Joinville",
   "icons": [
-    {
-      "src": "./dbm-icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "./dbm-icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "./dbm-icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
-    }
+    { "src": "./1781700842770.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./1781700842770.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./1781700842770.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ]
 }
